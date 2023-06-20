@@ -147,6 +147,7 @@ export const SearchPage = () => {
   };
 
   const renderDom = (name: string) => {
+    let newKey=keywords.toLowerCase()
     if (keywords.length && name.indexOf(keywords) > -1 && keywords !== name) {
       const temp = name.split(keywords);
       const dom = [];

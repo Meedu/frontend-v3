@@ -12,7 +12,7 @@ export const OrderPayPage = () => {
   document.title = "支付中";
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [payment, setPayment] = useState(result.get("payment"));
   const [id, setId] = useState(Number(result.get("id")));
   const [price, setPrice] = useState(Number(result.get("price")));
@@ -22,7 +22,7 @@ export const OrderPayPage = () => {
   const [courseId, setCourseId] = useState(Number(result.get("course_id")));
   const [courseType, setCourseType] = useState(result.get("course_type"));
   const [text, setText] = useState<string>("");
-  const [qrode, setQrode] = useState<string>("");
+  const [qrode, setQrode] = useState<string>("loading");
   const user = useSelector((state: any) => state.loginUser.value.user);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
 
@@ -44,8 +44,10 @@ export const OrderPayPage = () => {
         })
         .then((res: any) => {
           setQrode(res.data.code_url);
+          setLoading(false);
         })
         .catch((e) => {
+          setLoading(false);
           message.error(e.message);
           timer && clearInterval(timer);
           navigate("/");
@@ -57,8 +59,10 @@ export const OrderPayPage = () => {
         })
         .then((res: any) => {
           setText(res.data.text);
+          setLoading(false);
         })
         .catch((e) => {
+          setLoading(false);
           message.error(e.message);
           timer && clearInterval(timer);
           navigate("/");
@@ -165,7 +169,11 @@ export const OrderPayPage = () => {
               </div>
             </div>
             <div className={styles["paycode"]}>
-              {qrode !== "" && <QRCode size={200} value={qrode} />}
+              <QRCode
+                size={200}
+                value={qrode}
+                status={loading ? "loading" : "active"}
+              />
               <div className={styles["info"]}>
                 <div className={styles["orderNum"]}>订单号：{orderId}</div>
                 <div className={styles["price"]}>
