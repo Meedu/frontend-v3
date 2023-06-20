@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import styles from "./video.module.scss";
-import { Button, message, Input } from "antd";
+import { message, Input } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ChatBox } from "../../components";
 import { SignDialog } from "./components/sign-dialog";
@@ -12,18 +12,17 @@ import backIcon from "../../assets/img/commen/icon-back-h.png";
 declare const window: any;
 var livePlayer: any = null;
 var vodPlayer: any = null;
+
 export const LiveVideoPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [id, setId] = useState(Number(result.get("id")));
+  const [id] = useState(Number(result.get("id")));
   const [course, setCourse] = useState<any>({});
   const [video, setVideo] = useState<any>({});
   const [chat, setChat] = useState<any>(null);
   const [curStartTime, setCurStartTime] = useState<string>("");
   const [playUrl, setPlayUrl] = useState<string>("");
   const [record_exists, setRecordExists] = useState<number>(0);
-  const [record_duration, setRecordDuration] = useState<number>(0);
   const [webrtc_play_url, setWebrtcPlayUrl] = useState<string>("");
   const [roomDisabled, setRoomDisabled] = useState<boolean>(false);
   const [userDisabled, setUserDisabled] = useState<boolean>(false);
@@ -89,7 +88,6 @@ export const LiveVideoPage = () => {
       setVideo(resData.video);
       setPlayUrl(resData.play_url);
       setRecordExists(resData.record_exists);
-      setRecordDuration(resData.record_duration);
       setWebrtcPlayUrl(resData.web_rtc_play_url);
       if (typeof resData.video.status === "undefined") {
         setEnabledChat(false);
@@ -207,24 +205,42 @@ export const LiveVideoPage = () => {
   };
 
   const initLivePlayer = () => {
-    livePlayer = new window.HlsJsPlayer({
-      id: "meedu-live-player",
-      url: playUrl,
-      isLive: true,
+    // 解析跑马灯的字体大小
+    let bulletSecretFontSize = !config.player.bullet_secret.size
+      ? 14
+      : config.player.bullet_secret.size;
+
+    // 初始化播放器
+    livePlayer = new window.DPlayer({
+      container: document.getElementById("meedu-live-player"),
+      live: true,
+      video: {
+        url: playUrl,
+        type: "hls",
+        pic: course.poster || config.player.cover,
+      },
       autoplay: true,
-      poster: course.poster || config.player.cover,
-      height: 535,
-      width: 950,
-      closeVideoTouch: true,
-      closeVideoClick: true,
-      errorTips: "请刷新页面试试",
+      //   height: 535,
+      //   width: 950,
+      bulletSecret: {
+        enabled: parseInt(config.player.enabled_bullet_secret) === 1,
+        text: config.player.bullet_secret.text
+          .replace("${user.mobile}", user.mobile)
+          .replace("${mobile}", user.mobile)
+          .replace("${user.id}", user.id),
+        size: bulletSecretFontSize + "px",
+        color: !config.player.bullet_secret.color
+          ? "red"
+          : config.player.bullet_secret.color,
+        opacity: config.player.bullet_secret.opacity,
+      },
     });
     livePlayer.on("timeupdate", () => {
-      let curDuration = parseInt(livePlayer.currentTime);
+      let curDuration = parseInt(livePlayer.video.currentTime);
       livePlayRecord(curDuration, false);
     });
     livePlayer.on("ended", () => {
-      let curDuration = parseInt(livePlayer.currentTime);
+      let curDuration = parseInt(livePlayer.video.currentTime);
       livePlayRecord(curDuration, true);
     });
   };
@@ -232,6 +248,7 @@ export const LiveVideoPage = () => {
   const goDetail = () => {
     livePlayer && livePlayer.destroy(true);
     vodPlayer && vodPlayer.destroy();
+
     setTimeout(() => {
       navigate("/live/detail?id=" + course.id + "&tab=3", { replace: true });
     }, 500);
