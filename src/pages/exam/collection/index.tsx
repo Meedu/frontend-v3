@@ -33,6 +33,16 @@ export const ExamCollectionPage = () => {
       goLogin();
       return;
     }
+    if (
+      list[1] === 0 &&
+      list[2] === 0 &&
+      list[3] === 0 &&
+      list[4] === 0 &&
+      list[5] === 0 &&
+      list[6] === 0
+    ) {
+      return;
+    }
     navigate("/exam/collection/play?mode=" + mode);
   };
 
@@ -144,38 +154,86 @@ export const ExamCollectionPage = () => {
             </div>
           </>
         )}
-        {!loading && list[1] > 0 && (
-          <div className={styles["question-item"]} onClick={() => goDetail(1)}>
+        {!loading && (
+          <div
+            className={styles["question-item"]}
+            onClick={() => {
+              if (list[1] === 0) {
+                return;
+              }
+              goDetail(1);
+            }}
+          >
             <div className={styles["question-item-type"]}>单选题</div>
             <div className={styles["question-item-num"]}>已收藏{list[1]}题</div>
           </div>
         )}
-        {!loading && list[2] > 0 && (
-          <div className={styles["question-item"]} onClick={() => goDetail(2)}>
+        {!loading && (
+          <div
+            className={styles["question-item"]}
+            onClick={() => {
+              if (list[2] === 0) {
+                return;
+              }
+              goDetail(2);
+            }}
+          >
             <div className={styles["question-item-type"]}>多选题</div>
             <div className={styles["question-item-num"]}>已收藏{list[2]}题</div>
           </div>
         )}
-        {!loading && list[5] > 0 && (
-          <div className={styles["question-item"]} onClick={() => goDetail(5)}>
+        {!loading && (
+          <div
+            className={styles["question-item"]}
+            onClick={() => {
+              if (list[5] === 0) {
+                return;
+              }
+              goDetail(5);
+            }}
+          >
             <div className={styles["question-item-type"]}>判断题</div>
             <div className={styles["question-item-num"]}>已收藏{list[5]}题</div>
           </div>
         )}
-        {!loading && list[3] > 0 && (
-          <div className={styles["question-item"]} onClick={() => goDetail(3)}>
+        {!loading && (
+          <div
+            className={styles["question-item"]}
+            onClick={() => {
+              if (list[3] === 0) {
+                return;
+              }
+              goDetail(3);
+            }}
+          >
             <div className={styles["question-item-type"]}>填空题</div>
             <div className={styles["question-item-num"]}>已收藏{list[3]}题</div>
           </div>
         )}
-        {!loading && list[4] > 0 && (
-          <div className={styles["question-item"]} onClick={() => goDetail(4)}>
+        {!loading && (
+          <div
+            className={styles["question-item"]}
+            onClick={() => {
+              if (list[4] === 0) {
+                return;
+              }
+              goDetail(4);
+            }}
+          >
             <div className={styles["question-item-type"]}>问答题</div>
             <div className={styles["question-item-num"]}>已收藏{list[4]}题</div>
           </div>
         )}
-        {!loading && list[6] > 0 && (
-          <div className={styles["question-item"]} onClick={() => goDetail(6)}>
+        {!loading && (
+          <div
+            className={styles["question-item"]}
+            onClick={() => {
+              if (list[6] === 0) {
+                return;
+              }
+              goDetail(6);
+            }}
+          >
             <div className={styles["question-item-type"]}>题帽题</div>
             <div className={styles["question-item-num"]}>已收藏{list[1]}题</div>
           </div>
