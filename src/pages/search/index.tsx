@@ -121,8 +121,7 @@ export const SearchPage = () => {
     }
     navigate(`/search?keywords=${content}`);
     setKeywords(content);
-    setPage(1);
-    setList([]);
+    resetData();
   };
 
   const change = (val: string) => {
