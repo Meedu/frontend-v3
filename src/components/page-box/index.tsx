@@ -52,13 +52,15 @@ export const PageBox: React.FC<PropInterface> = ({
             <span>上一页</span>
           </button>
         )}
-        <button
-          style={{ backgroundColor: "#ffffff" }}
-          className={over ? "fl h50 cursor canNot" : "fl h50 cursor"}
-          onClick={() => nextPage()}
-        >
-          <span>下一页</span>
-        </button>
+        {!over && (
+          <button
+            style={{ backgroundColor: "#ffffff" }}
+            className={"fl h50 cursor"}
+            onClick={() => nextPage()}
+          >
+            <span>下一页</span>
+          </button>
+        )}
       </div>
     </div>
   );

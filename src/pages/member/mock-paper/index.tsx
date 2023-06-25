@@ -17,6 +17,7 @@ export const MemberMockPaperPage = () => {
   const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [over, setOver] = useState(false);
+  const [isSingle, setIsSingle] = useState(false);
 
   useEffect(() => {
     getList();
@@ -39,6 +40,7 @@ export const MemberMockPaperPage = () => {
         size: size,
       })
       .then((res: any) => {
+        setTotal(res.data.total);
         if (res.data.data.length === 0) {
           let currentPage = page;
           if (currentPage > 1) {
@@ -47,8 +49,14 @@ export const MemberMockPaperPage = () => {
             setPage(currentPage);
           }
           setOver(true);
+          setIsSingle(false);
         } else {
           setList(res.data.data);
+          if (page === 1 && res.data.data.length < size) {
+            setIsSingle(true);
+          } else {
+            setIsSingle(false);
+          }
           if (res.data.data.length < size) {
             setOver(true);
           } else {
@@ -107,7 +115,7 @@ export const MemberMockPaperPage = () => {
               ))}
             </>
           )}
-          {!loading && list.length > 0 && (
+          {!loading && list.length > 0 && !isSingle && (
             <div id="page">
               <PageBox
                 key={page}

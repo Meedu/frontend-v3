@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { message, Input, Row, Col, Spin, Skeleton, Pagination } from "antd";
+import { message, Input, Row, Col, Skeleton, Pagination } from "antd";
 import { search as searchApi } from "../../api/index";
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -27,6 +27,11 @@ export const SearchPage = () => {
   const configFunc = useSelector(
     (state: any) => state.systemConfig.value.configFunc
   );
+
+  useEffect(() => {
+    setKeywords(String(result.get("keywords")));
+    setContent(String(result.get("keywords")));
+  }, [result.get("keywords")]);
 
   useEffect(() => {
     getData();
@@ -121,8 +126,7 @@ export const SearchPage = () => {
     }
     navigate(`/search?keywords=${content}`);
     setKeywords(content);
-    setPage(1);
-    setList([]);
+    resetData();
   };
 
   const change = (val: string) => {
@@ -148,6 +152,7 @@ export const SearchPage = () => {
   };
 
   const renderDom = (name: string) => {
+    let newKey = keywords.toLowerCase();
     if (keywords.length && name.indexOf(keywords) > -1 && keywords !== name) {
       const temp = name.split(keywords);
       const dom = [];
@@ -170,6 +175,16 @@ export const SearchPage = () => {
         </span>
       );
     }
+  };
+
+  const warpTag = (content: string, keyword: string, tagName: string) => {
+    const a = content.toLowerCase();
+    const b = keyword.toLowerCase();
+    const indexof = a.indexOf(b);
+    const c = indexof > -1 ? content.substr(indexof, keyword.length) : "";
+    const val = `<${tagName} style="color:#ff4d4f;">${c}</${tagName}>`;
+    const regS = new RegExp(keyword, "gi");
+    return content.replace(regS, val);
   };
 
   const goDetail = (val: string, id: number) => {
@@ -283,15 +298,23 @@ export const SearchPage = () => {
                   style={{ padding: 0 }}
                   onClick={() => goDetail(item.resource_type, item.resource_id)}
                 >
-                  <li className={styles["item-top"]}>
-                    {renderDom(
-                      "【" + change(item.resource_type) + "】" + item.title
-                    )}
-                  </li>
+                  <li
+                    className={styles["item-top"]}
+                    dangerouslySetInnerHTML={{
+                      __html: warpTag(
+                        "【" + change(item.resource_type) + "】" + item.title,
+                        keywords,
+                        "span"
+                      ),
+                    }}
+                  ></li>
                   {item.p && (
-                    <li className={styles["item-content"]}>
-                      {renderDom(item.p)}
-                    </li>
+                    <li
+                      className={styles["item-content"]}
+                      dangerouslySetInnerHTML={{
+                        __html: warpTag(item.p, keywords, "span"),
+                      }}
+                    ></li>
                   )}
                 </ul>
               ))}
