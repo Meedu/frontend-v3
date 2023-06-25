@@ -29,6 +29,11 @@ export const SearchPage = () => {
   );
 
   useEffect(() => {
+    setKeywords(String(result.get("keywords")));
+    setContent(String(result.get("keywords")));
+  }, [result.get("keywords")]);
+
+  useEffect(() => {
     getData();
   }, [page, size, refresh, keywords]);
 
