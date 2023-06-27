@@ -40,7 +40,7 @@ export const Header = () => {
     useState<boolean>(false);
   const [hasMessage, setHasMessage] = useState<boolean>(false);
   const [forgetVisiale, setForgetVisiale] = useState<boolean>(false);
-  const [list, setList] = useState<MenuProps["items"]>([]);
+  const [list, setList] = useState<any>([]);
   const [current, setCurrent] = useState(pathname);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export const Header = () => {
   }, [freshUnread, isLogin]);
 
   useEffect(() => {
-    const arr: MenuProps["items"] = [];
+    const arr: any = [];
     navs.map((item: any) => {
       if (
         item.url !== "/" &&
@@ -68,12 +68,14 @@ export const Header = () => {
         arr.push({
           label: <span onClick={() => onMenuClick(item.url)}>{item.name}</span>,
           key: item.url,
+          blank: item.blank,
           children: checkArr(item.children),
         });
       } else {
         arr.push({
           label: item.name,
           key: item.url,
+          blank: item.blank,
         });
       }
     });
@@ -120,6 +122,7 @@ export const Header = () => {
       }
       setLoading(true);
       login.logout().then(() => {
+        setLoading(false);
         message.success("已安全退出");
         dispatch(logoutAction());
         setTimeout(() => {
@@ -177,7 +180,16 @@ export const Header = () => {
     setWeixinBindMobileVisiale(true);
   };
 
-  const checkNav: MenuProps["onClick"] = (e) => {
+  const checkNav: MenuProps["onClick"] = (e: any) => {
+    let blank = e.item.props.blank;
+    if (e.key.match("https:") || e.key.match("http:")) {
+      if (blank === 0) {
+        window.location.href = e.key;
+      } else {
+        window.open(e.key);
+      }
+      return;
+    }
     setCurrent(e.key);
     navigate(e.key);
   };
