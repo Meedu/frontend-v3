@@ -162,7 +162,11 @@ export const VodPlayPage = () => {
 
       // 当前用户已购买 || 可以试看
       if (res.data.is_watch || res.data.video.free_seconds > 0) {
-        getPlayInfo(res.data.is_watch, res.data.video.free_seconds);
+        getPlayInfo(
+          res.data.is_watch,
+          res.data.video.free_seconds,
+          res.data.video.ban_drag
+        );
       }
 
       //获取附件
@@ -184,7 +188,11 @@ export const VodPlayPage = () => {
     });
   };
 
-  const getPlayInfo = (active: boolean, free_seconds: number) => {
+  const getPlayInfo = (
+    active: boolean,
+    free_seconds: number,
+    ban_drag: number
+  ) => {
     let isTrySee = 0;
     if (active === false && free_seconds > 0) {
       isTrySee = 1;
@@ -210,14 +218,14 @@ export const VodPlayPage = () => {
           return;
         }
         setIsIframe(false);
-        initDPlayer(playUrls, isTrySee);
+        initDPlayer(playUrls, isTrySee, ban_drag);
       })
       .catch((e) => {
         message.error(e.message);
       });
   };
 
-  const initDPlayer = (playUrls: any, isTrySee: number) => {
+  const initDPlayer = (playUrls: any, isTrySee: number, ban_drag: number) => {
     savePlayId(String(result.get("id")));
     let dplayerUrls: any[] = [];
     playUrls.forEach((item: any) => {
@@ -251,7 +259,7 @@ export const VodPlayPage = () => {
           : config.player.bullet_secret.color,
         opacity: config.player.bullet_secret.opacity,
       },
-      ban_drag: parseInt(video.ban_drag) === 1,
+      ban_drag: ban_drag === 1,
       last_see_pos: lastSeeValue,
     });
 
@@ -569,8 +577,9 @@ export const VodPlayPage = () => {
             </div>
             <div className="course-chapter-box">
               {loading &&
-                Array.from({ length: 2 }).map(() => (
+                Array.from({ length: 2 }).map((_, i) => (
                   <div
+                    key={i}
                     style={{
                       width: 260,
                       display: "flex",
