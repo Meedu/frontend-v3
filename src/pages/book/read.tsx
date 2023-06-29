@@ -133,10 +133,9 @@ export const BookReadPage = () => {
       message.error("没有上一节");
       return;
     }
+    resetComments();
     navigate("/book/read?id=" + articleId);
     setId(articleId);
-    resetComments();
-    getComments();
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   };
 
@@ -148,10 +147,9 @@ export const BookReadPage = () => {
       message.error("没有下一节");
       return;
     }
+    resetComments();
     navigate("/book/read?id=" + articleId);
     setId(articleId);
-    resetComments();
-    getComments();
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   };
 
@@ -159,10 +157,9 @@ export const BookReadPage = () => {
     if (item.id === list.id) {
       return;
     }
+    resetComments();
     navigate("/book/read?id=" + item.id);
     setId(item.id);
-    resetComments();
-    getComments();
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   };
 
