@@ -27,6 +27,10 @@ export const ExamPaperDetailPage = () => {
   }, [id]);
 
   useEffect(() => {
+    setId(Number(result.get("id")));
+  }, [result.get("id")]);
+
+  useEffect(() => {
     let val = 0;
     for (var key in questions) {
       val = val + questions[key].length;

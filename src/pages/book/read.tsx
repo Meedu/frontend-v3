@@ -42,7 +42,6 @@ export const BookReadPage = () => {
   const [commentId, setCommentId] = useState<number>(0);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10000);
-  const [total, setTotal] = useState(0);
   const user = useSelector((state: any) => state.loginUser.value.user);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
 
@@ -50,6 +49,10 @@ export const BookReadPage = () => {
     getData();
     getComments();
   }, [id]);
+
+  useEffect(() => {
+    setId(Number(result.get("id")));
+  }, [result.get("id")]);
 
   useEffect(() => {
     latexRender(document.getElementById("desc"));

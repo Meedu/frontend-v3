@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
-import { Row, Col, Spin, Skeleton, Input, Button, message } from "antd";
+import { Col, Skeleton, Input, Button, message } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { topic as topicApi } from "../../api/index";
 import { useSelector } from "react-redux";
@@ -49,6 +49,10 @@ export const TopicDetailPage = () => {
     getDetail();
     getComments();
   }, [id]);
+
+  useEffect(() => {
+    setId(Number(result.get("id")));
+  }, [result.get("id")]);
 
   useEffect(() => {
     latexRender(document.getElementById("math"));
