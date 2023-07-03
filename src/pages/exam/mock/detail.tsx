@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
 import { Skeleton, message, Button } from "antd";
 import { useSelector } from "react-redux";
@@ -24,6 +24,10 @@ export const ExamMockPaperDetailPage = () => {
   useEffect(() => {
     getDetail();
   }, [id]);
+
+  useEffect(() => {
+    setId(Number(result.get("id")));
+  }, [result.get("id")]);
 
   useEffect(() => {
     let val = 0;

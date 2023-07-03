@@ -45,6 +45,10 @@ export const WendaDetailPage = () => {
   }, [id]);
 
   useEffect(() => {
+    setId(Number(result.get("id")));
+  }, [result.get("id")]);
+
+  useEffect(() => {
     latexRender(document.getElementById("desc"));
   }, [document.getElementById("desc")]);
 

@@ -16,7 +16,7 @@ var vodPlayer: any = null;
 export const LiveVideoPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
-  const [id] = useState(Number(result.get("id")));
+  const [id, setId] = useState(Number(result.get("id")));
   const [course, setCourse] = useState<any>({});
   const [video, setVideo] = useState<any>({});
   const [chat, setChat] = useState<any>(null);
@@ -75,6 +75,10 @@ export const LiveVideoPage = () => {
   useEffect(() => {
     getData();
   }, [id]);
+
+  useEffect(() => {
+    setId(Number(result.get("id")));
+  }, [result.get("id")]);
 
   const getData = () => {
     live.play(id).then((res: any) => {
