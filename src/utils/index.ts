@@ -101,9 +101,9 @@ export function changeTime(dateStr: string) {
     let tempTime = Math.floor(interval / (60 * 60 * 24));
     return `${tempTime}天前`;
   } else if (interval < 60 * 60 * 24 * 365) {
-    return moment(interval * 1000).format("MM-DD HH:mm");
+    return moment(dateStr).utcOffset(0).format("MM-DD HH:mm");
   } else {
-    return moment(interval * 1000).format("YYYY-MM-DD HH:mm");
+    return moment(dateStr).utcOffset(0).format("YYYY-MM-DD HH:mm");
   }
 }
 
