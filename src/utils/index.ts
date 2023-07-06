@@ -81,9 +81,9 @@ export function getCommentTime(dateStr: string) {
     let tempTime = Math.floor(interval / (60 * 60 * 24));
     return `${tempTime}天前`;
   } else if (interval < 60 * 60 * 24 * 365) {
-    return moment(interval * 1000).format("MM-DD");
+    return moment(dateStr).utcOffset(0).format("MM-DD");
   } else {
-    return moment(interval * 1000).format("YYYY-MM-DD");
+    return moment(dateStr).utcOffset(0).format("YYYY-MM-DD");
   }
 }
 
@@ -108,7 +108,7 @@ export function changeTime(dateStr: string) {
 }
 
 export function dateFormat(dateStr: string) {
-  return moment(dateStr).format("YYYY-MM-DD HH:mm");
+  return moment(dateStr).utcOffset(0).format("YYYY-MM-DD HH:mm");
 }
 
 export function generateUUID(): string {
