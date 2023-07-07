@@ -119,7 +119,7 @@ export const LiveVideoPage = () => {
       // 倒计时
       if (resData.video.status === 0) {
         setWaitTeacher(false);
-        countTime();
+        countTime(resData.video.published_at);
       }
       //签到相关
       let sign_in_record = resData.sign_in_record;
@@ -133,10 +133,10 @@ export const LiveVideoPage = () => {
     });
   };
 
-  const countTime = () => {
+  const countTime = (endValue: string) => {
     let date = new Date();
     let now = date.getTime();
-    let endDate = new Date(curStartTime);
+    let endDate = new Date(endValue);
     let end = endDate.getTime();
     let leftTime = end - now;
     let c_day = 0;
@@ -173,12 +173,13 @@ export const LiveVideoPage = () => {
       setMin("00");
       setSecond("00");
     }
-    if (c_day === 0 && c_hour === 0 && c_min === 0 && c_second === 0) {
+    if (leftTime <= 0) {
       setWaitTeacher(true);
       return;
-    } else {
-      setTimeout(countTime, 1000);
     }
+    setTimeout(() => {
+      countTime(endValue);
+    }, 1000);
   };
 
   const initLiveTencentPlayer = () => {
