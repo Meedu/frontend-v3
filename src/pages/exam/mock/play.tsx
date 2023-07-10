@@ -275,7 +275,11 @@ export const ExamMockPaperPlayPage = () => {
         {surplus === 0 && <div className={styles["text"]}>确认要交卷吗？</div>}
         <div
           slot="footer"
-          style={{ display: "flex", flexDirection: "row-reverse" }}
+          style={{
+            display: "flex",
+            flexDirection: "row-reverse",
+            marginTop: 15,
+          }}
         >
           <Button
             type="primary"
