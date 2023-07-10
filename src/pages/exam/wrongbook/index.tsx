@@ -235,7 +235,7 @@ export const ExamWrongbookPage = () => {
             }}
           >
             <div className={styles["question-item-type"]}>题帽题</div>
-            <div className={styles["question-item-num"]}>共{list[1]}题错题</div>
+            <div className={styles["question-item-num"]}>共{list[6]}题错题</div>
           </div>
         )}
       </div>
