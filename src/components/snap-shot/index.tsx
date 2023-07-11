@@ -387,15 +387,26 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
                 </Upload>
               )}
               {!changeBox && (
-                <div
-                  className={styles["upload-image-snapshot"]}
-                  onClick={() => {
-                    setChangeBox(true);
-                    getList();
-                  }}
-                >
-                  学习照片管理
-                </div>
+                <>
+                  <div
+                    className={styles["camera-tip"]}
+                    style={{ marginTop: 20 }}
+                  >
+                    系统自动随机拍照无需操作
+                  </div>
+                  <div className={styles["camera-tip"]}>
+                    请保证摄像头开启对准面部
+                  </div>
+                  <div
+                    className={styles["upload-image-snapshot"]}
+                    onClick={() => {
+                      setChangeBox(true);
+                      getList();
+                    }}
+                  >
+                    学习照片管理
+                  </div>
+                </>
               )}
             </div>
           )}
