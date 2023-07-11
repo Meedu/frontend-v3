@@ -46,11 +46,16 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
     setPreviewStatus(false);
     getCount();
     getConfig();
+    setShowList(true);
+    if (open) {
+      setOpenCamera(true);
+      getCamera();
+    }
     return () => {
       intervalId && clearInterval(intervalId);
       stopCamera();
     };
-  }, [id]);
+  }, [id, open]);
 
   useEffect(() => {
     if (open) {
