@@ -235,7 +235,7 @@ export const ExamCollectionPage = () => {
             }}
           >
             <div className={styles["question-item-type"]}>题帽题</div>
-            <div className={styles["question-item-num"]}>已收藏{list[1]}题</div>
+            <div className={styles["question-item-num"]}>已收藏{list[6]}题</div>
           </div>
         )}
       </div>

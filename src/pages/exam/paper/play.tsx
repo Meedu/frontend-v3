@@ -309,7 +309,11 @@ export const ExamPaperPlayPage = () => {
         {surplus === 0 && <div className={styles["text"]}>确认要交卷吗？</div>}
         <div
           slot="footer"
-          style={{ display: "flex", flexDirection: "row-reverse" }}
+          style={{
+            display: "flex",
+            flexDirection: "row-reverse",
+            marginTop: 15,
+          }}
         >
           <Button
             type="primary"
@@ -333,11 +337,23 @@ export const ExamPaperPlayPage = () => {
         maskClosable={false}
         open={readTip}
         width={500}
-        onOk={() => ok()}
-        onCancel={() => setReadTip(false)}
+        closable={false}
+        footer={null}
       >
         <div className={styles["text"]}>
           此次在线考试包含主观题，等待老师阅卷后查看成绩
+        </div>
+        <div
+          slot="footer"
+          style={{
+            display: "flex",
+            flexDirection: "row-reverse",
+            marginTop: 15,
+          }}
+        >
+          <Button type="primary" onClick={() => ok()}>
+            我知道了
+          </Button>
         </div>
       </Modal>
       <div className={styles["navheader"]}>
