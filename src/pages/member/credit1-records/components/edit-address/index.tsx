@@ -23,6 +23,9 @@ export const EditAddressDialog: React.FC<PropInterface> = ({
   const [city, setCity] = useState<any>(null);
   const [area, setArea] = useState<any>(null);
   const [street, setStreet] = useState<string>("");
+  const [provinceText, setProvinceText] = useState("");
+  const [cityText, setCityText] = useState("");
+  const [areaText, setAreaText] = useState("");
   const [provinceData, setProvinceData] = useState<any>([]);
   const [cityData, setCityData] = useState<any>([]);
   const [areaData, setAreaData] = useState<any>([]);
@@ -86,9 +89,9 @@ export const EditAddressDialog: React.FC<PropInterface> = ({
       setNewAddress({
         name: name,
         mobile: mobile,
-        province: province,
-        city: city,
-        area: area,
+        province: provinceText,
+        city: cityText,
+        area: areaText,
         street: street,
       })
     );
@@ -150,6 +153,10 @@ export const EditAddressDialog: React.FC<PropInterface> = ({
                   value={province}
                   onChange={(value: any) => {
                     setProvince(value);
+                    let it = provinceData.find((it: any) => it.value === value);
+                    if (it) {
+                      setProvinceText(it.label);
+                    }
                   }}
                   placeholder="请选择省"
                   options={provinceData}
@@ -170,6 +177,10 @@ export const EditAddressDialog: React.FC<PropInterface> = ({
                   value={city}
                   onChange={(value: any) => {
                     setCity(value);
+                    let it = cityData.find((it: any) => it.value === value);
+                    if (it) {
+                      setCityText(it.label);
+                    }
                   }}
                   placeholder="请选择市"
                   options={cityData}
@@ -189,8 +200,12 @@ export const EditAddressDialog: React.FC<PropInterface> = ({
                   value={area}
                   onChange={(value: any) => {
                     setArea(value);
+                    let it = areaData.find((it: any) => it.value === value);
+                    if (it) {
+                      setAreaText(it.label);
+                    }
                   }}
-                  placeholder="请选择市"
+                  placeholder="请选择区"
                   options={areaData}
                 ></Select>
               </div>
