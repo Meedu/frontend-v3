@@ -1,17 +1,17 @@
 .contanier {
   width: 1200px;
-  min-height: 500px;
   margin: 0 auto;
-  overflow: hidden;
   display: block;
   display: flex;
   flex-direction: row;
   box-sizing: border-box;
   .qa-box {
     width: 769px;
+    min-height: 500px;
     display: flex;
     flex-direction: column;
     margin-right: 30px;
+    overflow: hidden;
   }
   .right-contanier {
     width: 400px;
