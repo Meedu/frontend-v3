@@ -75,8 +75,10 @@ export const MemberPage = () => {
 
   useEffect(() => {
     if (isLogin) {
-    getSignStatus();
+      getSignStatus();
+   
     }
+    resetData()
   }, [isLogin]);
 
   useEffect(() => {
