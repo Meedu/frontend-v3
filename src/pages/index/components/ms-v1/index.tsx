@@ -12,7 +12,7 @@ interface PropInterface {
 export const MiaoShaComp: React.FC<PropInterface> = ({ items, name }) => {
   const navigate = useNavigate();
   const goDetail = (item: any) => {
-    if (item.is_over || item.num === item.over_num) {
+    if (item.is_over || item.over_num === 0) {
       message.error("已结束");
       return;
     }
@@ -81,10 +81,10 @@ export const MiaoShaComp: React.FC<PropInterface> = ({ items, name }) => {
                       原价：{item.original_charge}
                     </div>
                   </div>
-                  {(item.is_over || item.num === item.over_num) && (
+                  {(item.is_over || item.over_num === 0) && (
                     <div className={styles["over-progress"]}>已结束</div>
                   )}
-                  {!item.is_over && item.num !== item.over_num && (
+                  {!item.is_over && item.over_num !== 0 && (
                     <div className={styles["ms-progress"]}>
                       <div className={styles["label"]}>立即抢购</div>
                       <div className={styles["progress-text"]}>
@@ -94,7 +94,7 @@ export const MiaoShaComp: React.FC<PropInterface> = ({ items, name }) => {
                             style={{ width: proWidth(item.num, item.over_num) }}
                           ></div>
                         </div>
-                        {item.num >= 0 && item.over_num >= 0 ? (
+                        {item.num > 0 && item.over_num > 0 ? (
                           <div className={styles["progress-text-pure"]}>
                             {(
                               ((item.num - item.over_num) * 100) /

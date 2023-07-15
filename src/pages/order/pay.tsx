@@ -90,7 +90,7 @@ export const OrderPayPage = () => {
   const goBack = () => {
     timer && clearInterval(timer);
     if (goodsType === "role") {
-      navigate("/vip");
+      navigate("/member", { replace: true });
     } else if (goodsType === "book") {
       navigate("/book/detail?id=" + id);
     } else if (goodsType === "vod") {
