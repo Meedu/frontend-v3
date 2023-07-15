@@ -133,166 +133,175 @@ export const ForgetPasswordDialog: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title=""
-        centered
-        forceRender
-        open={open}
-        width={500}
-        footer={null}
-        onCancel={() => {
-          interval && clearInterval(interval);
-          onCancel();
-        }}
-        maskClosable={false}
-        closable={false}
-      >
-        <div className={styles["tabs"]}>
-          {items.map((item: any) => (
-            <div
-              key={item.key}
-              className={
-                item.key === tabKey
-                  ? styles["tab-active-item"]
-                  : styles["tab-item"]
-              }
-              onClick={() => {
-                onChange(item.key);
-              }}
-            >
-              <div className={styles["tit"]}>{item.label}</div>
-              {item.key === tabKey && <div className={styles["actline"]}></div>}
-            </div>
-          ))}
-          <a
-            className={styles["linkTab"]}
-            onClick={() => {
-              interval && clearInterval(interval);
-              changeLogin();
-            }}
-          >
-            返回登录&gt;&gt;
-          </a>
-          <img
-            className={styles["btn-close"]}
-            onClick={() => {
-              interval && clearInterval(interval);
-              onCancel();
-            }}
-            src={closeIcon}
-          />
-        </div>
-        <Form
-          form={form}
-          name="password-login-dialog"
-          labelCol={{ span: 0 }}
-          wrapperCol={{ span: 24 }}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-          style={{ marginTop: 30 }}
+      {open ? (
+        <Modal
+          title=""
+          centered
+          forceRender
+          open={true}
+          width={500}
+          footer={null}
+          onCancel={() => {
+            interval && clearInterval(interval);
+            onCancel();
+          }}
+          maskClosable={false}
+          closable={false}
         >
-          <Form.Item
-            name="mobile"
-            rules={[{ required: true, message: "请输入手机号!" }]}
-          >
-            <Input
-              style={{ width: 440, height: 54, fontSize: 16 }}
-              autoComplete="off"
-              placeholder="请输入手机号"
-            />
-          </Form.Item>
-
-          <Form.Item>
-            <Space align="baseline" style={{ height: 54 }}>
-              <Form.Item
-                name="captcha"
-                rules={[{ required: true, message: "请输入图形验证码!" }]}
+          <div className={styles["tabs"]}>
+            {items.map((item: any) => (
+              <div
+                key={item.key}
+                className={
+                  item.key === tabKey
+                    ? styles["tab-active-item"]
+                    : styles["tab-item"]
+                }
+                onClick={() => {
+                  onChange(item.key);
+                }}
               >
-                <Input
-                  style={{
-                    width: 310,
-                    height: 54,
-                    marginRight: 10,
-                    fontSize: 16,
-                  }}
-                  autoComplete="off"
-                  placeholder="请输入图形验证码"
-                />
-              </Form.Item>
-              <Image
-                onClick={() => getCaptcha()}
-                src={captcha.img}
-                width={110}
-                height={39}
-                preview={false}
-                style={{ cursor: "pointer" }}
-              />
-            </Space>
-          </Form.Item>
-
-          <Form.Item>
-            <Space align="baseline" style={{ height: 54 }}>
-              <Form.Item
-                name="sms"
-                rules={[{ required: true, message: "请输入手机验证码!" }]}
-              >
-                <Input
-                  style={{
-                    width: 310,
-                    height: 54,
-                    marginRight: 30,
-                    fontSize: 16,
-                  }}
-                  autoComplete="off"
-                  placeholder="请输入手机验证码"
-                />
-              </Form.Item>
-              <div className={styles["buttons"]}>
-                {smsLoading2 && (
-                  <div style={{ width: 90, textAlign: "center" }}>
-                    <Spin size="small" />
-                  </div>
-                )}
-                {!smsLoading2 && smsLoading && (
-                  <div className={styles["send-sms-button"]}>{current}s</div>
-                )}
-                {!smsLoading && !smsLoading2 && (
-                  <div
-                    className={styles["send-sms-button"]}
-                    onClick={() => sendSms()}
-                  >
-                    获取验证码
-                  </div>
+                <div className={styles["tit"]}>{item.label}</div>
+                {item.key === tabKey && (
+                  <div className={styles["actline"]}></div>
                 )}
               </div>
-            </Space>
-          </Form.Item>
-
-          <Form.Item
-            name="password"
-            rules={[{ required: true, message: "请设置账号密码!" }]}
-          >
-            <Input.Password
-              style={{ width: 440, height: 54, fontSize: 16 }}
-              autoComplete="off"
-              placeholder="请设置账号密码"
-            />
-          </Form.Item>
-
-          <Form.Item>
-            <Button
-              style={{ width: 440, height: 54, outline: "none", fontSize: 16 }}
-              type="primary"
-              onClick={() => form.submit()}
-              loading={loading}
+            ))}
+            <a
+              className={styles["linkTab"]}
+              onClick={() => {
+                interval && clearInterval(interval);
+                changeLogin();
+              }}
             >
-              重置密码
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
+              返回登录&gt;&gt;
+            </a>
+            <img
+              className={styles["btn-close"]}
+              onClick={() => {
+                interval && clearInterval(interval);
+                onCancel();
+              }}
+              src={closeIcon}
+            />
+          </div>
+          <Form
+            form={form}
+            name="password-login-dialog"
+            labelCol={{ span: 0 }}
+            wrapperCol={{ span: 24 }}
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+            style={{ marginTop: 30 }}
+          >
+            <Form.Item
+              name="mobile"
+              rules={[{ required: true, message: "请输入手机号!" }]}
+            >
+              <Input
+                style={{ width: 440, height: 54, fontSize: 16 }}
+                autoComplete="off"
+                placeholder="请输入手机号"
+              />
+            </Form.Item>
+
+            <Form.Item>
+              <Space align="baseline" style={{ height: 54 }}>
+                <Form.Item
+                  name="captcha"
+                  rules={[{ required: true, message: "请输入图形验证码!" }]}
+                >
+                  <Input
+                    style={{
+                      width: 310,
+                      height: 54,
+                      marginRight: 10,
+                      fontSize: 16,
+                    }}
+                    autoComplete="off"
+                    placeholder="请输入图形验证码"
+                  />
+                </Form.Item>
+                <Image
+                  onClick={() => getCaptcha()}
+                  src={captcha.img}
+                  width={110}
+                  height={39}
+                  preview={false}
+                  style={{ cursor: "pointer" }}
+                />
+              </Space>
+            </Form.Item>
+
+            <Form.Item>
+              <Space align="baseline" style={{ height: 54 }}>
+                <Form.Item
+                  name="sms"
+                  rules={[{ required: true, message: "请输入手机验证码!" }]}
+                >
+                  <Input
+                    style={{
+                      width: 310,
+                      height: 54,
+                      marginRight: 30,
+                      fontSize: 16,
+                    }}
+                    autoComplete="off"
+                    placeholder="请输入手机验证码"
+                  />
+                </Form.Item>
+                <div className={styles["buttons"]}>
+                  {smsLoading2 && (
+                    <div style={{ width: 90, textAlign: "center" }}>
+                      <Spin size="small" />
+                    </div>
+                  )}
+                  {!smsLoading2 && smsLoading && (
+                    <div className={styles["send-sms-button"]}>{current}s</div>
+                  )}
+                  {!smsLoading && !smsLoading2 && (
+                    <div
+                      className={styles["send-sms-button"]}
+                      onClick={() => sendSms()}
+                    >
+                      获取验证码
+                    </div>
+                  )}
+                </div>
+              </Space>
+            </Form.Item>
+
+            <Form.Item
+              name="password"
+              rules={[{ required: true, message: "请设置账号密码!" }]}
+            >
+              <Input.Password
+                style={{ width: 440, height: 54, fontSize: 16 }}
+                autoComplete="off"
+                placeholder="请设置账号密码"
+              />
+            </Form.Item>
+
+            <Form.Item>
+              <Button
+                style={{
+                  width: 440,
+                  height: 54,
+                  outline: "none",
+                  fontSize: 16,
+                }}
+                type="primary"
+                onClick={() => form.submit()}
+                loading={loading}
+              >
+                重置密码
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
+      ) : null}
     </>
   );
 };

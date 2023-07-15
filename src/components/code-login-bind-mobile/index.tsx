@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, message, Spin, Button, Space, Image } from "antd";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./index.module.scss";
 import { login, user, system } from "../../api/index";
-import { loginAction, logoutAction } from "../../store/user/loginUserSlice";
+import { loginAction } from "../../store/user/loginUserSlice";
 import {
   getLoginCode,
   getMsv,
@@ -18,7 +18,6 @@ import {
 
 interface PropInterface {
   open: boolean;
-  active: boolean;
   scene: string;
   onCancel: () => void;
   success: () => void;
@@ -28,13 +27,10 @@ var interval: any = null;
 
 export const CodeLoginBindMobileDialog: React.FC<PropInterface> = ({
   open,
-  active,
   scene,
   onCancel,
-  success,
 }) => {
   const result = new URLSearchParams(useLocation().search);
-  const params = useParams();
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -46,6 +42,10 @@ export const CodeLoginBindMobileDialog: React.FC<PropInterface> = ({
   const [smsLoading2, setSmsLoading2] = useState<boolean>(false);
   const [redirect, setRedirect] = useState(result.get("redirect"));
   const config = useSelector((state: any) => state.systemConfig.value.config);
+
+  const clearSmsInterval = () => {
+    interval && clearInterval(interval);
+  };
 
   useEffect(() => {
     form.setFieldsValue({
@@ -60,7 +60,7 @@ export const CodeLoginBindMobileDialog: React.FC<PropInterface> = ({
     }
 
     return () => {
-      interval && clearInterval(interval);
+      clearSmsInterval();
     };
   }, [form, open]);
 
@@ -71,13 +71,11 @@ export const CodeLoginBindMobileDialog: React.FC<PropInterface> = ({
   };
 
   const sendSms = () => {
-    if (smsLoading) {
+    if (smsLoading || smsLoading2) {
       return;
     }
-    if (smsLoading2) {
-      return;
-    }
-    if (!form.getFieldValue("captcha")) {
+    let captchaVal = form.getFieldValue("captcha");
+    if (!captchaVal) {
       message.error("请输入图形验证码");
       return;
     }
@@ -87,17 +85,17 @@ export const CodeLoginBindMobileDialog: React.FC<PropInterface> = ({
       .sendSms({
         mobile: form.getFieldValue("mobile"),
         image_key: captcha.key,
-        image_captcha: form.getFieldValue("captcha"),
+        image_captcha: captchaVal,
         scene: scene,
       })
-      .then((res: any) => {
+      .then(() => {
         setSmsLoading2(false);
         let time = 120;
         interval = setInterval(() => {
           time--;
           setCurrent(time);
           if (time === 0) {
-            interval && clearInterval(interval);
+            clearSmsInterval();
             setCurrent(120);
             setSmsLoading(false);
           }
@@ -109,7 +107,7 @@ export const CodeLoginBindMobileDialog: React.FC<PropInterface> = ({
           captcha: "",
         });
         getCaptcha();
-        interval && clearInterval(interval);
+        clearSmsInterval();
         setCurrent(120);
         setSmsLoading(false);
       });
@@ -146,7 +144,7 @@ export const CodeLoginBindMobileDialog: React.FC<PropInterface> = ({
               config.member.enabled_face_verify === true
             ) {
               setFaceCheckKey();
-              interval && clearInterval(interval);
+              clearSmsInterval();
               onCancel();
               navigate("/face-check", { replace: true });
             } else {
@@ -161,161 +159,132 @@ export const CodeLoginBindMobileDialog: React.FC<PropInterface> = ({
       });
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
-  };
-
   const redirectHandler = () => {
-    interval && clearInterval(interval);
+    clearSmsInterval();
     onCancel();
-    if (pathname === "/login" || pathname === "/login/callback") {
-      if (redirect) {
-        navigate(decodeURIComponent(redirect), { replace: true });
-      } else {
-        navigate("/", { replace: true });
-      }
-    } else {
-      navigate("/", { replace: true });
+    if ((pathname === "/login" || pathname === "/login/callback") && redirect) {
+      return navigate(decodeURIComponent(redirect), { replace: true });
     }
-  };
-
-  const goLogout = () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
-    login
-      .logout()
-      .then((res) => {
-        setLoading(false);
-        interval && clearInterval(interval);
-        dispatch(logoutAction());
-        onCancel();
-        location.reload();
-      })
-      .catch((e) => {
-        setLoading(false);
-      });
+    navigate("/", { replace: true });
   };
 
   return (
     <>
-      <Modal
-        title=""
-        centered
-        forceRender
-        open={open}
-        width={500}
-        footer={null}
-        onCancel={() => {
-          interval && clearInterval(interval);
-          onCancel();
-        }}
-        maskClosable={false}
-        closable={!active}
-      >
-        <div className={styles["tabs"]}>
-          <div className={styles["tab-active-item"]}>请绑定手机号</div>
-          {active && (
+      {open ? (
+        <Modal
+          title=""
+          centered
+          forceRender
+          open={true}
+          width={500}
+          footer={null}
+          onCancel={() => {
+            clearSmsInterval();
+            onCancel();
+          }}
+          maskClosable={false}
+          closable={false}
+        >
+          <div className={styles["tabs"]}>
+            <div className={styles["tab-active-item"]}>请绑定手机号</div>
             <a
               className={styles["linkTab"]}
               onClick={() => {
-                interval && clearInterval(interval);
+                clearSmsInterval();
                 onCancel();
               }}
             >
               取消绑定&gt;&gt;
             </a>
-          )}
-        </div>
-        <Form
-          form={form}
-          name="code-bind-new-mobile-dialog"
-          labelCol={{ span: 0 }}
-          wrapperCol={{ span: 24 }}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-          style={{ marginTop: 30 }}
-        >
-          <Form.Item
-            name="mobile"
-            rules={[{ required: true, message: "请输入手机号码!" }]}
+          </div>
+          <Form
+            form={form}
+            name="code-bind-new-mobile-dialog"
+            labelCol={{ span: 0 }}
+            wrapperCol={{ span: 24 }}
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            autoComplete="off"
+            style={{ marginTop: 30 }}
           >
-            <Input
-              style={{ width: 440, height: 54 }}
-              autoComplete="off"
-              placeholder="请输入手机号码"
-            />
-          </Form.Item>
-          <Form.Item>
-            <Space align="baseline" style={{ height: 54 }}>
-              <Form.Item
-                name="captcha"
-                rules={[{ required: true, message: "请输入图形验证码!" }]}
-              >
-                <Input
-                  style={{ width: 310, height: 54, marginRight: 10 }}
-                  autoComplete="off"
-                  placeholder="请输入图形验证码"
-                />
-              </Form.Item>
-              <Image
-                onClick={() => getCaptcha()}
-                src={captcha.img}
-                width={110}
-                height={39}
-                preview={false}
-                style={{ cursor: "pointer" }}
-              />
-            </Space>
-          </Form.Item>
-
-          <Form.Item>
-            <Space align="baseline" style={{ height: 54 }}>
-              <Form.Item
-                name="sms"
-                rules={[{ required: true, message: "请输入手机验证码!" }]}
-              >
-                <Input
-                  style={{ width: 310, height: 54, marginRight: 30 }}
-                  autoComplete="off"
-                  placeholder="请输入手机验证码"
-                />
-              </Form.Item>
-              <div className={styles["buttons"]}>
-                {smsLoading2 && (
-                  <div style={{ width: 90, textAlign: "center" }}>
-                    <Spin size="small" />
-                  </div>
-                )}
-                {!smsLoading2 && smsLoading && (
-                  <div className={styles["send-sms-button"]}>{current}s</div>
-                )}
-                {!smsLoading && !smsLoading2 && (
-                  <div
-                    className={styles["send-sms-button"]}
-                    onClick={() => sendSms()}
-                  >
-                    获取验证码
-                  </div>
-                )}
-              </div>
-            </Space>
-          </Form.Item>
-          <Form.Item>
-            <Button
-              style={{ width: 440, height: 54, outline: "none" }}
-              type="primary"
-              onClick={() => form.submit()}
-              loading={loading}
+            <Form.Item
+              name="mobile"
+              rules={[{ required: true, message: "请输入手机号码!" }]}
             >
-              立即绑定
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
+              <Input
+                style={{ width: 440, height: 54 }}
+                autoComplete="off"
+                placeholder="请输入手机号码"
+              />
+            </Form.Item>
+            <Form.Item>
+              <Space align="baseline" style={{ height: 54 }}>
+                <Form.Item
+                  name="captcha"
+                  rules={[{ required: true, message: "请输入图形验证码!" }]}
+                >
+                  <Input
+                    style={{ width: 310, height: 54, marginRight: 10 }}
+                    autoComplete="off"
+                    placeholder="请输入图形验证码"
+                  />
+                </Form.Item>
+                <Image
+                  onClick={() => getCaptcha()}
+                  src={captcha.img}
+                  width={110}
+                  height={39}
+                  preview={false}
+                  style={{ cursor: "pointer" }}
+                />
+              </Space>
+            </Form.Item>
+
+            <Form.Item>
+              <Space align="baseline" style={{ height: 54 }}>
+                <Form.Item
+                  name="sms"
+                  rules={[{ required: true, message: "请输入手机验证码!" }]}
+                >
+                  <Input
+                    style={{ width: 310, height: 54, marginRight: 30 }}
+                    autoComplete="off"
+                    placeholder="请输入手机验证码"
+                  />
+                </Form.Item>
+                <div className={styles["buttons"]}>
+                  {smsLoading2 && (
+                    <div style={{ width: 90, textAlign: "center" }}>
+                      <Spin size="small" />
+                    </div>
+                  )}
+                  {!smsLoading2 && smsLoading && (
+                    <div className={styles["send-sms-button"]}>{current}s</div>
+                  )}
+                  {!smsLoading && !smsLoading2 && (
+                    <div
+                      className={styles["send-sms-button"]}
+                      onClick={() => sendSms()}
+                    >
+                      获取验证码
+                    </div>
+                  )}
+                </div>
+              </Space>
+            </Form.Item>
+            <Form.Item>
+              <Button
+                style={{ width: 440, height: 54, outline: "none" }}
+                type="primary"
+                onClick={() => form.submit()}
+                loading={loading}
+              >
+                立即绑定
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
+      ) : null}
     </>
   );
 };

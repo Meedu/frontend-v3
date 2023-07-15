@@ -12,10 +12,12 @@ import {
 // 页面加载
 import { InitPage } from "../pages/init";
 import LoginPage from "../pages/login";
-import IndexPage from "../pages/index";
-import VodPage from "../pages/vod/index";
-import { VodDetailPage } from "../pages/vod/detail";
-import { VodPlayPage } from "../pages/vod/video";
+
+const IndexPage = lazy(() => import("../pages/index"));
+const VodPage = lazy(() => import("../pages/vod/index"));
+const VodDetailPage = lazy(() => import("../pages/vod/detail"));
+const VodPlayPage = lazy(() => import("../pages/vod/video"));
+
 import { LivePage } from "../pages/live/index";
 import { LiveDetailPage } from "../pages/live/detail";
 import { LiveVideoPage } from "../pages/live/video";
