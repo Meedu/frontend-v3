@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import vipIcon from "../../assets/img/commen/icon-VIP.png";
 
-export const RolePage = () => {
+const RolePage = () => {
   document.title = "会员中心";
   const navigate = useNavigate();
   const [list, setList] = useState<any>([]);
@@ -77,3 +77,5 @@ export const RolePage = () => {
     </div>
   );
 };
+
+export default RolePage;

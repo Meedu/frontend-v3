@@ -9,7 +9,7 @@ import practiceIcon from "../../assets/img/commen/practice.png";
 import wrongbookIcon from "../../assets/img/commen/wrong-book.png";
 import collectionIcon from "../../assets/img/commen/collect-paper.png";
 
-export const ExamPage = () => {
+const ExamPage = () => {
   document.title = "考试练习";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -135,3 +135,5 @@ export const ExamPage = () => {
     </div>
   );
 };
+
+export default ExamPage;

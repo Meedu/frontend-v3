@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { mock } from "../../../api/index";
 import { Empty, MockCourseItem, FilterCategories } from "../../../components";
 
-export const ExamMockPaperPage = () => {
+const ExamMockPaperPage = () => {
   document.title = "模拟考试";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -201,3 +201,5 @@ export const ExamMockPaperPage = () => {
     </div>
   );
 };
+
+export default ExamMockPaperPage;

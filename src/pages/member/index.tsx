@@ -30,7 +30,7 @@ import wxIcon from "../../assets/img/commen/icon-wechat.png";
 
 const { confirm } = Modal;
 
-export const MemberPage = () => {
+const MemberPage = () => {
   document.title = "用户中心";
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -76,9 +76,8 @@ export const MemberPage = () => {
   useEffect(() => {
     if (isLogin) {
       getSignStatus();
-   
     }
-    resetData()
+    resetData();
   }, [isLogin]);
 
   useEffect(() => {
@@ -577,3 +576,5 @@ export const MemberPage = () => {
     </div>
   );
 };
+
+export default MemberPage;

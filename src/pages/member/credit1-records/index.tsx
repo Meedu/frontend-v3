@@ -10,7 +10,7 @@ import { loginAction } from "../../../store/user/loginUserSlice";
 import { saveConfigAction } from "../../../store/system/systemConfigSlice";
 import { GoodsDetailComp } from "./components/goods-detail";
 
-export const MemberCredit1RecordsPage = () => {
+const MemberCredit1RecordsPage = () => {
   document.title = "积分商城";
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -478,3 +478,5 @@ export const MemberCredit1RecordsPage = () => {
     </div>
   );
 };
+
+export default MemberCredit1RecordsPage;

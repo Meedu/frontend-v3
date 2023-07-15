@@ -7,7 +7,7 @@ import { NavMember, Empty, PageBox } from "../../../components";
 import { user as member } from "../../../api/index";
 import paperIcon from "../../../assets/img/member/test.png";
 
-export const MemberPaperPage = () => {
+const MemberPaperPage = () => {
   document.title = "我的考试";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -53,7 +53,7 @@ export const MemberPaperPage = () => {
           setList(res.data.data);
           if (page === 1 && res.data.data.length < size) {
             setIsSingle(true);
-          }else{
+          } else {
             setIsSingle(false);
           }
           if (res.data.data.length < size) {
@@ -132,3 +132,5 @@ export const MemberPaperPage = () => {
     </div>
   );
 };
+
+export default MemberPaperPage;

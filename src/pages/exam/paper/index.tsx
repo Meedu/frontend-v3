@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { paper } from "../../../api/index";
 import { Empty, PaperCourseItem, FilterCategories } from "../../../components";
 
-export const ExamPaperPage = () => {
+const ExamPaperPage = () => {
   document.title = "在线考试";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -201,3 +201,5 @@ export const ExamPaperPage = () => {
     </div>
   );
 };
+
+export default ExamPaperPage;

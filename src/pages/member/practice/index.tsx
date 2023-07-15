@@ -7,7 +7,7 @@ import { NavMember, Empty, PageBox } from "../../../components";
 import { user as member } from "../../../api/index";
 import paperIcon from "../../../assets/img/member/practice.png";
 
-export const MemberPracticePage = () => {
+const MemberPracticePage = () => {
   document.title = "我的练习";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -133,3 +133,5 @@ export const MemberPracticePage = () => {
     </div>
   );
 };
+
+export default MemberPracticePage;

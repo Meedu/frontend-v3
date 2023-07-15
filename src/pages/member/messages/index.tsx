@@ -7,7 +7,7 @@ import { user as member } from "../../../api/index";
 import { saveUnread } from "../../../store/user/loginUserSlice";
 import { getCommentTime } from "../../../utils/index";
 
-export const MemberMessagesPage = () => {
+const MemberMessagesPage = () => {
   document.title = "我的消息";
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
@@ -137,3 +137,5 @@ export const MemberMessagesPage = () => {
     </div>
   );
 };
+
+export default MemberMessagesPage;

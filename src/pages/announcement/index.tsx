@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { home } from "../../api/index";
 import { changeTime, latexRender, codeRender } from "../../utils/index";
 
-export const AnnouncementPage = () => {
+const AnnouncementPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
@@ -166,3 +166,5 @@ export const AnnouncementPage = () => {
     </div>
   );
 };
+
+export default AnnouncementPage;
