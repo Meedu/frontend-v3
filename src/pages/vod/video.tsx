@@ -160,30 +160,33 @@ const VodPlayPage = () => {
         }
       }
 
+      //播放记录跳转
+      let last_see_value = null;
+      if (
+        res.data.video_watched_progress &&
+        res.data.video_watched_progress[vid] &&
+        res.data.video_watched_progress[vid].watch_seconds > 0
+      ) {
+        last_see_value = {
+          time: 5,
+          pos: res.data.video_watched_progress[vid].watch_seconds,
+        };
+        setLastSeeValue(last_see_value);
+      }
+
       // 当前用户已购买 || 可以试看
       if (res.data.is_watch || res.data.video.free_seconds > 0) {
         getPlayInfo(
           res.data.is_watch,
           res.data.video.free_seconds,
-          res.data.video.ban_drag
+          res.data.video.ban_drag,
+          last_see_value
         );
       }
 
       //获取附件
       getAttach(res.data.course.id);
 
-      //播放记录跳转
-      if (
-        res.data.video_watched_progress &&
-        res.data.video_watched_progress[vid] &&
-        res.data.video_watched_progress[vid].watch_seconds > 0
-      ) {
-        let last_see_value = {
-          time: 5,
-          pos: res.data.video_watched_progress[vid].watch_seconds,
-        };
-        setLastSeeValue(last_see_value);
-      }
       setLoading(false);
     });
   };
@@ -191,7 +194,8 @@ const VodPlayPage = () => {
   const getPlayInfo = (
     active: boolean,
     free_seconds: number,
-    ban_drag: number
+    ban_drag: number,
+    last_see_value: any
   ) => {
     let isTrySee = 0;
     if (active === false && free_seconds > 0) {
@@ -218,14 +222,19 @@ const VodPlayPage = () => {
           return;
         }
         setIsIframe(false);
-        initDPlayer(playUrls, isTrySee, ban_drag);
+        initDPlayer(playUrls, isTrySee, ban_drag, last_see_value);
       })
       .catch((e) => {
         message.error(e.message);
       });
   };
 
-  const initDPlayer = (playUrls: any, isTrySee: number, ban_drag: number) => {
+  const initDPlayer = (
+    playUrls: any,
+    isTrySee: number,
+    ban_drag: number,
+    lastSeeParams: any
+  ) => {
     savePlayId(String(result.get("id")));
     let dplayerUrls: any[] = [];
     playUrls.forEach((item: any) => {
@@ -260,7 +269,7 @@ const VodPlayPage = () => {
         opacity: config.player.bullet_secret.opacity,
       },
       ban_drag: ban_drag === 1,
-      last_see_pos: lastSeeValue,
+      last_see_pos: lastSeeParams,
     });
 
     // 监听播放进度更新evt
@@ -281,7 +290,7 @@ const VodPlayPage = () => {
   const checkPlayer = () => {
     timer = setInterval(() => {
       let playId = getPlayId();
-      if (parseInt(playId) !== Number(result.get("id"))) {
+      if (playId && parseInt(playId) !== Number(result.get("id"))) {
         timer && clearInterval(timer);
         window.player && window.player.destroy();
         setCheckPlayerStatus(true);
