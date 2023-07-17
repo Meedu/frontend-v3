@@ -108,7 +108,7 @@ export function changeTime(dateStr: string) {
 }
 
 export function dateFormat(dateStr: string) {
-  return moment(dateStr).utcOffset(0).format("YYYY-MM-DD HH:mm");
+  return moment(dateStr).format("YYYY-MM-DD HH:mm");
 }
 
 export function generateUUID(): string {

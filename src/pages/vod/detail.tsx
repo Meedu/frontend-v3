@@ -20,7 +20,7 @@ import noCollectIcon from "../../assets/img/commen/icon-collect-n.png";
 import { getToken, latexRender, codeRender } from "../../utils/index";
 import appConfig from "../../js/config";
 
-export const VodDetailPage = () => {
+const VodDetailPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
@@ -572,3 +572,5 @@ export const VodDetailPage = () => {
     </>
   );
 };
+
+export default VodDetailPage;

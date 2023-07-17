@@ -12,7 +12,7 @@ import wepayIcon from "../../assets/img/commen/icon-wepay.png";
 import cradIcon from "../../assets/img/commen/icon-crad.png";
 import { getAppUrl, getToken } from "../../utils/index";
 
-export const OrderPage = () => {
+const OrderPage = () => {
   document.title = "收银台";
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
@@ -531,3 +531,5 @@ export const OrderPage = () => {
     </div>
   );
 };
+
+export default OrderPage;

@@ -3,7 +3,7 @@ import styles from "./success.module.scss";
 import { Link, useLocation } from "react-router-dom";
 import successIcon from "../../assets/img/commen/icon-adopt.png";
 
-export const OrderSuccessPage = () => {
+const OrderSuccessPage = () => {
   document.title = "支付成功";
   const result = new URLSearchParams(useLocation().search);
   const [totalAmount, setTotalAmount] = useState(
@@ -35,3 +35,5 @@ export const OrderSuccessPage = () => {
     </div>
   );
 };
+
+export default OrderSuccessPage;

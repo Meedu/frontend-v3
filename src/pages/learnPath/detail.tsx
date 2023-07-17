@@ -14,7 +14,7 @@ import {
 import guideIcon from "../../assets/img/commen/icon-guidepost.png";
 import paperIcon from "../../assets/img/commen/default-paper.png";
 
-export const LearnPathDetailPage = () => {
+const LearnPathDetailPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
@@ -420,3 +420,5 @@ export const LearnPathDetailPage = () => {
     </div>
   );
 };
+
+export default LearnPathDetailPage;

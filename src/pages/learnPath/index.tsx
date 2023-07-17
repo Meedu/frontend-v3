@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { path } from "../../api/index";
 import { Empty, LearnPathCourseItem, FilterCategories } from "../../components";
 
-export const LearnPathPage = () => {
+const LearnPathPage = () => {
   document.title = "学习路径";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -171,3 +171,5 @@ export const LearnPathPage = () => {
     </>
   );
 };
+
+export default LearnPathPage;

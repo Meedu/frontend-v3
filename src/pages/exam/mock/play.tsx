@@ -17,7 +17,7 @@ import {
 } from "../../../components";
 
 var timer: any = null;
-export const ExamMockPaperPlayPage = () => {
+const ExamMockPaperPlayPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
@@ -506,3 +506,5 @@ export const ExamMockPaperPlayPage = () => {
     </div>
   );
 };
+
+export default ExamMockPaperPlayPage;

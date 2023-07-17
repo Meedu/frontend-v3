@@ -13,7 +13,7 @@ import {
 } from "../../components";
 import { changeUserCredit } from "../../store/user/loginUserSlice";
 
-export const WendaPage = () => {
+const WendaPage = () => {
   document.title = "在线问答";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -291,3 +291,5 @@ export const WendaPage = () => {
     </>
   );
 };
+
+export default WendaPage;

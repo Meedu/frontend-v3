@@ -1,6 +1,6 @@
 import { Spin } from "antd";
 
-export const AuthLoadingPage = () => {
+const AuthLoadingPage = () => {
   document.title = "加载中";
 
   return (
@@ -17,3 +17,5 @@ export const AuthLoadingPage = () => {
     </div>
   );
 };
+
+export default AuthLoadingPage;

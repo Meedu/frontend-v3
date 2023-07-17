@@ -18,7 +18,7 @@ import {
 } from "../../../components";
 import { NumberSheet } from "./components/number-sheet";
 
-export const ExamCollectionPlayPage = () => {
+const ExamCollectionPlayPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
@@ -449,3 +449,5 @@ export const ExamCollectionPlayPage = () => {
     </div>
   );
 };
+
+export default ExamCollectionPlayPage;

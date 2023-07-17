@@ -7,7 +7,7 @@ import { user as member } from "../../../api/index";
 import { getToken, changeTime } from "../../../utils/index";
 import { useSelector } from "react-redux";
 
-export const MemberCertsPage = () => {
+const MemberCertsPage = () => {
   document.title = "我的证书";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -124,3 +124,5 @@ export const MemberCertsPage = () => {
     </div>
   );
 };
+
+export default MemberCertsPage;

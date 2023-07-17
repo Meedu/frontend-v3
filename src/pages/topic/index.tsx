@@ -10,7 +10,7 @@ import {
   ThumbBar,
 } from "../../components";
 
-export const TopicPage = () => {
+const TopicPage = () => {
   document.title = "图文";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -273,3 +273,5 @@ export const TopicPage = () => {
     </>
   );
 };
+
+export default TopicPage;

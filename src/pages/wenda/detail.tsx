@@ -12,7 +12,7 @@ import idoptIcon from "../../assets/img/commen/icon-adopt.png";
 import likeIcon from "../../assets/img/commen/icon-like-h.png";
 import noLikeIcon from "../../assets/img/commen/icon-like.png";
 
-export const WendaDetailPage = () => {
+const WendaDetailPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(true);
@@ -658,3 +658,5 @@ export const WendaDetailPage = () => {
     </>
   );
 };
+
+export default WendaDetailPage;

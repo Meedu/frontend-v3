@@ -10,7 +10,7 @@ import {
   ThumbBar,
 } from "../../components";
 
-export const BookPage = () => {
+const BookPage = () => {
   document.title = "电子书";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -288,3 +288,5 @@ export const BookPage = () => {
     </>
   );
 };
+
+export default BookPage;

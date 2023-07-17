@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { live } from "../../api/index";
 import { Empty, LiveCourseItem, FilterCategories } from "../../components";
 
-export const LivePage = () => {
+const LivePage = () => {
   document.title = "直播课";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -148,3 +148,5 @@ export const LivePage = () => {
     </>
   );
 };
+
+export default LivePage;

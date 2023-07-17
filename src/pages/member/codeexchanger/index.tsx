@@ -9,7 +9,7 @@ import { ConfirmDialog } from "./components/confirm-dialog";
 import { user as member } from "../../../api/index";
 import { changeTime } from "../../../utils/index";
 
-export const MemberExchangerPage = () => {
+const MemberExchangerPage = () => {
   document.title = "兑换课程";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -180,3 +180,5 @@ export const MemberExchangerPage = () => {
     </div>
   );
 };
+
+export default MemberExchangerPage;

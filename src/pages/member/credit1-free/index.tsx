@@ -9,7 +9,7 @@ import { changeTime } from "../../../utils/index";
 import { loginAction } from "../../../store/user/loginUserSlice";
 import { saveConfigAction } from "../../../store/system/systemConfigSlice";
 
-export const MemberCredit1FreePage = () => {
+const MemberCredit1FreePage = () => {
   document.title = "我的积分";
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -209,3 +209,5 @@ export const MemberCredit1FreePage = () => {
     </div>
   );
 };
+
+export default MemberCredit1FreePage;

@@ -8,7 +8,7 @@ import wepayIcon from "../../assets/img/commen/icon-wexinpay.png";
 import cradIcon from "../../assets/img/commen/icon-card.png";
 
 var timer: any = null;
-export const OrderPayPage = () => {
+const OrderPayPage = () => {
   document.title = "支付中";
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
@@ -227,3 +227,5 @@ export const OrderPayPage = () => {
     </div>
   );
 };
+
+export default OrderPayPage;

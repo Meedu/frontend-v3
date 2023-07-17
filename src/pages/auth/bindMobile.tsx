@@ -13,7 +13,7 @@ import {
 } from "../../utils/index";
 
 var interval: any = null;
-export const BindNewMobilePage = () => {
+const BindNewMobilePage = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -233,3 +233,5 @@ export const BindNewMobilePage = () => {
     </div>
   );
 };
+
+export default BindNewMobilePage;

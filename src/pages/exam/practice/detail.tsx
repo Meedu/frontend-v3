@@ -6,7 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { practice } from "../../../api/index";
 import { Empty } from "../../../components";
 
-export const ExamPracticeDetailPage = () => {
+const ExamPracticeDetailPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
@@ -273,3 +273,5 @@ export const ExamPracticeDetailPage = () => {
     </div>
   );
 };
+
+export default ExamPracticeDetailPage;
