@@ -8,7 +8,7 @@ import { loginAction } from "../../store/user/loginUserSlice";
 import { clearFaceCheckKey } from "../../utils/index";
 
 var timer: any = null;
-export const TencentFaceCheckPage = () => {
+const TencentFaceCheckPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [verifyLoading, setVerifyLoading] = useState<boolean>(false);
@@ -84,3 +84,5 @@ export const TencentFaceCheckPage = () => {
     </div>
   );
 };
+
+export default TencentFaceCheckPage;

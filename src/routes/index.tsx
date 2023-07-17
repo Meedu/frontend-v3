@@ -64,30 +64,41 @@ const MemberCredit1RecordsPage = lazy(
   () => import("../pages/member/credit1-records")
 );
 const MemberCertsPage = lazy(() => import("../pages/member/certs"));
-
+//会员
 const RolePage = lazy(() => import("../pages/role"));
+//订单相关
 const OrderPage = lazy(() => import("../pages/order/index"));
-
-import { OrderPayPage } from "../pages/order/pay";
-import { OrderSuccessPage } from "../pages/order/success";
-import { SearchPage } from "../pages/search";
-import { TopicPage } from "../pages/topic/index";
-import { TopicDetailPage } from "../pages/topic/detail";
-import { BookPage } from "../pages/book/index";
-import { BookDetailPage } from "../pages/book/detail";
-import { BookReadPage } from "../pages/book/read";
-import { LearnPathPage } from "../pages/learnPath/index";
-import { LearnPathDetailPage } from "../pages/learnPath/detail";
-import { ErrorPage } from "../pages/error/index";
-import { WendaPage } from "../pages/wenda/index";
-import { WendaDetailPage } from "../pages/wenda/detail";
-import { SharePage } from "../pages/share";
-import { StudyCenterPage } from "../pages/study/index";
-import { TencentFaceCheckPage } from "../pages/auth/faceCheck";
-import { BindNewMobilePage } from "../pages/auth/bindMobile";
-import { AuthLoadingPage } from "../pages/auth/loading";
+const OrderPayPage = lazy(() => import("../pages/order/pay"));
+const OrderSuccessPage = lazy(() => import("../pages/order/success"));
+//搜索
+const SearchPage = lazy(() => import("../pages/search"));
+//图文相关
+const TopicPage = lazy(() => import("../pages/topic/index"));
+const TopicDetailPage = lazy(() => import("../pages/topic/detail"));
+//电子书相关
+const BookPage = lazy(() => import("../pages/book/index"));
+const BookDetailPage = lazy(() => import("../pages/book/detail"));
+const BookReadPage = lazy(() => import("../pages/book/read"));
+//路径相关
+const LearnPathPage = lazy(() => import("../pages/learnPath/index"));
+const LearnPathDetailPage = lazy(() => import("../pages/learnPath/detail"));
+//问答相关
+const WendaPage = lazy(() => import("../pages/wenda/index"));
+const WendaDetailPage = lazy(() => import("../pages/wenda/detail"));
+//推广
+const SharePage = lazy(() => import("../pages/share"));
+//学习中心
+const StudyCenterPage = lazy(() => import("../pages/study/index"));
+//实人认证
+const TencentFaceCheckPage = lazy(() => import("../pages/auth/faceCheck"));
+//绑定手机号
+const BindNewMobilePage = lazy(() => import("../pages/auth/bindMobile"));
+//加载...
+const AuthLoadingPage = lazy(() => import("../pages/auth/loading"));
+//错误相关
+const ErrorPage = lazy(() => import("../pages/error/index"));
+const Error404 = lazy(() => import("../pages/error/404"));
 import PrivateRoute from "../components/private-route";
-import { Error404 } from "../pages/error/404";
 
 let RootPage: any = null;
 let configFunc = {

@@ -17,7 +17,7 @@ import collectIcon from "../../assets/img/commen/icon-collect-h.png";
 import noCollectIcon from "../../assets/img/commen/icon-collect-n.png";
 import appConfig from "../../js/config";
 
-export const BookDetailPage = () => {
+const BookDetailPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
@@ -618,3 +618,5 @@ export const BookDetailPage = () => {
     </>
   );
 };
+
+export default BookDetailPage;

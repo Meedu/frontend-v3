@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Empty } from "../../components";
 
-export const SearchPage = () => {
+const SearchPage = () => {
   document.title = "全站搜索";
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
@@ -345,3 +345,5 @@ export const SearchPage = () => {
     </div>
   );
 };
+
+export default SearchPage;

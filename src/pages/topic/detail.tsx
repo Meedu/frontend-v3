@@ -17,7 +17,7 @@ import likeIcon from "../../assets/img/commen/icon-collect-h.png";
 import noLikeIcon from "../../assets/img/commen/icon-collect-n.png";
 import defaultAvatar from "../../assets/img/commen/default-avatar.jpg";
 
-export const TopicDetailPage = () => {
+const TopicDetailPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
@@ -818,3 +818,5 @@ export const TopicDetailPage = () => {
     </>
   );
 };
+
+export default TopicDetailPage;

@@ -3,7 +3,7 @@ import styles from "./index.module.scss";
 import { Link, useLocation } from "react-router-dom";
 import errorIcon from "../../assets/img/commen/img-wrong.png";
 
-export const ErrorPage = () => {
+const ErrorPage = () => {
   document.title = "错误";
   const result = new URLSearchParams(useLocation().search);
   const [msg, setMsg] = useState(result.get("msg"));
@@ -19,3 +19,5 @@ export const ErrorPage = () => {
     </div>
   );
 };
+
+export default ErrorPage;

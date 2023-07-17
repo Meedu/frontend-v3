@@ -8,7 +8,7 @@ import { getShareHost, changeTime } from "../../utils/index";
 import { Empty } from "../../components";
 import { WithdrawDialog } from "./components/withdraw-dialog";
 
-export const SharePage = () => {
+const SharePage = () => {
   document.title = "推广";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -494,3 +494,5 @@ export const SharePage = () => {
     </div>
   );
 };
+
+export default SharePage;

@@ -1,7 +1,7 @@
 import { Button, Result } from "antd";
 import { useNavigate } from "react-router-dom";
 
-export const Error404 = () => {
+const Error404 = () => {
   const navigate = useNavigate();
 
   return (
@@ -22,3 +22,5 @@ export const Error404 = () => {
     />
   );
 };
+
+export default Error404;

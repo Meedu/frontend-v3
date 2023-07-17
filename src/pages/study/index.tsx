@@ -11,7 +11,7 @@ import { BookItemComp } from "./components/book-item";
 import { TopicItemComp } from "./components/topic-item";
 import studyIcon from "../../assets/img/study/icon-mystudy.png";
 
-export const StudyCenterPage = () => {
+const StudyCenterPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [current, setCurrent] = useState("vod");
   const [tabs, setTabs] = useState<any>([]);
@@ -409,3 +409,5 @@ export const StudyCenterPage = () => {
     </>
   );
 };
+
+export default StudyCenterPage;

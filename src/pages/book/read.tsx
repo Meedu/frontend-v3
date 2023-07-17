@@ -15,7 +15,7 @@ import backIcon from "../../assets/img/commen/icon-back-h.png";
 import defaultAvatar from "../../assets/img/commen/default-avatar.jpg";
 import appConfig from "../../js/config";
 
-export const BookReadPage = () => {
+const BookReadPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [id, setId] = useState(Number(result.get("id")));
@@ -776,3 +776,5 @@ export const BookReadPage = () => {
     </>
   );
 };
+
+export default BookReadPage;
