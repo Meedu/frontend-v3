@@ -20,7 +20,7 @@ import { VideoListComp } from "./components/detail/video-list";
 import { VideoChapterListComp } from "./components/detail/video-chapter-list";
 import appConfig from "../../js/config";
 
-export const LiveDetailPage = () => {
+const LiveDetailPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
@@ -582,3 +582,5 @@ export const LiveDetailPage = () => {
     </>
   );
 };
+
+export default LiveDetailPage;

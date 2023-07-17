@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { NavMember, Empty } from "../../../components";
 import { user as member } from "../../../api/index";
 
-export const MemberQuestionsPage = () => {
+const MemberQuestionsPage = () => {
   document.title = "我的问答";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -183,3 +183,5 @@ export const MemberQuestionsPage = () => {
     </div>
   );
 };
+
+export default MemberQuestionsPage;

@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { collection } from "../../../api/index";
 
-export const ExamCollectionPage = () => {
+const ExamCollectionPage = () => {
   document.title = "收藏习题";
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
@@ -242,3 +242,5 @@ export const ExamCollectionPage = () => {
     </div>
   );
 };
+
+export default ExamCollectionPage;

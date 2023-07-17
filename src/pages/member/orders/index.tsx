@@ -15,7 +15,7 @@ import defaultStepsIcon from "../../../assets/img/commen/default-steps.png";
 import defaultLiveIcon from "../../../assets/img/commen/default-live.png";
 import defaultBookIcon from "../../../assets/img/commen/default-ebook.png";
 
-export const MemberOrdersPage = () => {
+const MemberOrdersPage = () => {
   document.title = "所有订单";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -493,3 +493,5 @@ export const MemberOrdersPage = () => {
     </div>
   );
 };
+
+export default MemberOrdersPage;

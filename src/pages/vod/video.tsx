@@ -17,7 +17,7 @@ import { getToken, getPlayId, savePlayId } from "../../utils/index";
 declare const window: any;
 var timer: any = null;
 var clock: any = null;
-export const VodPlayPage = () => {
+const VodPlayPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const pathname = useLocation().pathname;
@@ -679,3 +679,5 @@ export const VodPlayPage = () => {
     </>
   );
 };
+
+export default VodPlayPage;

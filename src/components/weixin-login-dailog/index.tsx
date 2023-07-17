@@ -92,39 +92,41 @@ export const WeixinLoginDialog: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title=""
-        centered
-        forceRender
-        open={open}
-        width={500}
-        footer={null}
-        onCancel={() => {
-          timer && clearInterval(timer);
-          onCancel();
-        }}
-        maskClosable={false}
-      >
-        <div className={styles["tabs"]}>
-          <div className={styles["tab-active-item"]}>微信扫码登录</div>
-          <a
-            className={styles["linkTab"]}
-            onClick={() => {
-              timer && clearInterval(timer);
-              changeLogin();
-            }}
-          >
-            其他方式登录&gt;&gt;
-          </a>
-        </div>
-        <div className={styles["box"]}>
-          {loading ? (
-            <QRCode value="loading" size={300} status="loading" />
-          ) : (
-            <Image width={300} height={300} src={qrode} preview={false} />
-          )}
-        </div>
-      </Modal>
+      {open ? (
+        <Modal
+          title=""
+          centered
+          forceRender
+          open={true}
+          width={500}
+          footer={null}
+          onCancel={() => {
+            timer && clearInterval(timer);
+            onCancel();
+          }}
+          maskClosable={false}
+        >
+          <div className={styles["tabs"]}>
+            <div className={styles["tab-active-item"]}>微信扫码登录</div>
+            <a
+              className={styles["linkTab"]}
+              onClick={() => {
+                timer && clearInterval(timer);
+                changeLogin();
+              }}
+            >
+              其他方式登录&gt;&gt;
+            </a>
+          </div>
+          <div className={styles["box"]}>
+            {loading ? (
+              <QRCode value="loading" size={300} status="loading" />
+            ) : (
+              <Image width={300} height={300} src={qrode} preview={false} />
+            )}
+          </div>
+        </Modal>
+      ) : null}
     </>
   );
 };

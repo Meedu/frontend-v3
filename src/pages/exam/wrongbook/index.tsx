@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { wrongbook } from "../../../api/index";
 
-export const ExamWrongbookPage = () => {
+const ExamWrongbookPage = () => {
   document.title = "考试错题本";
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
@@ -242,3 +242,5 @@ export const ExamWrongbookPage = () => {
     </div>
   );
 };
+
+export default ExamWrongbookPage;

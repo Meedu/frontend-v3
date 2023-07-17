@@ -9,7 +9,7 @@ import {
   FilterCategories,
 } from "../../../components";
 
-export const ExamPracticePage = () => {
+const ExamPracticePage = () => {
   document.title = "练习模式";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -207,3 +207,5 @@ export const ExamPracticePage = () => {
     </div>
   );
 };
+
+export default ExamPracticePage;

@@ -144,175 +144,185 @@ export const RegisterDialog: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title=""
-        centered
-        forceRender
-        open={open}
-        width={500}
-        footer={null}
-        onCancel={() => {
-          interval && clearInterval(interval);
-          onCancel();
-        }}
-        maskClosable={false}
-        closable={false}
-      >
-        <div className={styles["tabs"]}>
-          <div className={styles["tab-active-item"]}>用户注册</div>
-          <a
-            className={styles["linkTab"]}
-            onClick={() => {
-              interval && clearInterval(interval);
-              changeLogin();
-            }}
-          >
-            已有账号，立即登录&gt;&gt;
-          </a>
-          <img
-            className={styles["btn-close"]}
-            onClick={() => {
-              interval && clearInterval(interval);
-              onCancel();
-            }}
-            src={closeIcon}
-          />
-        </div>
-        <Form
-          form={form}
-          name="register-dialog"
-          labelCol={{ span: 0 }}
-          wrapperCol={{ span: 24 }}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-          style={{ marginTop: 30 }}
+      {open ? (
+        <Modal
+          title=""
+          centered
+          forceRender
+          open={true}
+          width={500}
+          footer={null}
+          onCancel={() => {
+            interval && clearInterval(interval);
+            onCancel();
+          }}
+          maskClosable={false}
+          closable={false}
         >
-          <Form.Item
-            name="mobile"
-            rules={[{ required: true, message: "请输入手机号!" }]}
-          >
-            <Input
-              style={{ width: 440, height: 54, fontSize: 16 }}
-              autoComplete="off"
-              placeholder="请输入手机号"
+          <div className={styles["tabs"]}>
+            <div className={styles["tab-active-item"]}>用户注册</div>
+            <a
+              className={styles["linkTab"]}
+              onClick={() => {
+                interval && clearInterval(interval);
+                changeLogin();
+              }}
+            >
+              已有账号，立即登录&gt;&gt;
+            </a>
+            <img
+              className={styles["btn-close"]}
+              onClick={() => {
+                interval && clearInterval(interval);
+                onCancel();
+              }}
+              src={closeIcon}
             />
-          </Form.Item>
-          <Form.Item>
-            <Space align="baseline" style={{ height: 54 }}>
-              <Form.Item
-                name="captcha"
-                rules={[{ required: true, message: "请输入图形验证码!" }]}
-              >
-                <Input
-                  style={{
-                    width: 310,
-                    height: 54,
-                    marginRight: 10,
-                    fontSize: 16,
-                  }}
-                  autoComplete="off"
-                  placeholder="请输入图形验证码"
-                />
-              </Form.Item>
-              <Image
-                onClick={() => getCaptcha()}
-                src={captcha.img}
-                width={110}
-                height={39}
-                preview={false}
-                style={{ cursor: "pointer" }}
+          </div>
+          <Form
+            form={form}
+            name="register-dialog"
+            labelCol={{ span: 0 }}
+            wrapperCol={{ span: 24 }}
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+            style={{ marginTop: 30 }}
+          >
+            <Form.Item
+              name="mobile"
+              rules={[{ required: true, message: "请输入手机号!" }]}
+            >
+              <Input
+                style={{ width: 440, height: 54, fontSize: 16 }}
+                autoComplete="off"
+                placeholder="请输入手机号"
               />
-            </Space>
-          </Form.Item>
-
-          <Form.Item>
-            <Space align="baseline" style={{ height: 54 }}>
-              <Form.Item
-                name="sms"
-                rules={[{ required: true, message: "请输入手机验证码!" }]}
-              >
-                <Input
-                  style={{
-                    width: 310,
-                    height: 54,
-                    marginRight: 30,
-                    fontSize: 16,
-                  }}
-                  autoComplete="off"
-                  placeholder="请输入手机验证码"
+            </Form.Item>
+            <Form.Item>
+              <Space align="baseline" style={{ height: 54 }}>
+                <Form.Item
+                  name="captcha"
+                  rules={[{ required: true, message: "请输入图形验证码!" }]}
+                >
+                  <Input
+                    style={{
+                      width: 310,
+                      height: 54,
+                      marginRight: 10,
+                      fontSize: 16,
+                    }}
+                    autoComplete="off"
+                    placeholder="请输入图形验证码"
+                  />
+                </Form.Item>
+                <Image
+                  onClick={() => getCaptcha()}
+                  src={captcha.img}
+                  width={110}
+                  height={39}
+                  preview={false}
+                  style={{ cursor: "pointer" }}
                 />
-              </Form.Item>
-              <div className={styles["buttons"]}>
-                {smsLoading2 && (
-                  <div style={{ width: 90, textAlign: "center" }}>
-                    <Spin size="small" />
-                  </div>
-                )}
-                {!smsLoading2 && smsLoading && (
-                  <div className={styles["send-sms-button"]}>{current}s</div>
-                )}
-                {!smsLoading && !smsLoading2 && (
-                  <div
-                    className={styles["send-sms-button"]}
-                    onClick={() => sendSms()}
-                  >
-                    获取验证码
-                  </div>
-                )}
-              </div>
-            </Space>
-          </Form.Item>
-          <Form.Item
-            name="password"
-            rules={[{ required: true, message: "请设置账号密码!" }]}
-          >
-            <Input.Password
-              style={{ width: 440, height: 54, fontSize: 16 }}
-              autoComplete="off"
-              placeholder="请设置账号密码"
-            />
-          </Form.Item>
-          <div className="mb-50 flex items-center">
-            <div className="flex-1 flex items-start">
-              <div className="flex items-center h-5">
-                <Checkbox onChange={onChange} defaultChecked={agreeProtocol} />
-              </div>
-              <div className="ml-10 text-sm">
-                <label className="text-gray-normal">
-                  同意
-                  <a
-                    className="text-blue"
-                    href={config.user_protocol}
-                    target="_blank"
-                  >
-                    《用户协议》
-                  </a>
-                  和
-                  <a
-                    className="text-blue"
-                    href={config.user_private_protocol}
-                    target="_blank"
-                  >
-                    《隐私政策》
-                  </a>
-                </label>
+              </Space>
+            </Form.Item>
+
+            <Form.Item>
+              <Space align="baseline" style={{ height: 54 }}>
+                <Form.Item
+                  name="sms"
+                  rules={[{ required: true, message: "请输入手机验证码!" }]}
+                >
+                  <Input
+                    style={{
+                      width: 310,
+                      height: 54,
+                      marginRight: 30,
+                      fontSize: 16,
+                    }}
+                    autoComplete="off"
+                    placeholder="请输入手机验证码"
+                  />
+                </Form.Item>
+                <div className={styles["buttons"]}>
+                  {smsLoading2 && (
+                    <div style={{ width: 90, textAlign: "center" }}>
+                      <Spin size="small" />
+                    </div>
+                  )}
+                  {!smsLoading2 && smsLoading && (
+                    <div className={styles["send-sms-button"]}>{current}s</div>
+                  )}
+                  {!smsLoading && !smsLoading2 && (
+                    <div
+                      className={styles["send-sms-button"]}
+                      onClick={() => sendSms()}
+                    >
+                      获取验证码
+                    </div>
+                  )}
+                </div>
+              </Space>
+            </Form.Item>
+            <Form.Item
+              name="password"
+              rules={[{ required: true, message: "请设置账号密码!" }]}
+            >
+              <Input.Password
+                style={{ width: 440, height: 54, fontSize: 16 }}
+                autoComplete="off"
+                placeholder="请设置账号密码"
+              />
+            </Form.Item>
+            <div className="mb-50 flex items-center">
+              <div className="flex-1 flex items-start">
+                <div className="flex items-center h-5">
+                  <Checkbox
+                    onChange={onChange}
+                    defaultChecked={agreeProtocol}
+                  />
+                </div>
+                <div className="ml-10 text-sm">
+                  <label className="text-gray-normal">
+                    同意
+                    <a
+                      className="text-blue"
+                      href={config.user_protocol}
+                      target="_blank"
+                    >
+                      《用户协议》
+                    </a>
+                    和
+                    <a
+                      className="text-blue"
+                      href={config.user_private_protocol}
+                      target="_blank"
+                    >
+                      《隐私政策》
+                    </a>
+                  </label>
+                </div>
               </div>
             </div>
-          </div>
-          <Form.Item>
-            <Button
-              style={{ width: 440, height: 54, outline: "none", fontSize: 16 }}
-              type="primary"
-              onClick={() => form.submit()}
-              loading={loading}
-            >
-              立即注册
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
+            <Form.Item>
+              <Button
+                style={{
+                  width: 440,
+                  height: 54,
+                  outline: "none",
+                  fontSize: 16,
+                }}
+                type="primary"
+                onClick={() => form.submit()}
+                loading={loading}
+              >
+                立即注册
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
+      ) : null}
     </>
   );
 };

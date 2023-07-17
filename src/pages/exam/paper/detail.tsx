@@ -6,7 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { paper } from "../../../api/index";
 import { Empty } from "../../../components";
 
-export const ExamPaperDetailPage = () => {
+const ExamPaperDetailPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
@@ -313,3 +313,5 @@ export const ExamPaperDetailPage = () => {
     </div>
   );
 };
+
+export default ExamPaperDetailPage;

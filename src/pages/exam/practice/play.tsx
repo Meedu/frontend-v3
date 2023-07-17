@@ -17,7 +17,7 @@ import {
 } from "../../../components";
 import { NumberSheet } from "./components/number-sheet";
 
-export const ExamPracticePlayPage = () => {
+const ExamPracticePlayPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
@@ -407,3 +407,5 @@ export const ExamPracticePlayPage = () => {
     </div>
   );
 };
+
+export default ExamPracticePlayPage;

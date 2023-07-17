@@ -13,7 +13,7 @@ declare const window: any;
 var livePlayer: any = null;
 var vodPlayer: any = null;
 
-export const LiveVideoPage = () => {
+const LiveVideoPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [id, setId] = useState(Number(result.get("id")));
@@ -604,3 +604,5 @@ export const LiveVideoPage = () => {
     </>
   );
 };
+
+export default LiveVideoPage;

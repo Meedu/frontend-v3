@@ -12,41 +12,62 @@ import {
 // 页面加载
 import { InitPage } from "../pages/init";
 import LoginPage from "../pages/login";
-import IndexPage from "../pages/index";
-import VodPage from "../pages/vod/index";
-import { VodDetailPage } from "../pages/vod/detail";
-import { VodPlayPage } from "../pages/vod/video";
-import { LivePage } from "../pages/live/index";
-import { LiveDetailPage } from "../pages/live/detail";
-import { LiveVideoPage } from "../pages/live/video";
-import { AnnouncementPage } from "../pages/announcement/index";
-import { ExamPage } from "../pages/exam/index";
-import { ExamPaperPage } from "../pages/exam/paper/index";
-import { ExamPaperDetailPage } from "../pages/exam/paper/detail";
-import { ExamPaperPlayPage } from "../pages/exam/paper/play";
-import { ExamMockPaperPage } from "../pages/exam/mock/index";
-import { ExamMockPaperDetailPage } from "../pages/exam/mock/detail";
-import { ExamMockPaperPlayPage } from "../pages/exam/mock/play";
-import { ExamPracticePage } from "../pages/exam/practice/index";
-import { ExamPracticeDetailPage } from "../pages/exam/practice/detail";
-import { ExamPracticePlayPage } from "../pages/exam/practice/play";
-import { ExamWrongbookPage } from "../pages/exam/wrongbook/index";
-import { ExamWrongbookPlayPage } from "../pages/exam/wrongbook/play";
-import { ExamCollectionPage } from "../pages/exam/collection/index";
-import { ExamCollectionPlayPage } from "../pages/exam/collection/play";
-import { MemberPage } from "../pages/member/index";
-import { MemberMessagesPage } from "../pages/member/messages";
-import { MemberOrdersPage } from "../pages/member/orders";
-import { MemberPaperPage } from "../pages/member/paper";
-import { MemberMockPaperPage } from "../pages/member/mock-paper";
-import { MemberPracticePage } from "../pages/member/practice";
-import { MemberQuestionsPage } from "../pages/member/questions";
-import { MemberExchangerPage } from "../pages/member/codeexchanger";
-import { MemberCredit1FreePage } from "../pages/member/credit1-free";
-import { MemberCredit1RecordsPage } from "../pages/member/credit1-records";
-import { MemberCertsPage } from "../pages/member/certs";
-import { RolePage } from "../pages/role";
-import { OrderPage } from "../pages/order/index";
+
+const IndexPage = lazy(() => import("../pages/index"));
+// 录播相关页面
+const VodPage = lazy(() => import("../pages/vod/index"));
+const VodDetailPage = lazy(() => import("../pages/vod/detail"));
+const VodPlayPage = lazy(() => import("../pages/vod/video"));
+// 直播相关页面
+const LivePage = lazy(() => import("../pages/live/index"));
+const LiveDetailPage = lazy(() => import("../pages/live/detail"));
+const LiveVideoPage = lazy(() => import("../pages/live/video"));
+// 其它
+const AnnouncementPage = lazy(() => import("../pages/announcement/index"));
+// 考试相关页面
+const ExamPage = lazy(() => import("../pages/exam/index"));
+const ExamPaperPage = lazy(() => import("../pages/exam/paper/index"));
+const ExamPaperDetailPage = lazy(() => import("../pages/exam/paper/detail"));
+const ExamPaperPlayPage = lazy(() => import("../pages/exam/paper/play"));
+// 模拟考试
+const ExamMockPaperPage = lazy(() => import("../pages/exam/mock/index"));
+const ExamMockPaperDetailPage = lazy(() => import("../pages/exam/mock/detail"));
+const ExamMockPaperPlayPage = lazy(() => import("../pages/exam/mock/play"));
+// 在线练习
+const ExamPracticePage = lazy(() => import("../pages/exam/practice/index"));
+const ExamPracticeDetailPage = lazy(
+  () => import("../pages/exam/practice/detail")
+);
+const ExamPracticePlayPage = lazy(() => import("../pages/exam/practice/play"));
+// 考试其它
+const ExamWrongbookPage = lazy(() => import("../pages/exam/wrongbook/index"));
+const ExamWrongbookPlayPage = lazy(
+  () => import("../pages/exam/wrongbook/play")
+);
+const ExamCollectionPage = lazy(() => import("../pages/exam/collection/index"));
+const ExamCollectionPlayPage = lazy(
+  () => import("../pages/exam/collection/play")
+);
+// 学员相关
+const MemberPage = lazy(() => import("../pages/member/index"));
+const MemberMessagesPage = lazy(() => import("../pages/member/messages"));
+const MemberOrdersPage = lazy(() => import("../pages/member/orders"));
+const MemberPaperPage = lazy(() => import("../pages/member/paper"));
+const MemberMockPaperPage = lazy(() => import("../pages/member/mock-paper"));
+const MemberPracticePage = lazy(() => import("../pages/member/practice"));
+const MemberQuestionsPage = lazy(() => import("../pages/member/questions"));
+const MemberExchangerPage = lazy(() => import("../pages/member/codeexchanger"));
+const MemberCredit1FreePage = lazy(
+  () => import("../pages/member/credit1-free")
+);
+const MemberCredit1RecordsPage = lazy(
+  () => import("../pages/member/credit1-records")
+);
+const MemberCertsPage = lazy(() => import("../pages/member/certs"));
+
+const RolePage = lazy(() => import("../pages/role"));
+const OrderPage = lazy(() => import("../pages/order/index"));
+
 import { OrderPayPage } from "../pages/order/pay";
 import { OrderSuccessPage } from "../pages/order/success";
 import { SearchPage } from "../pages/search";

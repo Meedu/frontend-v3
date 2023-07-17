@@ -7,7 +7,7 @@ import { NavMember, Empty, PageBox } from "../../../components";
 import { user as member } from "../../../api/index";
 import paperIcon from "../../../assets/img/member/mock.png";
 
-export const MemberMockPaperPage = () => {
+const MemberMockPaperPage = () => {
   document.title = "我的模考";
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -133,3 +133,5 @@ export const MemberMockPaperPage = () => {
     </div>
   );
 };
+
+export default MemberMockPaperPage;
