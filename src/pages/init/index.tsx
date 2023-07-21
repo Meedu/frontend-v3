@@ -8,12 +8,7 @@ import {
   saveConfigFuncAction,
 } from "../../store/system/systemConfigSlice";
 import { saveNavsAction } from "../../store/nav-menu/navMenuConfigSlice";
-import {
-  Header,
-  Footer,
-  BackTop,
-  CodeLoginBindMobileDialog,
-} from "../../components";
+import { BackTop, CodeLoginBindMobileDialog } from "../../components";
 import { useLocation } from "react-router-dom";
 import { user, share, login } from "../../api";
 import {
@@ -41,35 +36,8 @@ export const InitPage = (props: Props) => {
   const dispatch = useDispatch();
 
   const [backTopStatus, setBackTopStatus] = useState<boolean>(false);
-  const [showHeader, setShowHeader] = useState<boolean>(false);
-  const [showFooter, setShowFooter] = useState<boolean>(false);
   const [codebindmobileVisible, setCodebindmobileVisible] =
     useState<boolean>(false);
-
-  useEffect(() => {
-    let pathname = location.pathname;
-    if (
-      pathname === "/live/video" ||
-      pathname === "/exam/papers/play" ||
-      pathname === "/exam/mockpaper/play" ||
-      pathname === "/exam/practice/play" ||
-      pathname === "/exam/wrongbook/play" ||
-      pathname === "/exam/collection/play" ||
-      pathname === "/error"
-    ) {
-      setShowHeader(false);
-      setShowFooter(false);
-    } else if (pathname === "/book/read") {
-      setShowHeader(false);
-      setShowFooter(true);
-    } else if (pathname === "/login") {
-      setShowHeader(true);
-      setShowFooter(false);
-    } else {
-      setShowHeader(true);
-      setShowFooter(true);
-    }
-  }, [location.pathname]);
 
   //-----监听滚动条-----
   const getHeight = () => {
@@ -230,10 +198,8 @@ export const InitPage = (props: Props) => {
         }}
       ></CodeLoginBindMobileDialog>
       <div style={{ minHeight: 800 }}>
-        {showHeader ? <Header></Header> : null}
         <Outlet />
       </div>
-      {showFooter ? <Footer status={true}></Footer> : null}
       {backTopStatus ? <BackTop></BackTop> : null}
     </>
   );
