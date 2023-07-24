@@ -283,6 +283,9 @@ const VodPlayPage = () => {
     window.player.on("sub_course", () => {
       paySelect(1);
     });
+    window.player.on("play_error", (e: any) => {
+      console.log("视频播放错误,错误信息:", e);
+    });
 
     checkPlayer();
   };
@@ -307,7 +310,7 @@ const VodPlayPage = () => {
         .videoRecord(vid, {
           duration: duration,
         })
-        .then((res: any) => { });
+        .then((res: any) => {});
     }
   };
 
@@ -353,26 +356,26 @@ const VodPlayPage = () => {
     if (val === 1) {
       navigate(
         "/order?goods_id=" +
-        courseRef.current.id +
-        "&goods_type=vod&goods_charge=" +
-        courseRef.current.charge +
-        "&goods_label=点播课程&goods_name=" +
-        courseRef.current.title +
-        "&goods_thumb=" +
-        courseRef.current.thumb
+          courseRef.current.id +
+          "&goods_type=vod&goods_charge=" +
+          courseRef.current.charge +
+          "&goods_label=点播课程&goods_name=" +
+          courseRef.current.title +
+          "&goods_thumb=" +
+          courseRef.current.thumb
       );
       return;
     }
     if (val === 3) {
       navigate(
         "/order?goods_id=" +
-        video.id +
-        "&goods_type=video&goods_charge=" +
-        video.charge +
-        "&goods_label=视频&goods_name=" +
-        video.title +
-        "&goods_thumb=" +
-        course.thumb
+          video.id +
+          "&goods_type=video&goods_charge=" +
+          video.charge +
+          "&goods_label=视频&goods_name=" +
+          video.title +
+          "&goods_thumb=" +
+          course.thumb
       );
       return;
     }
