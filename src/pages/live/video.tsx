@@ -8,6 +8,7 @@ import { AttachDialog } from "./components/attach-dialog";
 import { useSelector } from "react-redux";
 import { live, goMeedu } from "../../api/index";
 import backIcon from "../../assets/img/commen/icon-back-h.png";
+import { type } from "os";
 
 declare const window: any;
 var livePlayer: any = null;
@@ -225,8 +226,6 @@ const LiveVideoPage = () => {
         pic: course.poster || config.player.cover,
       },
       autoplay: true,
-      //   height: 535,
-      //   width: 950,
       bulletSecret: {
         enabled: parseInt(config.player.enabled_bullet_secret) === 1,
         text: config.player.bullet_secret.text
@@ -241,6 +240,9 @@ const LiveVideoPage = () => {
       },
     });
     livePlayer.on("timeupdate", () => {
+      if (!livePlayer || !livePlayer.video) {
+        return;
+      }
       let curDuration = parseInt(livePlayer.video.currentTime);
       livePlayRecord(curDuration, false);
     });
@@ -248,11 +250,23 @@ const LiveVideoPage = () => {
       let curDuration = parseInt(livePlayer.video.currentTime);
       livePlayRecord(curDuration, true);
     });
+    livePlayer.on("play_error", () => {
+      setNoTeacher(true);
+      // 销毁播放器
+      livePlayer.destroy(true);
+      livePlayer = null;
+    });
   };
 
   const goDetail = () => {
-    livePlayer && livePlayer.destroy(true);
-    vodPlayer && vodPlayer.destroy();
+    if (livePlayer) {
+      livePlayer.destroy(true);
+      livePlayer = null;
+    }
+    if (vodPlayer) {
+      vodPlayer.destroy();
+      vodPlayer = null;
+    }
 
     setTimeout(() => {
       navigate("/live/detail?id=" + course.id + "&tab=3", { replace: true });
@@ -300,6 +314,7 @@ const LiveVideoPage = () => {
   const reloadPlayer = () => {
     vodPlayer && vodPlayer.destroy();
     livePlayer && livePlayer.destroy(true);
+
     setNoTeacher(false);
     setCourse({});
     setVideo({});
@@ -449,15 +464,14 @@ const LiveVideoPage = () => {
                 >
                   {video.status === 1 && (
                     <>
-                      {noTeacher && (
+                      {noTeacher ? (
                         <div className={styles["alert-message"]}>
                           <div className={styles["message"]}>
                             讲师暂时离开直播间，稍后请刷新！
                             <a onClick={() => reloadPlayer()}>点击刷新</a>
                           </div>
                         </div>
-                      )}
-                      {!noTeacher && (
+                      ) : (
                         <div className={styles["play"]}>
                           <div
                             id="meedu-live-player"
@@ -469,13 +483,12 @@ const LiveVideoPage = () => {
                   )}
                   {video.status === 0 && (
                     <div className={styles["alert-message"]}>
-                      {waitTeacher && (
+                      {waitTeacher ? (
                         <div className={styles["message"]}>
                           待讲师开播，
                           <a onClick={() => reloadPlayer()}>点击刷新</a>
                         </div>
-                      )}
-                      {!waitTeacher && (
+                      ) : (
                         <div className={styles["message"]}>
                           直播倒计时：{day}天{hour}小时{min}分{second}秒
                         </div>
