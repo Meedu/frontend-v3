@@ -30,7 +30,7 @@ export const CourseItemComp: React.FC<PropInterface> = ({
 
   const goDetail = (id: number) => {
     let tab = currentStatus === 2 ? 3 : 2;
-    navigate("/courses/detail?id=" + id + "&tab=" + tab);
+    navigate("/courses/detail/" + id + "?tab=" + tab);
   };
 
   return (

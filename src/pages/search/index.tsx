@@ -191,7 +191,7 @@ const SearchPage = () => {
     if (val === "video") {
       navigate("/courses/video?id=" + id);
     } else if (val === "vod") {
-      navigate("/courses/detail?id=" + id);
+      navigate("/courses/detail/" + id);
     } else if (val === "live") {
       navigate("/live/detail/" + id);
     } else if (val === "topic") {

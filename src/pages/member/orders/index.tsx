@@ -118,7 +118,7 @@ const MemberOrdersPage = () => {
     } else if (item.goods[0].goods_type === "BOOK") {
       navigate("/book/detail/" + item.goods[0].goods_id);
     } else if (item.goods[0].goods_type === "COURSE") {
-      navigate("/courses/detail?id=" + item.goods[0].goods_id);
+      navigate("/courses/detail/" + item.goods[0].goods_id);
     } else if (item.goods[0].goods_type === "直播课程") {
       navigate("/live/detail/" + item.goods[0].goods_id);
     } else if (item.goods[0].goods_type === "文章") {
@@ -140,7 +140,7 @@ const MemberOrdersPage = () => {
     if (item.goods.goods_type === "book") {
       navigate("/book/detail/" + item.goods.other_id);
     } else if (item.goods.goods_type === "course") {
-      navigate("/courses/detail?id=" + item.goods.other_id);
+      navigate("/courses/detail/" + item.goods.other_id);
     } else if (item.goods.goods_type === "live") {
       navigate("/live/detail/" + item.goods.other_id);
     } else if (item.goods.goods_type === "learnPath") {
@@ -170,7 +170,7 @@ const MemberOrdersPage = () => {
     if (item.goods.goods_type === "book") {
       navigate("/book/detail/" + item.goods.goods_id);
     } else if (item.goods.goods_type === "course") {
-      navigate("/courses/detail?id=" + item.goods.goods_id);
+      navigate("/courses/detail/" + item.goods.goods_id);
     } else if (item.goods.goods_type === "live") {
       navigate("/live/detail/" + item.goods.goods_id);
     } else if (item.goods.goods_type === "learnPath") {

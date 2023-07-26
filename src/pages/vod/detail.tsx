@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
-import { Button, Skeleton, message } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Skeleton, message } from "antd";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { course as vod, miaosha, tuangou } from "../../api/index";
 import {
@@ -23,9 +23,10 @@ import appConfig from "../../js/config";
 const VodDetailPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
+  const params = useParams();
   const [loading, setLoading] = useState<boolean>(false);
   const [commentLoading, setCommentLoading] = useState<boolean>(false);
-  const [cid, setCid] = useState(Number(result.get("id")));
+  const [cid, setCid] = useState(Number(params.courseId));
   const [course, setCourse] = useState<any>({});
   const [attach, setAttach] = useState<any>([]);
   const [chapters, setChapters] = useState<any>([]);
@@ -81,7 +82,7 @@ const VodDetailPage = () => {
 
   const tabChange = (id: number) => {
     setCurrentTab(id);
-    navigate("/courses/detail?id=" + cid + "&tab=" + id);
+    navigate("/courses/detail/" + cid + "?tab=" + id);
   };
 
   const handleTabFix = () => {

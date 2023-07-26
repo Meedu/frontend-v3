@@ -152,15 +152,30 @@ export const InitPage = (props: Props) => {
             id;
         }
       } else if (curPathname.indexOf("/courses/detail") !== -1) {
-        url += "/#/pages/course/show" + curSearch;
+        let id = curPathname.slice(16);
+        if (curSearch === "") {
+          url += "/#/pages/course/show?id=" + id;
+        } else {
+          url += "/#/pages/course/show" + curSearch + "&id=" + id;
+        }
       } else if (curPathname.indexOf("/courses/video") !== -1) {
         url += "/#/pages/course/video" + curSearch;
       } else if (curPathname.indexOf("/live/detail") !== -1) {
-        url += "/#/packageA/live/show" + curSearch;
+        let id = curPathname.slice(13);
+        if (curSearch === "") {
+          url += "/#/packageA/live/show?id=" + id;
+        } else {
+          url += "/#/packageA/live/show" + curSearch + "&id=" + id;
+        }
       } else if (curPathname.indexOf("/live/video") !== -1) {
         url += "/#/packageA/live/video" + curSearch;
       } else if (curPathname.indexOf("/book/detail") !== -1) {
-        url += "/#/packageA/book/show" + curSearch;
+        let id = curPathname.slice(13);
+        if (curSearch === "") {
+          url += "/#/packageA/book/show?id=" + id;
+        } else {
+          url += "/#/packageA/book/show" + curSearch + "&id=" + id;
+        }
       } else if (curPathname.indexOf("/book/read") !== -1) {
         url += "/#/pages/webview/webview" + curSearch + "&course_type=book";
       } else if (curPathname.indexOf("/learnPath/detail") !== -1) {

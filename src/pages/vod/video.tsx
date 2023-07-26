@@ -488,7 +488,7 @@ const VodPlayPage = () => {
             <>
               <a
                 onClick={() => {
-                  navigate("/courses/detail?id=" + course.id);
+                  navigate("/courses/detail/" + course.id);
                 }}
               >
                 {course.title}

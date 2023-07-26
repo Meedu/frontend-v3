@@ -169,11 +169,7 @@ const SharePage = () => {
         getShareHost() + "tg/detail?id=" + goods.goods_id + "&msv=" + user.id;
     } else {
       shareLink =
-        getShareHost() +
-        "courses/detail?id=" +
-        goods.goods_id +
-        "&msv=" +
-        user.id;
+        getShareHost() + "courses/detail/" + goods.goods_id + "?msv=" + user.id;
     }
     var input = document.createElement("input");
     input.value = shareLink;

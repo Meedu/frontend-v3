@@ -94,7 +94,7 @@ const OrderPayPage = () => {
     } else if (goodsType === "book") {
       navigate("/book/detail/" + id);
     } else if (goodsType === "vod") {
-      navigate("/courses/detail?id=" + id);
+      navigate("/courses/detail/" + id);
     } else if (goodsType === "live") {
       navigate("/live/detail/" + id);
     } else if (goodsType === "topic") {
@@ -113,7 +113,7 @@ const OrderPayPage = () => {
       navigate("/k12/detail?id=" + id);
     } else if (goodsType === "tg") {
       if (courseType === "course") {
-        navigate("/courses/detail?id=" + courseId);
+        navigate("/courses/detail/" + courseId);
       } else if (courseType === "live") {
         navigate("/live/detail/" + courseId);
       } else if (courseType === "book") {
@@ -125,7 +125,7 @@ const OrderPayPage = () => {
       }
     } else if (goodsType === "ms") {
       if (courseType === "course") {
-        navigate("/courses/detail?id=" + courseId);
+        navigate("/courses/detail/" + courseId);
       } else if (courseType === "live") {
         navigate("/live/detail/" + courseId);
       } else if (courseType === "book") {

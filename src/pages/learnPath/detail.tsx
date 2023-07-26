@@ -168,7 +168,7 @@ const LearnPathDetailPage = () => {
     }
 
     if (item.type === "course") {
-      navigate("/courses/detail?id=" + item.other_id);
+      navigate("/courses/detail/" + item.other_id);
     } else if (item.type === "book") {
       navigate("/book/detail/" + item.other_id);
     } else if (item.type === "live") {
