@@ -108,7 +108,7 @@ const OrderPayPage = () => {
     } else if (goodsType === "practice") {
       navigate("/exam/practice/detail/" + id);
     } else if (goodsType === "mockpaper") {
-      navigate("/exam/mockpaper/detail?id=" + id);
+      navigate("/exam/mockpaper/detail/" + id);
     } else if (goodsType === "k12") {
       navigate("/k12/detail?id=" + id);
     } else if (goodsType === "tg") {

@@ -68,7 +68,7 @@ const MemberMockPaperPage = () => {
   };
 
   const goDetail = (id: number) => {
-    navigate("/exam/mockpaper/detail?id=" + id);
+    navigate("/exam/mockpaper/detail/" + id);
   };
 
   return (

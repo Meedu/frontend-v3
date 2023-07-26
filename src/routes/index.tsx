@@ -281,7 +281,7 @@ const routes: RouteObject[] = [
 
           { path: "/exam/mockpaper", element: <ExamMockPaperPage /> },
           {
-            path: "/exam/mockpaper/detail",
+            path: "/exam/mockpaper/detail/:courseId",
             element: <PrivateRoute Component={<ExamMockPaperDetailPage />} />,
           },
 

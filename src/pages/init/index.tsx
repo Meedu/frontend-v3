@@ -193,7 +193,16 @@ export const InitPage = (props: Props) => {
             id;
         }
       } else if (curPathname.indexOf("/exam/mockpaper/detail") !== -1) {
-        url += "/#/pages/webview/webview" + curSearch + "&course_type=mockRead";
+        let id = curPathname.slice(23);
+        if (curSearch === "") {
+          url += "/#/pages/webview/webview?course_type=mockRead&id=" + id;
+        } else {
+          url +=
+            "/#/pages/webview/webview" +
+            curSearch +
+            "&course_type=mockRead&id=" +
+            id;
+        }
       }
 
       // 如果存在msv的话则携带上msv(邀请学员的id)
