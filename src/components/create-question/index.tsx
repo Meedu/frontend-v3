@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Input, Upload, message, Button } from "antd";
 import type { UploadProps } from "antd";
 import styles from "./index.module.scss";
-import { wenda } from "../../api/index";
+import { wenda, user as member } from "../../api/index";
 import closeIcon from "../../assets/img/commen/icon-close.png";
 import config from "../../js/config";
 import uploadIcon from "../../assets/img/commen/upload.png";
+import { loginAction } from "../../store/user/loginUserSlice";
 import { getToken } from "../../utils/index";
 
 interface PropInterface {
@@ -22,6 +23,7 @@ export const CreateQuestionDialog: React.FC<PropInterface> = ({
   onSuccess,
   onCancel,
 }) => {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [categories, setCategories] = useState<any>([]);
   const [title, setTitle] = useState<string>("");
@@ -39,8 +41,16 @@ export const CreateQuestionDialog: React.FC<PropInterface> = ({
       setCategoryId(0);
       setContent("");
       getCreateParams();
+      getUser();
     }
   }, [open]);
+
+  const getUser = () => {
+    member.detail().then((res: any) => {
+      let loginData = res.data;
+      dispatch(loginAction(loginData));
+    });
+  };
 
   const getCreateParams = () => {
     wenda.create().then((res: any) => {
