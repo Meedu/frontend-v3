@@ -239,7 +239,6 @@ export const CreateQuestionDialog: React.FC<PropInterface> = ({
                           setCredit1(e.target.value);
                         }}
                         className={styles["input2"]}
-                        disabled={user.credit1 === 0}
                         placeholder="置悬赏积分"
                       ></Input>
                       <div className={styles["help"]}>
