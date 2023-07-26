@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
-import { Button, Skeleton, message } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Skeleton } from "antd";
+import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { path, miaosha, tuangou } from "../../api/index";
 import {
   MiaoshaDialog,
   ThumbBar,
-  Empty,
   MiaoshaList,
   TuangouList,
 } from "../../components";
@@ -16,9 +15,9 @@ import paperIcon from "../../assets/img/commen/default-paper.png";
 
 const LearnPathDetailPage = () => {
   const navigate = useNavigate();
-  const result = new URLSearchParams(useLocation().search);
+  const params = useParams();
   const [loading, setLoading] = useState<boolean>(false);
-  const [cid, setCid] = useState(Number(result.get("id")));
+  const [cid, setCid] = useState(Number(params.courseId));
   const [isBuy, setIsBuy] = useState<boolean>(false);
   const [learn, setLearn] = useState<any>({});
   const [steps, setSteps] = useState<any>([]);

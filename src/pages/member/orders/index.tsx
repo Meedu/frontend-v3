@@ -126,7 +126,7 @@ const MemberOrdersPage = () => {
     } else if (item.goods[0].goods_type === "VIDEO") {
       navigate("/courses/video?id=" + item.goods[0].goods_id);
     } else if (item.goods[0].goods_type === "学习路径") {
-      navigate("/learnPath/detail?id=" + item.goods[0].goods_id);
+      navigate("/learnPath/detail/" + item.goods[0].goods_id);
     } else if (item.goods[0].goods_type === "试卷") {
       navigate("/exam/papers/detail?id=" + item.goods[0].goods_id);
     } else if (item.goods[0].goods_type === "练习") {
@@ -144,7 +144,7 @@ const MemberOrdersPage = () => {
     } else if (item.goods.goods_type === "live") {
       navigate("/live/detail?id=" + item.goods.other_id);
     } else if (item.goods.goods_type === "learnPath") {
-      navigate("/learnPath/detail?id=" + item.goods.other_id);
+      navigate("/learnPath/detail/" + item.goods.other_id);
     }
   };
 
@@ -174,7 +174,7 @@ const MemberOrdersPage = () => {
     } else if (item.goods.goods_type === "live") {
       navigate("/live/detail?id=" + item.goods.goods_id);
     } else if (item.goods.goods_type === "learnPath") {
-      navigate("/learnPath/detail?id=" + item.goods.goods_id);
+      navigate("/learnPath/detail/" + item.goods.goods_id);
     }
   };
 

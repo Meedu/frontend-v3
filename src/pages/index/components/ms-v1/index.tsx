@@ -23,7 +23,7 @@ export const MiaoShaComp: React.FC<PropInterface> = ({ items, name }) => {
     } else if (item.goods_type === "book") {
       navigate("/book/detail?id=" + item.goods_id);
     } else if (item.goods_type === "learnPath") {
-      navigate("/learnPath/detail?id=" + item.goods_id);
+      navigate("/learnPath/detail/" + item.goods_id);
     }
   };
   const proWidth = (num: number, overnum: number) => {

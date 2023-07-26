@@ -155,7 +155,12 @@ export const InitPage = (props: Props) => {
       } else if (curPathname.indexOf("/book/read") !== -1) {
         url += "/#/pages/webview/webview" + curSearch + "&course_type=book";
       } else if (curPathname.indexOf("/learnPath/detail") !== -1) {
-        url += "/#/packageA/learnPath/show" + curSearch;
+        let id = curPathname.slice(18);
+        if (curSearch === "") {
+          url += "/#/packageA/learnPath/show?id=" + id;
+        } else {
+          url += "/#/packageA/learnPath/show" + curSearch + "&id=" + id;
+        }
       } else if (curPathname.indexOf("/exam/papers/detail") !== -1) {
         url +=
           "/#/pages/webview/webview" + curSearch + "&course_type=paperRead";

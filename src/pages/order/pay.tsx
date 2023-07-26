@@ -102,7 +102,7 @@ const OrderPayPage = () => {
     } else if (goodsType === "video") {
       navigate("/courses/video?id=" + id);
     } else if (goodsType === "path") {
-      navigate("/learnPath/detail?id=" + id);
+      navigate("/learnPath/detail/" + id);
     } else if (goodsType === "paper") {
       navigate("/exam/papers/detail?id=" + id);
     } else if (goodsType === "practice") {
@@ -119,7 +119,7 @@ const OrderPayPage = () => {
       } else if (courseType === "book") {
         navigate("/book/detail?id=" + courseId);
       } else if (courseType === "learnPath") {
-        navigate("/learnPath/detail?id=" + courseId);
+        navigate("/learnPath/detail/" + courseId);
       } else {
         navigate("/tg/detail?id=" + courseId);
       }
@@ -131,7 +131,7 @@ const OrderPayPage = () => {
       } else if (courseType === "book") {
         navigate("/book/detail?id=" + courseId);
       } else if (courseType === "learnPath") {
-        navigate("/learnPath/detail?id=" + courseId);
+        navigate("/learnPath/detail/" + courseId);
       } else {
         navigate("/ms/detail?id=" + courseId);
       }

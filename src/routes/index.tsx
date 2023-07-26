@@ -359,7 +359,10 @@ const routes: RouteObject[] = [
           { path: "/book/detail", element: <BookDetailPage /> },
 
           { path: "/learnPath", element: <LearnPathPage /> },
-          { path: "/learnPath/detail", element: <LearnPathDetailPage /> },
+          {
+            path: "/learnPath/detail/:courseId",
+            element: <LearnPathDetailPage />,
+          },
           { path: "/error", element: <ErrorPage /> },
           { path: "/wenda", element: <WendaPage /> },
           { path: "/wenda/detail", element: <WendaDetailPage /> },

@@ -11,7 +11,7 @@ interface PropInterface {
 export const LearnPathComp: React.FC<PropInterface> = ({ items, name }) => {
   const navigate = useNavigate();
   const goDetail = (item: any) => {
-    navigate("/learnPath/detail?id=" + item.id);
+    navigate("/learnPath/detail/" + item.id);
   };
   return (
     <>

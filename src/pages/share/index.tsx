@@ -146,7 +146,7 @@ const SharePage = () => {
     } else if (goods.goods_type === "learnPath") {
       shareLink =
         getShareHost() +
-        "learnPath/detail?id=" +
+        "learnPath/detail/" +
         goods.goods_id +
         "&msv=" +
         user.id;
