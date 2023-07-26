@@ -354,7 +354,7 @@ const routes: RouteObject[] = [
           },
           { path: "/search", element: <SearchPage /> },
           { path: "/topic", element: <TopicPage /> },
-          { path: "/topic/detail", element: <TopicDetailPage /> },
+          { path: "/topic/detail/:courseId", element: <TopicDetailPage /> },
           { path: "/book", element: <BookPage /> },
           { path: "/book/detail", element: <BookDetailPage /> },
 

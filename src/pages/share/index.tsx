@@ -139,7 +139,7 @@ const SharePage = () => {
     } else if (goods.goods_type === "topic") {
       shareLink =
         getShareHost() +
-        "topic/detail?id=" +
+        "topic/detail/" +
         goods.goods_id +
         "&msv=" +
         user.id;

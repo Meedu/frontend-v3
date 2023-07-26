@@ -98,7 +98,7 @@ const OrderPayPage = () => {
     } else if (goodsType === "live") {
       navigate("/live/detail?id=" + id);
     } else if (goodsType === "topic") {
-      navigate("/topic/detail?id=" + id);
+      navigate("/topic/detail/" + id);
     } else if (goodsType === "video") {
       navigate("/courses/video?id=" + id);
     } else if (goodsType === "path") {

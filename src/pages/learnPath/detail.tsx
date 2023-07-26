@@ -35,6 +35,10 @@ const LearnPathDetailPage = () => {
     getDetail();
   }, [cid]);
 
+  useEffect(() => {
+    setCid(Number(params.courseId));
+  }, [params.courseId]);
+
   const getDetail = () => {
     if (loading) {
       return;

@@ -195,7 +195,7 @@ const SearchPage = () => {
     } else if (val === "live") {
       navigate("/live/detail?id=" + id);
     } else if (val === "topic") {
-      navigate("/topic/detail?id=" + id);
+      navigate("/topic/detail/" + id);
     } else if (val === "book") {
       navigate("/book/detail?id=" + id);
     } else if (val === "paper") {
