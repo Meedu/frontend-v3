@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
 import { Skeleton, message, Button } from "antd";
 import { useSelector } from "react-redux";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { paper } from "../../../api/index";
 import { Empty } from "../../../components";
 

@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
 import { Skeleton, message } from "antd";
 import { useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { practice } from "../../../api/index";
 import { Empty } from "../../../components";
 
 const ExamPracticeDetailPage = () => {
   const navigate = useNavigate();
-  const result = new URLSearchParams(useLocation().search);
+  const params = useParams();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>({});
   const [questions, setQuestions] = useState<any>([]);
@@ -19,7 +19,7 @@ const ExamPracticeDetailPage = () => {
   const [surplus, setSurplus] = useState<number>(99999);
   const [sumQuestion, setSumQuestion] = useState<number>(0);
   const [joinLoading, setJoinLoading] = useState<boolean>(false);
-  const [id, setId] = useState(Number(result.get("id")) || 0);
+  const [id, setId] = useState(Number(params.courseId) || 0);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
 
   useEffect(() => {
@@ -27,8 +27,8 @@ const ExamPracticeDetailPage = () => {
   }, [id]);
 
   useEffect(() => {
-    setId(Number(result.get("id")));
-  }, [result.get("id")]);
+    setId(Number(params.courseId));
+  }, [params.courseId]);
 
   useEffect(() => {
     let val = 0;

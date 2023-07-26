@@ -287,7 +287,7 @@ const routes: RouteObject[] = [
 
           { path: "/exam/practice", element: <ExamPracticePage /> },
           {
-            path: "/exam/practice/detail",
+            path: "/exam/practice/detail/:courseId",
             element: <PrivateRoute Component={<ExamPracticeDetailPage />} />,
           },
 

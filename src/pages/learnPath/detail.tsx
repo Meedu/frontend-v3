@@ -174,7 +174,7 @@ const LearnPathDetailPage = () => {
     } else if (item.type === "live") {
       navigate("/live/detail?id=" + item.other_id);
     } else if (item.type === "paper_practice") {
-      navigate("/exam/practice/detail?id=" + item.other_id);
+      navigate("/exam/practice/detail/" + item.other_id);
     } else if (item.type === "paper_paper") {
       navigate("/exam/papers/detail/" + item.other_id);
     }

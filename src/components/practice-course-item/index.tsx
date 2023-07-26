@@ -36,7 +36,7 @@ export const PracticeCourseItem: React.FC<PropInterface> = ({
       goLogin();
       return;
     }
-    navigate("/exam/practice/detail?id=" + cid);
+    navigate("/exam/practice/detail/" + cid);
   };
 
   const goLogin = () => {

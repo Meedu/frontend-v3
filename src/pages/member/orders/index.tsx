@@ -130,7 +130,7 @@ const MemberOrdersPage = () => {
     } else if (item.goods[0].goods_type === "试卷") {
       navigate("/exam/papers/detail/" + item.goods[0].goods_id);
     } else if (item.goods[0].goods_type === "练习") {
-      navigate("/exam/practice/detail?id=" + item.goods[0].goods_id);
+      navigate("/exam/practice/detail/" + item.goods[0].goods_id);
     } else if (item.goods[0].goods_type === "模拟试卷") {
       navigate("/exam/mockpaper/detail?id=" + item.goods[0].goods_id);
     }

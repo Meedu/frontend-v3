@@ -125,9 +125,9 @@ const SharePage = () => {
     if (goods.goods_type === "practice") {
       shareLink =
         getShareHost() +
-        "exam/practice/detail?id=" +
+        "exam/practice/detail/" +
         goods.goods_id +
-        "&msv=" +
+        "?msv=" +
         user.id;
     } else if (goods.goods_type === "paper") {
       shareLink =

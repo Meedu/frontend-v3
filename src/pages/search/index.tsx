@@ -203,7 +203,7 @@ const SearchPage = () => {
     } else if (val === "mock_paper") {
       navigate("/exam/mockpaper/detail?id=" + id);
     } else if (val === "practice") {
-      navigate("/exam/practice/detail?id=" + id);
+      navigate("/exam/practice/detail/" + id);
     } else {
       return;
     }

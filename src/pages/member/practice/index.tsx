@@ -67,7 +67,7 @@ const MemberPracticePage = () => {
   };
 
   const goDetail = (id: number) => {
-    navigate("/exam/practice/detail?id=" + id);
+    navigate("/exam/practice/detail/" + id);
   };
 
   return (
