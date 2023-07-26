@@ -166,6 +166,7 @@ const LiveDetailPage = () => {
 
   const tabChange = (id: number) => {
     setCurrentTab(id);
+    navigate("/live/detail?id=" + cid + "&tab=" + id);
   };
 
   const likeHit = () => {

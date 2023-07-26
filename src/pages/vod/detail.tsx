@@ -81,6 +81,7 @@ const VodDetailPage = () => {
 
   const tabChange = (id: number) => {
     setCurrentTab(id);
+    navigate("/courses/detail?id=" + cid + "&tab=" + id);
   };
 
   const handleTabFix = () => {

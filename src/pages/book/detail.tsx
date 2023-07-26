@@ -171,6 +171,7 @@ const BookDetailPage = () => {
 
   const tabChange = (id: number) => {
     setCurrentTab(id);
+    navigate("/book/detail?id=" + bid + "&tab=" + id);
   };
 
   const goLogin = () => {
