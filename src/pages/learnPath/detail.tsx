@@ -170,9 +170,9 @@ const LearnPathDetailPage = () => {
     if (item.type === "course") {
       navigate("/courses/detail?id=" + item.other_id);
     } else if (item.type === "book") {
-      navigate("/book/detail?id=" + item.other_id);
+      navigate("/book/detail/" + item.other_id);
     } else if (item.type === "live") {
-      navigate("/live/detail?id=" + item.other_id);
+      navigate("/live/detail/" + item.other_id);
     } else if (item.type === "paper_practice") {
       navigate("/exam/practice/detail/" + item.other_id);
     } else if (item.type === "paper_paper") {

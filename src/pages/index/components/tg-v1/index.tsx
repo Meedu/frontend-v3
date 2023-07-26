@@ -19,9 +19,9 @@ export const TuangouComp: React.FC<PropInterface> = ({ items, name }) => {
     if (item.goods_type === "course") {
       navigate("/courses/detail?id=" + item.other_id);
     } else if (item.goods_type === "live") {
-      navigate("/live/detail?id=" + item.other_id);
+      navigate("/live/detail/" + item.other_id);
     } else if (item.goods_type === "book") {
-      navigate("/book/detail?id=" + item.other_id);
+      navigate("/book/detail/" + item.other_id);
     } else if (item.goods_type === "learnPath") {
       navigate("/learnPath/detail/" + item.other_id);
     }

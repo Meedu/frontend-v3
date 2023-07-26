@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
 import { Skeleton, message } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { book as bookApi, miaosha, tuangou } from "../../api/index";
 import {
@@ -20,9 +20,10 @@ import appConfig from "../../js/config";
 const BookDetailPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
+  const params = useParams();
   const [loading, setLoading] = useState<boolean>(false);
   const [commentLoading, setCommentLoading] = useState<boolean>(false);
-  const [bid, setBid] = useState(Number(result.get("id")));
+  const [bid, setBid] = useState(Number(params.courseId));
   const [book, setBook] = useState<any>({});
   const [isLike, setIsLike] = useState<boolean>(false);
   const [isBuy, setIsBuy] = useState<boolean>(false);
@@ -171,7 +172,7 @@ const BookDetailPage = () => {
 
   const tabChange = (id: number) => {
     setCurrentTab(id);
-    navigate("/book/detail?id=" + bid + "&tab=" + id);
+    navigate("/book/detail/" + bid + "?tab=" + id);
   };
 
   const goLogin = () => {

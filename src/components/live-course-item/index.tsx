@@ -20,7 +20,7 @@ export const LiveCourseItem: React.FC<PropInterface> = ({
   const navigate = useNavigate();
 
   const goDetail = () => {
-    navigate("/live/detail?id=" + cid);
+    navigate("/live/detail/" + cid);
   };
 
   return (

@@ -148,10 +148,10 @@ const SharePage = () => {
         user.id;
     } else if (goods.goods_type === "book") {
       shareLink =
-        getShareHost() + "book/detail?id=" + goods.goods_id + "&msv=" + user.id;
+        getShareHost() + "book/detail/" + goods.goods_id + "?msv=" + user.id;
     } else if (goods.goods_type === "live") {
       shareLink =
-        getShareHost() + "live/detail?id=" + goods.goods_id + "&msv=" + user.id;
+        getShareHost() + "live/detail/" + goods.goods_id + "?msv=" + user.id;
     } else if (goods.goods_type === "video") {
       shareLink =
         getShareHost() +

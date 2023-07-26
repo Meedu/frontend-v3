@@ -270,7 +270,7 @@ const routes: RouteObject[] = [
             element: <PrivateRoute Component={<VodPlayPage />} />,
           },
           { path: "/live", element: <LivePage /> },
-          { path: "/live/detail", element: <LiveDetailPage /> },
+          { path: "/live/detail/:courseId", element: <LiveDetailPage /> },
           { path: "/announcement", element: <AnnouncementPage /> },
           { path: "/exam", element: <ExamPage /> },
           { path: "/exam/papers", element: <ExamPaperPage /> },
@@ -356,7 +356,7 @@ const routes: RouteObject[] = [
           { path: "/topic", element: <TopicPage /> },
           { path: "/topic/detail/:courseId", element: <TopicDetailPage /> },
           { path: "/book", element: <BookPage /> },
-          { path: "/book/detail", element: <BookDetailPage /> },
+          { path: "/book/detail/:courseId", element: <BookDetailPage /> },
 
           { path: "/learnPath", element: <LearnPathPage /> },
           {

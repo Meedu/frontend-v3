@@ -116,11 +116,11 @@ const MemberOrdersPage = () => {
     if (item.goods[0].goods_type === "ROLE") {
       navigate("/vip");
     } else if (item.goods[0].goods_type === "BOOK") {
-      navigate("/book/detail?id=" + item.goods[0].goods_id);
+      navigate("/book/detail/" + item.goods[0].goods_id);
     } else if (item.goods[0].goods_type === "COURSE") {
       navigate("/courses/detail?id=" + item.goods[0].goods_id);
     } else if (item.goods[0].goods_type === "直播课程") {
-      navigate("/live/detail?id=" + item.goods[0].goods_id);
+      navigate("/live/detail/" + item.goods[0].goods_id);
     } else if (item.goods[0].goods_type === "文章") {
       navigate("/topic/detail/" + item.goods[0].goods_id);
     } else if (item.goods[0].goods_type === "VIDEO") {
@@ -138,11 +138,11 @@ const MemberOrdersPage = () => {
 
   const goTgDetail = (item: any) => {
     if (item.goods.goods_type === "book") {
-      navigate("/book/detail?id=" + item.goods.other_id);
+      navigate("/book/detail/" + item.goods.other_id);
     } else if (item.goods.goods_type === "course") {
       navigate("/courses/detail?id=" + item.goods.other_id);
     } else if (item.goods.goods_type === "live") {
-      navigate("/live/detail?id=" + item.goods.other_id);
+      navigate("/live/detail/" + item.goods.other_id);
     } else if (item.goods.goods_type === "learnPath") {
       navigate("/learnPath/detail/" + item.goods.other_id);
     }
@@ -168,11 +168,11 @@ const MemberOrdersPage = () => {
 
   const goMsDetail = (item: any) => {
     if (item.goods.goods_type === "book") {
-      navigate("/book/detail?id=" + item.goods.goods_id);
+      navigate("/book/detail/" + item.goods.goods_id);
     } else if (item.goods.goods_type === "course") {
       navigate("/courses/detail?id=" + item.goods.goods_id);
     } else if (item.goods.goods_type === "live") {
-      navigate("/live/detail?id=" + item.goods.goods_id);
+      navigate("/live/detail/" + item.goods.goods_id);
     } else if (item.goods.goods_type === "learnPath") {
       navigate("/learnPath/detail/" + item.goods.goods_id);
     }

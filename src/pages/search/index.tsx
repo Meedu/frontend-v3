@@ -193,11 +193,11 @@ const SearchPage = () => {
     } else if (val === "vod") {
       navigate("/courses/detail?id=" + id);
     } else if (val === "live") {
-      navigate("/live/detail?id=" + id);
+      navigate("/live/detail/" + id);
     } else if (val === "topic") {
       navigate("/topic/detail/" + id);
     } else if (val === "book") {
-      navigate("/book/detail?id=" + id);
+      navigate("/book/detail/" + id);
     } else if (val === "paper") {
       navigate("/exam/papers/detail/" + id);
     } else if (val === "mock_paper") {

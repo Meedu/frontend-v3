@@ -19,9 +19,9 @@ export const MiaoShaComp: React.FC<PropInterface> = ({ items, name }) => {
     if (item.goods_type === "course") {
       navigate("/courses/detail?id=" + item.goods_id);
     } else if (item.goods_type === "live") {
-      navigate("/live/detail?id=" + item.goods_id);
+      navigate("/live/detail/" + item.goods_id);
     } else if (item.goods_type === "book") {
-      navigate("/book/detail?id=" + item.goods_id);
+      navigate("/book/detail/" + item.goods_id);
     } else if (item.goods_type === "learnPath") {
       navigate("/learnPath/detail/" + item.goods_id);
     }

@@ -92,11 +92,11 @@ const OrderPayPage = () => {
     if (goodsType === "role") {
       navigate("/member", { replace: true });
     } else if (goodsType === "book") {
-      navigate("/book/detail?id=" + id);
+      navigate("/book/detail/" + id);
     } else if (goodsType === "vod") {
       navigate("/courses/detail?id=" + id);
     } else if (goodsType === "live") {
-      navigate("/live/detail?id=" + id);
+      navigate("/live/detail/" + id);
     } else if (goodsType === "topic") {
       navigate("/topic/detail/" + id);
     } else if (goodsType === "video") {
@@ -115,9 +115,9 @@ const OrderPayPage = () => {
       if (courseType === "course") {
         navigate("/courses/detail?id=" + courseId);
       } else if (courseType === "live") {
-        navigate("/live/detail?id=" + courseId);
+        navigate("/live/detail/" + courseId);
       } else if (courseType === "book") {
-        navigate("/book/detail?id=" + courseId);
+        navigate("/book/detail/" + courseId);
       } else if (courseType === "learnPath") {
         navigate("/learnPath/detail/" + courseId);
       } else {
@@ -127,9 +127,9 @@ const OrderPayPage = () => {
       if (courseType === "course") {
         navigate("/courses/detail?id=" + courseId);
       } else if (courseType === "live") {
-        navigate("/live/detail?id=" + courseId);
+        navigate("/live/detail/" + courseId);
       } else if (courseType === "book") {
-        navigate("/book/detail?id=" + courseId);
+        navigate("/book/detail/" + courseId);
       } else if (courseType === "learnPath") {
         navigate("/learnPath/detail/" + courseId);
       } else {

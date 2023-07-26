@@ -113,7 +113,7 @@ const BookReadPage = () => {
   };
 
   const goDetail = () => {
-    navigate("/book/detail?id=" + book.id + "&tab=3");
+    navigate("/book/detail/" + book.id + "?tab=3");
   };
 
   const showIndex = () => {

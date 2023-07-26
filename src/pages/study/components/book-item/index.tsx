@@ -22,7 +22,7 @@ export const BookItemComp: React.FC<PropInterface> = ({
 
   const goDetail = (id: number) => {
     let tab = currentStatus === 2 ? 3 : 2;
-    navigate("/book/detail?id=" + id + "&tab=" + tab);
+    navigate("/book/detail/" + id + "?tab=" + tab);
   };
 
   return (

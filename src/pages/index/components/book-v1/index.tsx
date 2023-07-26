@@ -11,7 +11,7 @@ interface PropInterface {
 export const BookComp: React.FC<PropInterface> = ({ items, name }) => {
   const navigate = useNavigate();
   const goBookDetail = (item: any) => {
-    navigate("/book/detail?id=" + item.id);
+    navigate("/book/detail/" + item.id);
   };
   return (
     <>

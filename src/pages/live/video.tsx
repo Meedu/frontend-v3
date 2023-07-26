@@ -313,7 +313,7 @@ const LiveVideoPage = () => {
     }
 
     setTimeout(() => {
-      navigate("/live/detail?id=" + course.id + "&tab=3", { replace: true });
+      navigate("/live/detail/" + course.id + "?tab=3", { replace: true });
     }, 500);
   };
 
