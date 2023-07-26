@@ -128,7 +128,7 @@ const MemberOrdersPage = () => {
     } else if (item.goods[0].goods_type === "学习路径") {
       navigate("/learnPath/detail/" + item.goods[0].goods_id);
     } else if (item.goods[0].goods_type === "试卷") {
-      navigate("/exam/papers/detail?id=" + item.goods[0].goods_id);
+      navigate("/exam/papers/detail/" + item.goods[0].goods_id);
     } else if (item.goods[0].goods_type === "练习") {
       navigate("/exam/practice/detail?id=" + item.goods[0].goods_id);
     } else if (item.goods[0].goods_type === "模拟试卷") {

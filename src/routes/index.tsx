@@ -275,7 +275,7 @@ const routes: RouteObject[] = [
           { path: "/exam", element: <ExamPage /> },
           { path: "/exam/papers", element: <ExamPaperPage /> },
           {
-            path: "/exam/papers/detail",
+            path: "/exam/papers/detail/:courseId",
             element: <PrivateRoute Component={<ExamPaperDetailPage />} />,
           },
 

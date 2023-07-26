@@ -141,7 +141,16 @@ export const InitPage = (props: Props) => {
       let curSearch = window.location.search || "";
 
       if (curPathname.indexOf("/topic/detail") !== -1) {
-        url += "/#/pages/webview/webview" + curSearch + "&course_type=topic";
+        let id = curPathname.slice(14);
+        if (curSearch === "") {
+          url += "/#/pages/webview/webview?course_type=topic&id=" + id;
+        } else {
+          url +=
+            "/#/pages/webview/webview" +
+            curSearch +
+            "&course_type=topic&id=" +
+            id;
+        }
       } else if (curPathname.indexOf("/courses/detail") !== -1) {
         url += "/#/pages/course/show" + curSearch;
       } else if (curPathname.indexOf("/courses/video") !== -1) {
@@ -162,8 +171,16 @@ export const InitPage = (props: Props) => {
           url += "/#/packageA/learnPath/show" + curSearch + "&id=" + id;
         }
       } else if (curPathname.indexOf("/exam/papers/detail") !== -1) {
-        url +=
-          "/#/pages/webview/webview" + curSearch + "&course_type=paperRead";
+        let id = curPathname.slice(20);
+        if (curSearch === "") {
+          url += "/#/pages/webview/webview?course_type=paperRead&id=" + id;
+        } else {
+          url +=
+            "/#/pages/webview/webview" +
+            curSearch +
+            "&course_type=paperRead&id=" +
+            id;
+        }
       } else if (curPathname.indexOf("/exam/practice/detail") !== -1) {
         url +=
           "/#/pages/webview/webview" + curSearch + "&course_type=practiceRead";

@@ -32,7 +32,7 @@ export const PaperCourseItem: React.FC<PropInterface> = ({
       goLogin();
       return;
     }
-    navigate("/exam/papers/detail?id=" + cid);
+    navigate("/exam/papers/detail/" + cid);
   };
 
   const goLogin = () => {

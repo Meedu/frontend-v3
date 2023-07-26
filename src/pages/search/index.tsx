@@ -199,7 +199,7 @@ const SearchPage = () => {
     } else if (val === "book") {
       navigate("/book/detail?id=" + id);
     } else if (val === "paper") {
-      navigate("/exam/papers/detail?id=" + id);
+      navigate("/exam/papers/detail/" + id);
     } else if (val === "mock_paper") {
       navigate("/exam/mockpaper/detail?id=" + id);
     } else if (val === "practice") {

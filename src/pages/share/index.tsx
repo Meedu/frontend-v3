@@ -132,23 +132,19 @@ const SharePage = () => {
     } else if (goods.goods_type === "paper") {
       shareLink =
         getShareHost() +
-        "exam/papers/detail?id=" +
+        "exam/papers/detail/" +
         goods.goods_id +
-        "&msv=" +
+        "?msv=" +
         user.id;
     } else if (goods.goods_type === "topic") {
       shareLink =
-        getShareHost() +
-        "topic/detail/" +
-        goods.goods_id +
-        "&msv=" +
-        user.id;
+        getShareHost() + "topic/detail/" + goods.goods_id + "?msv=" + user.id;
     } else if (goods.goods_type === "learnPath") {
       shareLink =
         getShareHost() +
         "learnPath/detail/" +
         goods.goods_id +
-        "&msv=" +
+        "?msv=" +
         user.id;
     } else if (goods.goods_type === "book") {
       shareLink =
