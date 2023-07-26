@@ -245,15 +245,25 @@ const LiveVideoPage = () => {
       ? 14
       : config.player.bullet_secret.size;
 
+    let poster = course.poster || config.player.cover;
+
+    let videoInfo: any = {
+      url: playUrl,
+      pic: poster,
+    };
+    if (aliRTS) {
+      videoInfo = {
+        live_artc_url: aliRTS,
+        type: "artc",
+        pic: poster,
+      };
+    }
+
     // 初始化播放器
     liveDPlayerRef.current = new window.DPlayer({
       container: document.getElementById("meedu-live-player"),
       live: true,
-      video: {
-        live_artc_url: aliRTS ? aliRTS : playUrl, //如果返回了阿里云RTS直播地址的话则优先使用rts地址播放
-        type: aliRTS ? "artc" : "auto",
-        pic: course.poster || config.player.cover,
-      },
+      video: videoInfo,
       autoplay: true,
       bulletSecret: {
         enabled: parseInt(config.player.enabled_bullet_secret) === 1,
