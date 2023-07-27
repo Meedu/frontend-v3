@@ -5,6 +5,7 @@
   cursor: pointer;
   flex-direction: column;
   border-radius: 8px;
+  position: relative;
   &:hover {
     box-shadow: 0px 4px 8px 0px rgba(102, 102, 102, 0.1);
     .live-course-thumb {
@@ -12,6 +13,16 @@
         transform: scale(1.1, 1.1);
       }
     }
+  }
+  .whiteback {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.5);
+    z-index: 20;
   }
   .live-course-thumb {
     width: 264px;

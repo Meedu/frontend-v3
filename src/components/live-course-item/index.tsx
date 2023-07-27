@@ -20,11 +20,15 @@ export const LiveCourseItem: React.FC<PropInterface> = ({
   const navigate = useNavigate();
 
   const goDetail = () => {
+    if (!cid) {
+      return;
+    }
     navigate("/live/detail/" + cid);
   };
 
   return (
     <div className={styles["live-course-item"]} onClick={() => goDetail()}>
+      {!cid && <div className={styles["whiteback"]}></div>}
       <div className={styles["live-course-thumb"]}>
         <div className={styles["thumb-bar"]}>
           <ThumbBar value={thumb} width={264} height={198} border={null} />

@@ -44,6 +44,9 @@ export const MiaoShaComp: React.FC<PropInterface> = ({ items, name }) => {
                 key={item.id + "ms" + index}
                 onClick={() => goDetail(item)}
               >
+                {!item.goods_type && (
+                  <div className={styles["whiteback"]}></div>
+                )}
                 <div className={styles["ms-course-thumb"]}>
                   {item.goods_type === "book" && (
                     <div className={styles["thumb-bar"]}>
