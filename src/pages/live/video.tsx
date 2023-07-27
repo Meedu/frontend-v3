@@ -8,32 +8,103 @@ import { AttachDialog } from "./components/attach-dialog";
 import { useSelector } from "react-redux";
 import { live, goMeedu } from "../../api/index";
 import backIcon from "../../assets/img/commen/icon-back-h.png";
+import { courses } from "../../api/user";
 
 declare const window: any;
 
 const LiveVideoPage = () => {
+  // store数据
+  const user = useSelector((state: any) => state.loginUser.value.user);
+  const config = useSelector((state: any) => state.systemConfig.value.config);
+  const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
+
+  // 销毁播放器
+  const playerDestroy = () => {
+    if (liveDPlayerRef.current) {
+      liveDPlayerRef.current.destroy();
+    }
+    if (liveTencentPlayerRef.current) {
+      liveTencentPlayerRef.current.dispose();
+    }
+    if (vodDlayerRef.current) {
+      vodDlayerRef.current.destroy();
+    }
+  };
+
+  // 退出全屏播放
+  const exitFullscreen = () => {
+    if (liveDPlayerRef.current) {
+      liveDPlayerRef.current.fullScreen.cancel();
+    }
+    if (liveTencentPlayerRef.current) {
+      liveTencentPlayerRef.current.exitFullscreen();
+    }
+  };
+
+  // 三个播放器的实例
   const liveTencentPlayerRef = useRef<any>(null);
   const liveDPlayerRef = useRef<any>(null);
   const vodDlayerRef = useRef<any>(null);
+
+  // 播放器
+  const [enabledBulletSecret, setEnabledBulletSecret] = useState(false);
+  const [bulletSecretText, setBullectSecretText] = useState("");
+  const [bulletSecretColor, setBulletSecretColor] = useState("red");
+  const [bulletSecretFontSize, setBulletSecretFontSize] = useState("10px");
+  const [bulletSecretFontOpacity, setBulletSecretOpacity] = useState("1");
+  const [playerPoster, setPlayerPoster] = useState("");
+
+  useEffect(() => {
+    if (config) {
+      setEnabledBulletSecret(
+        parseInt(config.player.enabled_bullet_secret) === 1
+      );
+      setBullectSecretText(
+        config.player.bullet_secret.text
+          .replace("${user.mobile}", user.mobile)
+          .replace("${mobile}", user.mobile)
+          .replace("${user.id}", user.id)
+      );
+      setBulletSecretColor(config.player.bullet_secret.color);
+      setBulletSecretFontSize(config.player.bullet_secret.size + "px");
+      setBulletSecretOpacity(config.player.bullet_secret.opacity);
+    }
+  }, [config]);
 
   const navigate = useNavigate();
   const params = useParams();
   const [id, setId] = useState(Number(params.courseId));
   const [course, setCourse] = useState<any>({});
   const [video, setVideo] = useState<any>({});
-  const [chat, setChat] = useState<any>(null);
+  const [record_exists, setRecordExists] = useState(0);
+
+  useEffect(() => {
+    let poster = "";
+    if (course) {
+      poster = course.poster;
+    }
+    if (!poster && config) {
+      poster = config.player.cover;
+    }
+    setPlayerPoster(poster);
+  }, [config, course]);
+
+  // 播放地址
   const [playUrl, setPlayUrl] = useState("");
   const [aliRTS, setAliRTS] = useState("");
-  const [record_exists, setRecordExists] = useState<number>(0);
   const [webrtc_play_url, setWebrtcPlayUrl] = useState("");
-  const [roomDisabled, setRoomDisabled] = useState(false);
-  const [userDisabled, setUserDisabled] = useState(false);
-  const [messageDisabled, setMessageDisabled] = useState(false);
-  const [waitTeacher, setWaitTeacher] = useState(false);
-  const [noTeacher, setNoTeacher] = useState(false);
-  const [isShowVodPlayer, setIsShowVodPlayer] = useState(false);
-  const [signStatus, setSignStatus] = useState(false);
-  const [signRecords, setSignRecords] = useState<any>(null);
+  // 聊天
+  const [chat, setChat] = useState<any>(null);
+  const [roomDisabled, setRoomDisabled] = useState(false); //房间禁言
+  const [userDisabled, setUserDisabled] = useState(false); //学员禁言
+  const [messageDisabled, setMessageDisabled] = useState(false); // 房间禁言 || 学员禁言
+  // 直播间状态
+  const [waitTeacher, setWaitTeacher] = useState(false); //直播未开始-倒计时结束
+  const [noTeacher, setNoTeacher] = useState(false); //直播开始-但是讲师未推流
+  const [isShowVodPlayer, setIsShowVodPlayer] = useState(false); //是否显示回放
+  const [signStatus, setSignStatus] = useState(false); //签到状态
+  const [signRecords, setSignRecords] = useState<any>(null); //签到记录
+  // 倒计时
   const [day, setDay] = useState<string | number>("0");
   const [hour, setHour] = useState<string | number>("00");
   const [min, setMin] = useState<string | number>("00");
@@ -43,9 +114,7 @@ const LiveVideoPage = () => {
   const [currentTab, setCurrentTab] = useState(1);
   const [content, setContent] = useState("");
   const [enabledChat, setEnabledChat] = useState(false);
-  const user = useSelector((state: any) => state.loginUser.value.user);
-  const config = useSelector((state: any) => state.systemConfig.value.config);
-  const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
+
   const myRef = useRef(0);
   const tabs = [
     {
@@ -59,10 +128,12 @@ const LiveVideoPage = () => {
   ];
 
   useEffect(() => {
-    if (video.status === 1 && webrtc_play_url) {
-      initLiveTencentPlayer();
-    } else if (video.status === 1 && playUrl) {
-      startLivePlay();
+    if (video?.status === 1) {
+      if (webrtc_play_url) {
+        renderLiveTencentPlayer();
+      } else {
+        renderLiveDPlayer();
+      }
     }
   }, [video, webrtc_play_url, playUrl]);
 
@@ -179,18 +250,14 @@ const LiveVideoPage = () => {
     }, 1000);
   };
 
-  const initLiveTencentPlayer = () => {
+  const renderLiveTencentPlayer = () => {
     liveTencentPlayerRef.current = new window.TCPlayer("meedu-live-player", {
       width: 950,
       height: 535,
-      sources: [
-        {
-          src: webrtc_play_url,
-        },
-      ],
+      sources: [{ src: webrtc_play_url }],
       controls: true,
       autoplay: true,
-      poster: course.poster || config.player.cover,
+      poster: playerPoster,
       bigPlayButton: true,
       reportable: false,
       webrtcConfig: {
@@ -201,33 +268,21 @@ const LiveVideoPage = () => {
         showLog: false,
       },
       plugins: {
-        DynamicWatermark:
-          parseInt(config.player.enabled_bullet_secret) === 1
-            ? {
-                type: "text",
-                speed: 0.2, // 建议取值范围 0<= speed <=1，默认值 0.2
-                content: config.player.bullet_secret.text
-                  .replace("${user.mobile}", user.mobile)
-                  .replace("${mobile}", user.mobile)
-                  .replace("${user.id}", user.id),
-                opacity: 0.5,
-                fontSize:
-                  (!config.player.bullet_secret.size
-                    ? 14
-                    : config.player.bullet_secret.size) + "px",
-                color: !config.player.bullet_secret.color
-                  ? "red"
-                  : config.player.bullet_secret.color,
-              }
-            : null,
+        DynamicWatermark: enabledBulletSecret
+          ? {
+              type: "text",
+              speed: 0.2, // 建议取值范围 0<= speed <=1，默认值 0.2
+              content: bulletSecretText,
+              opacity: bulletSecretFontOpacity,
+              fontSize: bulletSecretFontSize,
+              color: bulletSecretColor,
+            }
+          : null,
       },
     });
 
     liveTencentPlayerRef.current.on("timeupdate", function () {
       livePlayRecord(liveTencentPlayerRef.current.currentTime(), false);
-    });
-    liveTencentPlayerRef.current.on("ended", function () {
-      livePlayRecord(liveTencentPlayerRef.current.currentTime(), true);
     });
     liveTencentPlayerRef.current.on("error", function (e: any) {
       console.log("视频播放出现错误", e);
@@ -239,23 +294,16 @@ const LiveVideoPage = () => {
     });
   };
 
-  const startLivePlay = () => {
-    // 解析跑马灯的字体大小
-    let bulletSecretFontSize = !config.player.bullet_secret.size
-      ? 14
-      : config.player.bullet_secret.size;
-
-    let poster = course.poster || config.player.cover;
-
+  const renderLiveDPlayer = () => {
     let videoInfo: any = {
       url: playUrl,
-      pic: poster,
+      pic: playerPoster,
     };
     if (aliRTS) {
       videoInfo = {
         live_artc_url: aliRTS,
         type: "artc",
-        pic: poster,
+        pic: playerPoster,
       };
     }
 
@@ -266,16 +314,11 @@ const LiveVideoPage = () => {
       video: videoInfo,
       autoplay: true,
       bulletSecret: {
-        enabled: parseInt(config.player.enabled_bullet_secret) === 1,
-        text: config.player.bullet_secret.text
-          .replace("${user.mobile}", user.mobile)
-          .replace("${mobile}", user.mobile)
-          .replace("${user.id}", user.id),
-        size: bulletSecretFontSize + "px",
-        color: !config.player.bullet_secret.color
-          ? "red"
-          : config.player.bullet_secret.color,
-        opacity: config.player.bullet_secret.opacity,
+        enabled: enabledBulletSecret,
+        text: bulletSecretText,
+        size: bulletSecretFontSize,
+        color: bulletSecretColor,
+        opacity: bulletSecretFontOpacity,
       },
     });
     liveDPlayerRef.current.on("timeupdate", () => {
@@ -284,34 +327,17 @@ const LiveVideoPage = () => {
       }
       livePlayRecord(parseInt(liveDPlayerRef.current.video.currentTime), false);
     });
-    liveDPlayerRef.current.on("ended", () => {
-      livePlayRecord(parseInt(liveDPlayerRef.current.video.currentTime), true);
-    });
     liveDPlayerRef.current.on("play_error", (e: any) => {
       console.log("play_error", e);
       if (e?.from && (e.from === "AliRTS" || e.from === "HLS")) {
-        // 销毁播放器
-        if (liveDPlayerRef.current) {
-          liveDPlayerRef.current.destroy(true);
-          liveDPlayerRef.current = null;
-        }
+        playerDestroy();
         setNoTeacher(true);
       }
     });
   };
 
   const goDetail = () => {
-    if (liveDPlayerRef.current) {
-      liveDPlayerRef.current.destroy();
-    }
-    if (liveTencentPlayerRef.current) {
-      liveTencentPlayerRef.current.dispose();
-    }
-    // 回放播放器销毁
-    if (vodDlayerRef.current) {
-      vodDlayerRef.current.destroy();
-    }
-
+    playerDestroy();
     setTimeout(() => {
       navigate("/live/detail/" + course.id + "?tab=3", { replace: true });
     }, 500);
@@ -329,18 +355,10 @@ const LiveVideoPage = () => {
     setSignStatus(true);
   };
 
-  const exitFullscreen = () => {
-    if (liveDPlayerRef.current) {
-      liveDPlayerRef.current.fullScreen.cancel();
-    }
-    if (liveTencentPlayerRef.current) {
-      liveTencentPlayerRef.current.exitFullscreen();
-    }
-  };
-
   const showVodPlayer = () => {
     if (record_exists === 1 && playUrl.length > 0) {
-      vodDlayerRef.current && vodDlayerRef.current.destroy();
+      playerDestroy();
+      setIsShowVodPlayer(true);
       initVodPlayer();
     } else {
       setIsShowVodPlayer(false);
@@ -358,32 +376,20 @@ const LiveVideoPage = () => {
   };
 
   const initVodPlayer = () => {
-    setIsShowVodPlayer(true);
-
-    // 跑马灯文字大小
-    let bulletSecretFontSize = !config.player.bullet_secret.size
-      ? 14
-      : config.player.bullet_secret.size;
-
     vodDlayerRef.current = new window.DPlayer({
       container: document.getElementById("meedu-vod-player"),
       autoplay: false,
       video: {
-        quality: playUrl, //如果存在回放的话，那么playUrl就是回放的地址列表
+        quality: playUrl,
         defaultQuality: 0,
-        pic: course?.poster || config.player.cover,
+        pic: playerPoster,
       },
       bulletSecret: {
-        enabled: parseInt(config.player.enabled_bullet_secret) === 1,
-        text: config.player.bullet_secret.text
-          .replace("${user.mobile}", user.mobile)
-          .replace("${mobile}", user.mobile)
-          .replace("${user.id}", user.id),
-        size: bulletSecretFontSize + "px",
-        color: !config.player.bullet_secret.color
-          ? "red"
-          : config.player.bullet_secret.color,
-        opacity: config.player.bullet_secret.opacity,
+        enabled: enabledBulletSecret,
+        text: bulletSecretText,
+        size: bulletSecretFontSize,
+        color: bulletSecretColor,
+        opacity: bulletSecretFontOpacity,
       },
     });
     vodDlayerRef.current.on("timeupdate", () => {
