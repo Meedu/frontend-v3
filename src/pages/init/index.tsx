@@ -187,7 +187,16 @@ export const InitPage = (props: Props) => {
           url += "/#/packageA/book/show" + curSearch + "&id=" + id;
         }
       } else if (curPathname.indexOf("/book/read") !== -1) {
-        url += "/#/pages/webview/webview" + curSearch + "&course_type=book";
+        let id = curPathname.slice(11);
+        if (curSearch === "") {
+          url += "/#/pages/webview/webview?course_type=book&id=" + id;
+        } else {
+          url +=
+            "/#/pages/webview/webview" +
+            curSearch +
+            "&course_type=book&id=" +
+            id;
+        }
       } else if (curPathname.indexOf("/learnPath/detail") !== -1) {
         let id = curPathname.slice(18);
         if (curSearch === "") {

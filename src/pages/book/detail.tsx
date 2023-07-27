@@ -252,7 +252,7 @@ const BookDetailPage = () => {
       buyBook();
       return;
     }
-    navigate("/book/read?id=" + item.id);
+    navigate("/book/read/" + item.id);
   };
 
   const startLearn = () => {

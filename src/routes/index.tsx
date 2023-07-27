@@ -393,7 +393,7 @@ const routes: RouteObject[] = [
         element: <WithoutHeaderWithFooter />,
         children: [
           {
-            path: "/book/read",
+            path: "/book/read/:courseId",
             element: <PrivateRoute Component={<BookReadPage />} />,
           },
         ],

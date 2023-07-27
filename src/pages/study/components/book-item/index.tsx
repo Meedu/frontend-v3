@@ -17,7 +17,7 @@ export const BookItemComp: React.FC<PropInterface> = ({
   const [loading, setLoading] = useState<boolean>(false);
 
   const goRead = (item: any) => {
-    navigate("/book/read?id=" + item.article_id);
+    navigate("/book/read/" + item.article_id);
   };
 
   const goDetail = (id: number) => {
