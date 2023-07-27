@@ -44,7 +44,27 @@ export const Header = () => {
   const [current, setCurrent] = useState(pathname);
 
   useEffect(() => {
-    setCurrent(pathname);
+    if (pathname.indexOf("/courses/") !== -1) {
+      setCurrent("/courses");
+    } else if (pathname.indexOf("/live/") !== -1) {
+      setCurrent("/live");
+    } else if (pathname.indexOf("/topic/") !== -1) {
+      setCurrent("/topic");
+    } else if (pathname.indexOf("/book/") !== -1) {
+      setCurrent("/book");
+    } else if (pathname.indexOf("/learnPath/") !== -1) {
+      setCurrent("/learnPath");
+    } else if (pathname.indexOf("/wenda/") !== -1) {
+      setCurrent("/wenda");
+    } else if (pathname.indexOf("/exam/papers/") !== -1) {
+      setCurrent("/exam/papers");
+    } else if (pathname.indexOf("/exam/mockpaper/") !== -1) {
+      setCurrent("/exam/mockpaper");
+    } else if (pathname.indexOf("/exam/practice/") !== -1) {
+      setCurrent("/exam/practice");
+    } else {
+      setCurrent(pathname);
+    }
   }, [pathname]);
 
   useEffect(() => {
