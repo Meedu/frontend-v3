@@ -201,32 +201,27 @@ const VodPlayPage = () => {
     if (active === false && free_seconds > 0) {
       isTrySee = 1;
     }
-    vod
-      .playInfo(vid, { is_try: isTrySee })
-      .then((res: any) => {
-        if (res.data.urls.length === 0) {
-          message.error("无播放地址");
-          return;
-        }
+    vod.playInfo(vid, { is_try: isTrySee }).then((res: any) => {
+      if (res.data.urls.length === 0) {
+        message.error("无播放地址");
+        return;
+      }
 
-        let playUrls = res.data.urls;
-        let firstPlayUrl = playUrls[0].url;
+      let playUrls = res.data.urls;
+      let firstPlayUrl = playUrls[0].url;
 
-        if (firstPlayUrl.substr(1, 6) === "iframe") {
-          setIsIframe(true);
-          let playUrl = firstPlayUrl.replace(
-            ">",
-            ' style="width:100%;height:506px" >'
-          );
-          setPlayUrl(playUrl);
-          return;
-        }
-        setIsIframe(false);
-        initDPlayer(playUrls, isTrySee, ban_drag, last_see_value);
-      })
-      .catch((e) => {
-        message.error(e.message);
-      });
+      if (firstPlayUrl.substr(1, 6) === "iframe") {
+        setIsIframe(true);
+        let playUrl = firstPlayUrl.replace(
+          ">",
+          ' style="width:100%;height:506px" >'
+        );
+        setPlayUrl(playUrl);
+        return;
+      }
+      setIsIframe(false);
+      initDPlayer(playUrls, isTrySee, ban_drag, last_see_value);
+    });
   };
 
   const initDPlayer = (

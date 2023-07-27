@@ -146,19 +146,14 @@ const VodDetailPage = () => {
 
   const collectCourse = () => {
     if (isLogin) {
-      vod
-        .collect(cid)
-        .then(() => {
-          setIsCollect(!isCollect);
-          if (isCollect) {
-            message.success("取消收藏");
-          } else {
-            message.success("已收藏");
-          }
-        })
-        .catch((e) => {
-          message.error(e.message);
-        });
+      vod.collect(cid).then(() => {
+        setIsCollect(!isCollect);
+        if (isCollect) {
+          message.success("取消收藏");
+        } else {
+          message.success("已收藏");
+        }
+      });
     } else {
       goLogin();
     }

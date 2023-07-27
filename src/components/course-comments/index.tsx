@@ -46,7 +46,6 @@ export const CourseComments: React.FC<PropInterface> = ({
       })
       .catch((e) => {
         setLoading(false);
-        message.error(e.message);
       });
   };
 

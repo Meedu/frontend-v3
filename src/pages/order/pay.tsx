@@ -48,7 +48,6 @@ const OrderPayPage = () => {
         })
         .catch((e) => {
           setLoading(false);
-          message.error(e.message);
           timer && clearInterval(timer);
           navigate("/");
         });
@@ -63,7 +62,6 @@ const OrderPayPage = () => {
         })
         .catch((e) => {
           setLoading(false);
-          message.error(e.message);
           timer && clearInterval(timer);
           navigate("/");
         });

@@ -79,35 +79,30 @@ export const InitPage = (props: Props) => {
     saveSessionLoginCode(code);
 
     // 请求登录接口
-    login
-      .codeLogin({ code: code, msv: getMsv() })
-      .then((res: any) => {
-        if (res.data.success === 1) {
-          setToken(res.data.token);
-          user.detail().then((res: any) => {
-            let loginData = res.data;
-            // 将学员数据存储到store
-            dispatch(loginAction(loginData));
-            // 登录成功之后的跳转
-            if (window.location.pathname === "/login/callback") {
-              // 社交登录回调指定的跳转地址
-              navigate(redirectUrl, { replace: true });
-            } else {
-              // 直接reload当前登录表单所在页面
-              let path = window.location.pathname + window.location.search;
-              navigate(path, { replace: true });
-            }
-          });
-        } else {
-          if (res.data.action === "bind_mobile") {
-            saveLoginCode(code);
-            setCodebindmobileVisible(true);
+    login.codeLogin({ code: code, msv: getMsv() }).then((res: any) => {
+      if (res.data.success === 1) {
+        setToken(res.data.token);
+        user.detail().then((res: any) => {
+          let loginData = res.data;
+          // 将学员数据存储到store
+          dispatch(loginAction(loginData));
+          // 登录成功之后的跳转
+          if (window.location.pathname === "/login/callback") {
+            // 社交登录回调指定的跳转地址
+            navigate(redirectUrl, { replace: true });
+          } else {
+            // 直接reload当前登录表单所在页面
+            let path = window.location.pathname + window.location.search;
+            navigate(path, { replace: true });
           }
+        });
+      } else {
+        if (res.data.action === "bind_mobile") {
+          saveLoginCode(code);
+          setCodebindmobileVisible(true);
         }
-      })
-      .catch((e) => {
-        message.error(e.message);
-      });
+      }
+    });
   };
 
   const msvBind = () => {

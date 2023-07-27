@@ -48,7 +48,6 @@ export const CourseVideoComments: React.FC<PropInterface> = ({
       })
       .catch((e) => {
         setLoading(false);
-        message.error(e.message);
       });
   };
 
