@@ -168,7 +168,12 @@ export const InitPage = (props: Props) => {
           url += "/#/packageA/live/show" + curSearch + "&id=" + id;
         }
       } else if (curPathname.indexOf("/live/video") !== -1) {
-        url += "/#/packageA/live/video" + curSearch;
+        let id = curPathname.slice(12);
+        if (curSearch === "") {
+          url += "/#/packageA/live/video?id=" + id;
+        } else {
+          url += "/#/packageA/live/video" + curSearch + "&id=" + id;
+        }
       } else if (curPathname.indexOf("/book/detail") !== -1) {
         let id = curPathname.slice(13);
         if (curSearch === "") {

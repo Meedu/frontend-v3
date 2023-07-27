@@ -8,7 +8,6 @@ import {
   HistoryRecord,
   MiaoshaDialog,
   ThumbBar,
-  Empty,
   MiaoshaList,
   TuangouList,
   LiveCourseComments,
@@ -293,7 +292,7 @@ const LiveDetailPage = () => {
       return;
     }
 
-    navigate("/live/video?id=" + item.id);
+    navigate("/live/video/" + item.id);
   };
 
   return (

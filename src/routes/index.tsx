@@ -403,7 +403,7 @@ const routes: RouteObject[] = [
         element: <WithoutHeaderWithoutFooter />,
         children: [
           {
-            path: "/live/video",
+            path: "/live/video/:courseId",
             element: <PrivateRoute Component={<LiveVideoPage />} />,
           },
           {

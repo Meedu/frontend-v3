@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import styles from "./video.module.scss";
 import { message, Input } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { ChatBox } from "../../components";
 import { SignDialog } from "./components/sign-dialog";
 import { AttachDialog } from "./components/attach-dialog";
@@ -17,8 +17,8 @@ const LiveVideoPage = () => {
   const vodDlayerRef = useRef<any>(null);
 
   const navigate = useNavigate();
-  const result = new URLSearchParams(useLocation().search);
-  const [id, setId] = useState(Number(result.get("id")));
+  const params = useParams();
+  const [id, setId] = useState(Number(params.courseId));
   const [course, setCourse] = useState<any>({});
   const [video, setVideo] = useState<any>({});
   const [chat, setChat] = useState<any>(null);
@@ -79,8 +79,8 @@ const LiveVideoPage = () => {
   }, [id]);
 
   useEffect(() => {
-    setId(Number(result.get("id")));
-  }, [result.get("id")]);
+    setId(Number(params.courseId));
+  }, [params.courseId]);
 
   const getData = () => {
     live.play(id).then((res: any) => {

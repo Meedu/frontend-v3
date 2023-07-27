@@ -21,7 +21,7 @@ export const LiveItemComp: React.FC<PropInterface> = ({
     if (item.course && item.course.next_video.length !== 0) {
       vid = item.course.next_video.id;
     }
-    navigate("/live/video?id=" + vid);
+    navigate("/live/video/" + vid);
   };
 
   const goDetail = (id: number) => {
