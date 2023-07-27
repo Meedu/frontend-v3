@@ -140,7 +140,7 @@ const WendaPage = () => {
     let credit = Number(user.credit1) - Number(credit1);
     changeUserCredit(credit);
     setTimeout(() => {
-      navigate("/wenda/detail?id=" + id);
+      navigate("/wenda/detail/" + id);
     }, 600);
   };
 

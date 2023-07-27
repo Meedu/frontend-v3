@@ -26,7 +26,7 @@ export const QaItem: React.FC<PropInterface> = ({
   const navigate = useNavigate();
 
   const goDetail = () => {
-    navigate("/wenda/detail?id=" + cid);
+    navigate("/wenda/detail/" + cid);
   };
 
   return (

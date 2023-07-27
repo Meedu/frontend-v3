@@ -59,7 +59,7 @@ const MemberQuestionsPage = () => {
   };
 
   const goDetail = (id: number) => {
-    navigate("/wenda/detail?id=" + id);
+    navigate("/wenda/detail/" + id);
   };
 
   const resetData = () => {
