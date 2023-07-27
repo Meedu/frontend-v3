@@ -100,7 +100,7 @@ const OrderPayPage = () => {
     } else if (goodsType === "topic") {
       navigate("/topic/detail/" + id);
     } else if (goodsType === "video") {
-      navigate("/courses/video?id=" + id);
+      navigate("/courses/video/" + id);
     } else if (goodsType === "path") {
       navigate("/learnPath/detail/" + id);
     } else if (goodsType === "paper") {

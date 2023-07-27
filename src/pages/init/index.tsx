@@ -159,7 +159,12 @@ export const InitPage = (props: Props) => {
           url += "/#/pages/course/show" + curSearch + "&id=" + id;
         }
       } else if (curPathname.indexOf("/courses/video") !== -1) {
-        url += "/#/pages/course/video" + curSearch;
+        let id = curPathname.slice(15);
+        if (curSearch === "") {
+          url += "/#/pages/course/video?id=" + id;
+        } else {
+          url += "/#/pages/course/video" + curSearch + "&id=" + id;
+        }
       } else if (curPathname.indexOf("/live/detail") !== -1) {
         let id = curPathname.slice(13);
         if (curSearch === "") {

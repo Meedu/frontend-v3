@@ -51,7 +51,7 @@ export const DetailDialog: React.FC<PropInterface> = ({
   };
 
   const goPlay = (item: any) => {
-    navigate("/courses/video?id=" + item.id);
+    navigate("/courses/video/" + item.id);
   };
 
   return (

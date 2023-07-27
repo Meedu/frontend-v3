@@ -124,7 +124,7 @@ const MemberOrdersPage = () => {
     } else if (item.goods[0].goods_type === "文章") {
       navigate("/topic/detail/" + item.goods[0].goods_id);
     } else if (item.goods[0].goods_type === "VIDEO") {
-      navigate("/courses/video?id=" + item.goods[0].goods_id);
+      navigate("/courses/video/" + item.goods[0].goods_id);
     } else if (item.goods[0].goods_type === "学习路径") {
       navigate("/learnPath/detail/" + item.goods[0].goods_id);
     } else if (item.goods[0].goods_type === "试卷") {

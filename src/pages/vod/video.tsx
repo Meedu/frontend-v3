@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import styles from "./video.module.scss";
-import { Button, Skeleton, message } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Skeleton, message } from "antd";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { course as vod } from "../../api/index";
 import { useSelector } from "react-redux";
 import {
@@ -19,11 +19,11 @@ var timer: any = null;
 var clock: any = null;
 const VodPlayPage = () => {
   const navigate = useNavigate();
-  const result = new URLSearchParams(useLocation().search);
+  const params = useParams();
   const pathname = useLocation().pathname;
   const [loading, setLoading] = useState<boolean>(false);
   const [cid, setCid] = useState(0);
-  const [vid, setVid] = useState(Number(result.get("id")));
+  const [vid, setVid] = useState(Number(params.courseId));
   const [course, setCourse] = useState<any>({});
   const [video, setVideo] = useState<any>({});
   const [videos, setVideos] = useState<any>([]);
@@ -68,10 +68,10 @@ const VodPlayPage = () => {
   ];
 
   useEffect(() => {
-    setVid(Number(result.get("id")));
+    setVid(Number(params.courseId));
     window.player && window.player.destroy();
     myRef.current = 0;
-  }, [result.get("id")]);
+  }, [params.courseId]);
 
   useEffect(() => {
     clock && clearInterval(clock);
@@ -235,7 +235,7 @@ const VodPlayPage = () => {
     ban_drag: number,
     lastSeeParams: any
   ) => {
-    savePlayId(String(result.get("id")));
+    savePlayId(String(params.courseId));
     let dplayerUrls: any[] = [];
     playUrls.forEach((item: any) => {
       dplayerUrls.push({
@@ -293,7 +293,7 @@ const VodPlayPage = () => {
   const checkPlayer = () => {
     timer = setInterval(() => {
       let playId = getPlayId();
-      if (playId && parseInt(playId) !== Number(result.get("id"))) {
+      if (playId && parseInt(playId) !== Number(params.courseId)) {
         timer && clearInterval(timer);
         window.player && window.player.destroy();
         setCheckPlayerStatus(true);
@@ -334,14 +334,14 @@ const VodPlayPage = () => {
     clock && clearInterval(clock);
     setLastSeeValue(null);
     setTotalTime(10);
-    navigate("/courses/video?id=" + item.id, { replace: true });
+    navigate("/courses/video/" + item.id, { replace: true });
   };
 
   const goNextVideo = (id: number) => {
     clock && clearInterval(clock);
     setLastSeeValue(null);
     setTotalTime(10);
-    navigate("/courses/video?id=" + id, { replace: true });
+    navigate("/courses/video/" + id, { replace: true });
   };
 
   const paySelect = (val: number) => {

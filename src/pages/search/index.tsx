@@ -189,7 +189,7 @@ const SearchPage = () => {
 
   const goDetail = (val: string, id: number) => {
     if (val === "video") {
-      navigate("/courses/video?id=" + id);
+      navigate("/courses/video/" + id);
     } else if (val === "vod") {
       navigate("/courses/detail/" + id);
     } else if (val === "live") {

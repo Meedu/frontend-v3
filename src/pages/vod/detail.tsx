@@ -276,7 +276,7 @@ const VodDetailPage = () => {
       goLogin();
       return;
     }
-    navigate("/courses/video?id=" + item.id);
+    navigate("/courses/video/" + item.id);
   };
 
   const download = (id: number) => {

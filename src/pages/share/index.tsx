@@ -154,11 +154,7 @@ const SharePage = () => {
         getShareHost() + "live/detail/" + goods.goods_id + "?msv=" + user.id;
     } else if (goods.goods_type === "video") {
       shareLink =
-        getShareHost() +
-        "courses/video?id=" +
-        goods.goods_id +
-        "&msv=" +
-        user.id;
+        getShareHost() + "courses/video/" + goods.goods_id + "?msv=" + user.id;
     } else if (goods.goods_type === "vip") {
       shareLink = getShareHost() + "vip" + "?msv=" + user.id;
     } else if (goods.goods_type === "ms") {

@@ -266,7 +266,7 @@ const routes: RouteObject[] = [
           { path: "/courses", element: <VodPage /> },
           { path: "/courses/detail/:courseId", element: <VodDetailPage /> },
           {
-            path: "/courses/video",
+            path: "/courses/video/:courseId",
             element: <PrivateRoute Component={<VodPlayPage />} />,
           },
           { path: "/live", element: <LivePage /> },
