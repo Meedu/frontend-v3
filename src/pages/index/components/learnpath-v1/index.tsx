@@ -11,7 +11,10 @@ interface PropInterface {
 export const LearnPathComp: React.FC<PropInterface> = ({ items, name }) => {
   const navigate = useNavigate();
   const goDetail = (item: any) => {
-    navigate("/learnPath/detail?id=" + item.id);
+    if (!item.id) {
+      return;
+    }
+    navigate("/learnPath/detail/" + item.id);
   };
   return (
     <>
@@ -27,6 +30,7 @@ export const LearnPathComp: React.FC<PropInterface> = ({ items, name }) => {
                 key={item.id + "path" + index}
                 onClick={() => goDetail(item)}
               >
+                {!item.id && <div className={styles["whiteback"]}></div>}
                 <div className={styles["learnpath-course-thumb"]}>
                   <div className={styles["thumb-bar"]}>
                     <ThumbBar

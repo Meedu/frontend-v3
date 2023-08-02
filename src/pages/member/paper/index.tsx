@@ -67,7 +67,7 @@ const MemberPaperPage = () => {
   };
 
   const goDetail = (id: number) => {
-    navigate("/exam/papers/detail?id=" + id);
+    navigate("/exam/papers/detail/" + id);
   };
 
   return (

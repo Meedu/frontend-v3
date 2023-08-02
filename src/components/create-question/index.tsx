@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Input, Upload, message, Button } from "antd";
 import type { UploadProps } from "antd";
 import styles from "./index.module.scss";
-import { wenda } from "../../api/index";
+import { wenda, user as member } from "../../api/index";
 import closeIcon from "../../assets/img/commen/icon-close.png";
 import config from "../../js/config";
 import uploadIcon from "../../assets/img/commen/upload.png";
+import { loginAction } from "../../store/user/loginUserSlice";
 import { getToken } from "../../utils/index";
 
 interface PropInterface {
   open: boolean;
+  enable: boolean;
   onSuccess: (id: number, value: number) => void;
   onCancel: () => void;
 }
 
 export const CreateQuestionDialog: React.FC<PropInterface> = ({
   open,
+  enable,
   onSuccess,
   onCancel,
 }) => {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [categories, setCategories] = useState<any>([]);
   const [title, setTitle] = useState<string>("");
@@ -37,8 +41,16 @@ export const CreateQuestionDialog: React.FC<PropInterface> = ({
       setCategoryId(0);
       setContent("");
       getCreateParams();
+      getUser();
     }
   }, [open]);
+
+  const getUser = () => {
+    member.detail().then((res: any) => {
+      let loginData = res.data;
+      dispatch(loginAction(loginData));
+    });
+  };
 
   const getCreateParams = () => {
     wenda.create().then((res: any) => {
@@ -216,21 +228,24 @@ export const CreateQuestionDialog: React.FC<PropInterface> = ({
             </div>
             <div className={styles["bottom-item"]}>
               <div className={styles["body"]}>
-                <div className={styles["title"]}>悬赏积分</div>
+                {enable && <div className={styles["title"]}>悬赏积分</div>}
                 <div className={styles["credit1"]}>
-                  <Input
-                    type="number"
-                    value={credit1}
-                    onChange={(e) => {
-                      setCredit1(e.target.value);
-                    }}
-                    className={styles["input2"]}
-                    disabled={user.credit1 === 0}
-                    placeholder="置悬赏积分"
-                  ></Input>
-                  <div className={styles["help"]}>
-                    积分余额：{user.credit1}积分
-                  </div>
+                  {enable && (
+                    <>
+                      <Input
+                        type="number"
+                        value={credit1}
+                        onChange={(e) => {
+                          setCredit1(e.target.value);
+                        }}
+                        className={styles["input2"]}
+                        placeholder="置悬赏积分"
+                      ></Input>
+                      <div className={styles["help"]}>
+                        积分余额：{user.credit1}积分
+                      </div>
+                    </>
+                  )}
                   {content.length > 0 && title.length > 0 && categoryId > 0 ? (
                     <Button
                       loading={loading}

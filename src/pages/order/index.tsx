@@ -196,7 +196,6 @@ const OrderPage = () => {
         })
         .catch((e) => {
           setLoading(false);
-          message.error(e.message);
         });
     } else if (goodsType === "video") {
       // 视频
@@ -210,7 +209,6 @@ const OrderPage = () => {
         })
         .catch((e) => {
           setLoading(false);
-          message.error(e.message);
         });
     } else if (goodsType === "role") {
       order
@@ -223,7 +221,6 @@ const OrderPage = () => {
         })
         .catch((e) => {
           setLoading(false);
-          message.error(e.message);
         });
     } else if (goodsType === "live") {
       order
@@ -236,7 +233,6 @@ const OrderPage = () => {
         })
         .catch((e) => {
           setLoading(false);
-          message.error(e.message);
         });
     } else if (goodsType === "book") {
       order
@@ -249,7 +245,6 @@ const OrderPage = () => {
         })
         .catch((e) => {
           setLoading(false);
-          message.error(e.message);
         });
     } else if (goodsType === "paper") {
       order
@@ -262,7 +257,6 @@ const OrderPage = () => {
         })
         .catch((e) => {
           setLoading(false);
-          message.error(e.message);
         });
     } else if (goodsType === "practice") {
       order
@@ -275,7 +269,6 @@ const OrderPage = () => {
         })
         .catch((e) => {
           setLoading(false);
-          message.error(e.message);
         });
     } else if (goodsType === "mockpaper") {
       order
@@ -288,7 +281,6 @@ const OrderPage = () => {
         })
         .catch((e) => {
           setLoading(false);
-          message.error(e.message);
         });
     } else if (goodsType === "path") {
       order
@@ -301,7 +293,6 @@ const OrderPage = () => {
         })
         .catch((e) => {
           setLoading(false);
-          message.error(e.message);
         });
     } else if (goodsType === "tg") {
       order
@@ -315,7 +306,6 @@ const OrderPage = () => {
         })
         .catch((e) => {
           setLoading(false);
-          message.error(e.message);
         });
     } else if (goodsType === "ms") {
       order
@@ -328,7 +318,6 @@ const OrderPage = () => {
         })
         .catch((e) => {
           setLoading(false);
-          message.error(e.message);
         });
     } else if (goodsType === "topic") {
       order
@@ -341,7 +330,6 @@ const OrderPage = () => {
         })
         .catch((e) => {
           setLoading(false);
-          message.error(e.message);
         });
     } else if (goodsType === "k12") {
       order
@@ -354,7 +342,6 @@ const OrderPage = () => {
         })
         .catch((e) => {
           setLoading(false);
-          message.error(e.message);
         });
     }
   };

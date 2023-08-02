@@ -12,6 +12,11 @@ import {
 // 页面加载
 import { InitPage } from "../pages/init";
 import LoginPage from "../pages/login";
+import PrivateRoute from "../components/private-route";
+import WithHeaderWithFooter from "../pages/layouts/with-header-with-footer";
+import WithHeaderWithoutFooter from "../pages/layouts/with-header-without-footer";
+import WithoutHeaderWithFooter from "../pages/layouts/without-header-with-footer";
+import WithoutHeaderWithoutFooter from "../pages/layouts/without-header-without-footer";
 
 const IndexPage = lazy(() => import("../pages/index"));
 // 录播相关页面
@@ -98,10 +103,9 @@ const AuthLoadingPage = lazy(() => import("../pages/auth/loading"));
 //错误相关
 const ErrorPage = lazy(() => import("../pages/error/index"));
 const Error404 = lazy(() => import("../pages/error/404"));
-import PrivateRoute from "../components/private-route";
 
 let RootPage: any = null;
-let configFunc = {
+let configFunc: AppFeatureInterface = {
   vip: true,
   live: false,
   book: false,
@@ -114,7 +118,6 @@ let configFunc = {
   share: false,
   codeExchanger: false,
   snapshort: false,
-  ke: false,
   promoCode: false,
   daySignIn: false,
   credit1Mall: false,
@@ -127,69 +130,65 @@ if (getToken()) {
   RootPage = lazy(async () => {
     return new Promise<any>(async (resolve) => {
       try {
-        let configRes: any = await system.config();
-        let userRes: any = await user.detail();
+        // 获取系统配置
+        let configRes: AppConfigInterface = (
+          (await system.config()) as ResponseInterface
+        ).data as AppConfigInterface;
+
+        // 获取当前登录学员
+        let userRes: UserDetailInterface = (
+          (await user.detail()) as ResponseInterface
+        ).data as UserDetailInterface;
+
         let navsRes: any = await home.headerNav();
 
         // 强制绑定手机号
         if (
-          userRes.data.is_bind_mobile === 0 &&
-          configRes.data.member.enabled_mobile_bind_alert === 1
+          userRes.is_bind_mobile === 0 &&
+          configRes.member.enabled_mobile_bind_alert === 1
         ) {
           setBindMobileKey();
         } else {
           clearBindMobileKey();
         }
+
         //强制实名认证
         if (
-          userRes.data.is_face_verify === false &&
-          configRes.data.member.enabled_face_verify === true
+          userRes.is_face_verify === false &&
+          configRes.member.enabled_face_verify === true
         ) {
           setFaceCheckKey();
         } else {
           clearFaceCheckKey();
         }
 
-        configFunc.live = configRes.data.enabled_addons.indexOf("Zhibo") !== -1;
-        configFunc.book =
-          configRes.data.enabled_addons.indexOf("MeeduBooks") !== -1;
-        configFunc.topic =
-          configRes.data.enabled_addons.indexOf("MeeduTopics") !== -1;
-        configFunc.paper =
-          configRes.data.enabled_addons.indexOf("Paper") !== -1;
-        configFunc.mockPaper =
-          configRes.data.enabled_addons.indexOf("Paper") !== -1;
-        configFunc.wrongBook =
-          configRes.data.enabled_addons.indexOf("Paper") !== -1;
+        configFunc.live = configRes.enabled_addons.includes("Zhibo");
+        configFunc.book = configRes.enabled_addons.includes("MeeduBooks");
+        configFunc.topic = configRes.enabled_addons.includes("MeeduTopics");
+        // 考试模块
         configFunc.practice =
-          configRes.data.enabled_addons.indexOf("Paper") !== -1;
-        configFunc.wenda =
-          configRes.data.enabled_addons.indexOf("Wenda") !== -1;
-        configFunc.share =
-          configRes.data.enabled_addons.indexOf("MultiLevelShare") !== -1;
+          configFunc.wrongBook =
+          configFunc.mockPaper =
+          configFunc.paper =
+            configRes.enabled_addons.includes("Paper");
+        configFunc.wenda = configRes.enabled_addons.includes("Wenda");
+        configFunc.share = configRes.enabled_addons.includes("MultiLevelShare");
         configFunc.codeExchanger =
-          configRes.data.enabled_addons.indexOf("CodeExchanger") !== -1;
-        configFunc.snapshort =
-          configRes.data.enabled_addons.indexOf("Snapshot") !== -1;
-        configFunc.ke =
-          configRes.data.enabled_addons.indexOf("XiaoBanKe") !== -1;
+          configRes.enabled_addons.includes("CodeExchanger");
+        configFunc.snapshort = configRes.enabled_addons.includes("Snapshot");
         configFunc.promoCode =
-          configRes.data.enabled_addons.indexOf("MultiLevelShar") !== -1;
-        configFunc.daySignIn =
-          configRes.data.enabled_addons.indexOf("DaySignIn") !== -1;
-        configFunc.credit1Mall =
-          configRes.data.enabled_addons.indexOf("Credit1Mall") !== -1;
-        configFunc.tuangou =
-          configRes.data.enabled_addons.indexOf("TuanGou") !== -1;
-        configFunc.miaosha =
-          configRes.data.enabled_addons.indexOf("MiaoSha") !== -1;
-        configFunc.cert = configRes.data.enabled_addons.indexOf("Cert") !== -1;
+          configRes.enabled_addons.includes("MultiLevelShar");
+        configFunc.daySignIn = configRes.enabled_addons.includes("DaySignIn");
+        configFunc.credit1Mall = configRes.enabled_addons.includes("DaySignIn");
+        configFunc.tuangou = configRes.enabled_addons.includes("TuanGou");
+        configFunc.miaosha = configRes.enabled_addons.includes("MiaoSha");
+        configFunc.cert = configRes.enabled_addons.includes("Cert");
 
         resolve({
           default: (
             <InitPage
-              loginData={userRes.data}
-              config={configRes.data}
+              loginData={userRes}
+              config={configRes}
               configFunc={configFunc}
               navsData={navsRes.data}
             />
@@ -204,49 +203,40 @@ if (getToken()) {
   RootPage = lazy(async () => {
     return new Promise<any>(async (resolve) => {
       try {
-        let configRes: any = await system.config();
+        // 获取系统配置
+        let configRes: AppConfigInterface = (
+          (await system.config()) as ResponseInterface
+        ).data as AppConfigInterface;
+
         let navsRes: any = await home.headerNav();
 
-        configFunc.live = configRes.data.enabled_addons.indexOf("Zhibo") !== -1;
-        configFunc.book =
-          configRes.data.enabled_addons.indexOf("MeeduBooks") !== -1;
-        configFunc.topic =
-          configRes.data.enabled_addons.indexOf("MeeduTopics") !== -1;
-        configFunc.paper =
-          configRes.data.enabled_addons.indexOf("Paper") !== -1;
-        configFunc.mockPaper =
-          configRes.data.enabled_addons.indexOf("Paper") !== -1;
-        configFunc.wrongBook =
-          configRes.data.enabled_addons.indexOf("Paper") !== -1;
+        configFunc.live = configRes.enabled_addons.includes("Zhibo");
+        configFunc.book = configRes.enabled_addons.includes("MeeduBooks");
+        configFunc.topic = configRes.enabled_addons.includes("MeeduTopics");
+        // 考试模块
         configFunc.practice =
-          configRes.data.enabled_addons.indexOf("Paper") !== -1;
-        configFunc.wenda =
-          configRes.data.enabled_addons.indexOf("Wenda") !== -1;
-        configFunc.share =
-          configRes.data.enabled_addons.indexOf("MultiLevelShare") !== -1;
+          configFunc.wrongBook =
+          configFunc.mockPaper =
+          configFunc.paper =
+            configRes.enabled_addons.includes("Paper");
+        configFunc.wenda = configRes.enabled_addons.includes("Wenda");
+        configFunc.share = configRes.enabled_addons.includes("MultiLevelShare");
         configFunc.codeExchanger =
-          configRes.data.enabled_addons.indexOf("CodeExchanger") !== -1;
-        configFunc.snapshort =
-          configRes.data.enabled_addons.indexOf("Snapshot") !== -1;
-        configFunc.ke =
-          configRes.data.enabled_addons.indexOf("XiaoBanKe") !== -1;
+          configRes.enabled_addons.includes("CodeExchanger");
+        configFunc.snapshort = configRes.enabled_addons.includes("Snapshot");
         configFunc.promoCode =
-          configRes.data.enabled_addons.indexOf("MultiLevelShar") !== -1;
-        configFunc.daySignIn =
-          configRes.data.enabled_addons.indexOf("DaySignIn") !== -1;
-        configFunc.credit1Mall =
-          configRes.data.enabled_addons.indexOf("Credit1Mall") !== -1;
-        configFunc.tuangou =
-          configRes.data.enabled_addons.indexOf("TuanGou") !== -1;
-        configFunc.miaosha =
-          configRes.data.enabled_addons.indexOf("MiaoSha") !== -1;
-        configFunc.cert = configRes.data.enabled_addons.indexOf("Cert") !== -1;
+          configRes.enabled_addons.includes("MultiLevelShar");
+        configFunc.daySignIn = configRes.enabled_addons.includes("DaySignIn");
+        configFunc.credit1Mall = configRes.enabled_addons.includes("DaySignIn");
+        configFunc.tuangou = configRes.enabled_addons.includes("TuanGou");
+        configFunc.miaosha = configRes.enabled_addons.includes("MiaoSha");
+        configFunc.cert = configRes.enabled_addons.includes("Cert");
 
         resolve({
           default: (
             <InitPage
               loginData={null}
-              config={configRes.data}
+              config={configRes}
               configFunc={configFunc}
               navsData={navsRes.data}
             />
@@ -266,139 +256,181 @@ const routes: RouteObject[] = [
     children: [
       {
         path: "/",
-        element: <IndexPage />,
+        element: <WithHeaderWithFooter />,
+        children: [
+          {
+            path: "/",
+            element: <IndexPage />,
+          },
+          { path: "/login/callback", element: <AuthLoadingPage /> },
+          { path: "/courses", element: <VodPage /> },
+          { path: "/courses/detail/:courseId", element: <VodDetailPage /> },
+          {
+            path: "/courses/video/:courseId",
+            element: <PrivateRoute Component={<VodPlayPage />} />,
+          },
+          { path: "/live", element: <LivePage /> },
+          { path: "/live/detail/:courseId", element: <LiveDetailPage /> },
+          { path: "/announcement", element: <AnnouncementPage /> },
+          { path: "/exam", element: <ExamPage /> },
+          { path: "/exam/papers", element: <ExamPaperPage /> },
+          {
+            path: "/exam/papers/detail/:courseId",
+            element: <PrivateRoute Component={<ExamPaperDetailPage />} />,
+          },
+
+          { path: "/exam/mockpaper", element: <ExamMockPaperPage /> },
+          {
+            path: "/exam/mockpaper/detail/:courseId",
+            element: <PrivateRoute Component={<ExamMockPaperDetailPage />} />,
+          },
+
+          { path: "/exam/practice", element: <ExamPracticePage /> },
+          {
+            path: "/exam/practice/detail/:courseId",
+            element: <PrivateRoute Component={<ExamPracticeDetailPage />} />,
+          },
+
+          { path: "/exam/wrongbook", element: <ExamWrongbookPage /> },
+
+          { path: "/exam/collection", element: <ExamCollectionPage /> },
+
+          {
+            path: "/member",
+            element: <PrivateRoute Component={<MemberPage />} />,
+          },
+          {
+            path: "/member/messages",
+            element: <PrivateRoute Component={<MemberMessagesPage />} />,
+          },
+          {
+            path: "/member/orders",
+            element: <PrivateRoute Component={<MemberOrdersPage />} />,
+          },
+          {
+            path: "/member/paper",
+            element: <PrivateRoute Component={<MemberPaperPage />} />,
+          },
+          {
+            path: "/member/mockpaper",
+            element: <PrivateRoute Component={<MemberMockPaperPage />} />,
+          },
+          {
+            path: "/member/practice",
+            element: <PrivateRoute Component={<MemberPracticePage />} />,
+          },
+          {
+            path: "/member/questions",
+            element: <PrivateRoute Component={<MemberQuestionsPage />} />,
+          },
+          {
+            path: "/member/code-exchanger",
+            element: <PrivateRoute Component={<MemberExchangerPage />} />,
+          },
+          {
+            path: "/member/credit1-free",
+            element: <PrivateRoute Component={<MemberCredit1FreePage />} />,
+          },
+          {
+            path: "/member/credit1-records",
+            element: <PrivateRoute Component={<MemberCredit1RecordsPage />} />,
+          },
+          {
+            path: "/member/certs",
+            element: <PrivateRoute Component={<MemberCertsPage />} />,
+          },
+          { path: "/vip", element: <RolePage /> },
+          {
+            path: "/order",
+            element: <PrivateRoute Component={<OrderPage />} />,
+          },
+          {
+            path: "/order/pay",
+            element: <PrivateRoute Component={<OrderPayPage />} />,
+          },
+          {
+            path: "/order/success",
+            element: <PrivateRoute Component={<OrderSuccessPage />} />,
+          },
+          { path: "/search", element: <SearchPage /> },
+          { path: "/topic", element: <TopicPage /> },
+          { path: "/topic/detail/:courseId", element: <TopicDetailPage /> },
+          { path: "/book", element: <BookPage /> },
+          { path: "/book/detail/:courseId", element: <BookDetailPage /> },
+
+          { path: "/learnPath", element: <LearnPathPage /> },
+          {
+            path: "/learnPath/detail/:courseId",
+            element: <LearnPathDetailPage />,
+          },
+          { path: "/error", element: <ErrorPage /> },
+          { path: "/wenda", element: <WendaPage /> },
+          { path: "/wenda/detail/:courseId", element: <WendaDetailPage /> },
+          {
+            path: "/share",
+            element: <PrivateRoute Component={<SharePage />} />,
+          },
+          {
+            path: "/study-center",
+            element: <PrivateRoute Component={<StudyCenterPage />} />,
+          },
+          { path: "/face-check", element: <TencentFaceCheckPage /> },
+          { path: "/bind-mobile", element: <BindNewMobilePage /> },
+        ],
       },
       {
-        path: "/login",
-        element: <LoginPage />,
-      },
-      { path: "/login/callback", element: <AuthLoadingPage /> },
-      { path: "/courses", element: <VodPage /> },
-      { path: "/courses/detail", element: <VodDetailPage /> },
-      {
-        path: "/courses/video",
-        element: <PrivateRoute Component={<VodPlayPage />} />,
-      },
-      { path: "/live", element: <LivePage /> },
-      { path: "/live/detail", element: <LiveDetailPage /> },
-      {
-        path: "/live/video",
-        element: <PrivateRoute Component={<LiveVideoPage />} />,
-      },
-      { path: "/announcement", element: <AnnouncementPage /> },
-      { path: "/exam", element: <ExamPage /> },
-      { path: "/exam/papers", element: <ExamPaperPage /> },
-      {
-        path: "/exam/papers/detail",
-        element: <PrivateRoute Component={<ExamPaperDetailPage />} />,
+        path: "/",
+        element: <WithHeaderWithoutFooter />,
+        children: [
+          {
+            path: "/login",
+            element: <LoginPage />,
+          },
+        ],
       },
       {
-        path: "/exam/papers/play",
-        element: <PrivateRoute Component={<ExamPaperPlayPage />} />,
-      },
-      { path: "/exam/mockpaper", element: <ExamMockPaperPage /> },
-      {
-        path: "/exam/mockpaper/detail",
-        element: <PrivateRoute Component={<ExamMockPaperDetailPage />} />,
-      },
-      {
-        path: "/exam/mockpaper/play",
-        element: <PrivateRoute Component={<ExamMockPaperPlayPage />} />,
-      },
-      { path: "/exam/practice", element: <ExamPracticePage /> },
-      {
-        path: "/exam/practice/detail",
-        element: <PrivateRoute Component={<ExamPracticeDetailPage />} />,
+        path: "/",
+        element: <WithoutHeaderWithFooter />,
+        children: [
+          {
+            path: "/book/read/:courseId",
+            element: <PrivateRoute Component={<BookReadPage />} />,
+          },
+        ],
       },
       {
-        path: "/exam/practice/play",
-        element: <PrivateRoute Component={<ExamPracticePlayPage />} />,
+        path: "/",
+        element: <WithoutHeaderWithoutFooter />,
+        children: [
+          {
+            path: "/live/video/:courseId",
+            element: <PrivateRoute Component={<LiveVideoPage />} />,
+          },
+          {
+            path: "/exam/papers/play",
+            element: <PrivateRoute Component={<ExamPaperPlayPage />} />,
+          },
+          {
+            path: "/exam/mockpaper/play",
+            element: <PrivateRoute Component={<ExamMockPaperPlayPage />} />,
+          },
+          {
+            path: "/exam/practice/play",
+            element: <PrivateRoute Component={<ExamPracticePlayPage />} />,
+          },
+          {
+            path: "/exam/wrongbook/play",
+            element: <PrivateRoute Component={<ExamWrongbookPlayPage />} />,
+          },
+          {
+            path: "/exam/collection/play",
+            element: <PrivateRoute Component={<ExamCollectionPlayPage />} />,
+          },
+          { path: "*", element: <Error404 /> },
+        ],
       },
-      { path: "/exam/wrongbook", element: <ExamWrongbookPage /> },
-      {
-        path: "/exam/wrongbook/play",
-        element: <PrivateRoute Component={<ExamWrongbookPlayPage />} />,
-      },
-      { path: "/exam/collection", element: <ExamCollectionPage /> },
-      {
-        path: "/exam/collection/play",
-        element: <PrivateRoute Component={<ExamCollectionPlayPage />} />,
-      },
-      { path: "/member", element: <PrivateRoute Component={<MemberPage />} /> },
-      {
-        path: "/member/messages",
-        element: <PrivateRoute Component={<MemberMessagesPage />} />,
-      },
-      {
-        path: "/member/orders",
-        element: <PrivateRoute Component={<MemberOrdersPage />} />,
-      },
-      {
-        path: "/member/paper",
-        element: <PrivateRoute Component={<MemberPaperPage />} />,
-      },
-      {
-        path: "/member/mockpaper",
-        element: <PrivateRoute Component={<MemberMockPaperPage />} />,
-      },
-      {
-        path: "/member/practice",
-        element: <PrivateRoute Component={<MemberPracticePage />} />,
-      },
-      {
-        path: "/member/questions",
-        element: <PrivateRoute Component={<MemberQuestionsPage />} />,
-      },
-      {
-        path: "/member/code-exchanger",
-        element: <PrivateRoute Component={<MemberExchangerPage />} />,
-      },
-      {
-        path: "/member/credit1-free",
-        element: <PrivateRoute Component={<MemberCredit1FreePage />} />,
-      },
-      {
-        path: "/member/credit1-records",
-        element: <PrivateRoute Component={<MemberCredit1RecordsPage />} />,
-      },
-      {
-        path: "/member/certs",
-        element: <PrivateRoute Component={<MemberCertsPage />} />,
-      },
-      { path: "/vip", element: <RolePage /> },
-      { path: "/order", element: <PrivateRoute Component={<OrderPage />} /> },
-      {
-        path: "/order/pay",
-        element: <PrivateRoute Component={<OrderPayPage />} />,
-      },
-      {
-        path: "/order/success",
-        element: <PrivateRoute Component={<OrderSuccessPage />} />,
-      },
-      { path: "/search", element: <SearchPage /> },
-      { path: "/topic", element: <TopicPage /> },
-      { path: "/topic/detail", element: <TopicDetailPage /> },
-      { path: "/book", element: <BookPage /> },
-      { path: "/book/detail", element: <BookDetailPage /> },
-      {
-        path: "/book/read",
-        element: <PrivateRoute Component={<BookReadPage />} />,
-      },
-      { path: "/learnPath", element: <LearnPathPage /> },
-      { path: "/learnPath/detail", element: <LearnPathDetailPage /> },
-      { path: "/error", element: <ErrorPage /> },
-      { path: "/wenda", element: <WendaPage /> },
-      { path: "/wenda/detail", element: <WendaDetailPage /> },
-      { path: "/share", element: <PrivateRoute Component={<SharePage />} /> },
-      {
-        path: "/study-center",
-        element: <PrivateRoute Component={<StudyCenterPage />} />,
-      },
-      { path: "/face-check", element: <TencentFaceCheckPage /> },
-      { path: "/bind-mobile", element: <BindNewMobilePage /> },
     ],
   },
-  { path: "/*", element: <Error404 /> },
 ];
 
 export default routes;

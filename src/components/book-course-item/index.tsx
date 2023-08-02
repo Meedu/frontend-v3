@@ -28,7 +28,7 @@ export const BookCourseItem: React.FC<PropInterface> = ({
 }) => {
   const navigate = useNavigate();
   const goDetail = () => {
-    navigate("/book/detail?id=" + cid);
+    navigate("/book/detail/" + cid);
   };
 
   return (

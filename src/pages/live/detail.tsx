@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
-import { Button, Skeleton, message } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Skeleton, message } from "antd";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { live, miaosha, tuangou } from "../../api/index";
 import {
   HistoryRecord,
   MiaoshaDialog,
   ThumbBar,
-  Empty,
   MiaoshaList,
   TuangouList,
   LiveCourseComments,
@@ -23,9 +22,10 @@ import appConfig from "../../js/config";
 const LiveDetailPage = () => {
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
+  const params = useParams();
   const [loading, setLoading] = useState<boolean>(false);
   const [commentLoading, setCommentLoading] = useState<boolean>(false);
-  const [cid, setCid] = useState(Number(result.get("id")));
+  const [cid, setCid] = useState(Number(params.courseId));
   const [course, setCourse] = useState<any>({});
   const [chapters, setChapters] = useState<any>([]);
   const [videos, setVideos] = useState<any>({});
@@ -166,6 +166,7 @@ const LiveDetailPage = () => {
 
   const tabChange = (id: number) => {
     setCurrentTab(id);
+    navigate("/live/detail/" + cid + "?tab=" + id);
   };
 
   const likeHit = () => {
@@ -291,7 +292,7 @@ const LiveDetailPage = () => {
       return;
     }
 
-    navigate("/live/video?id=" + item.id);
+    navigate("/live/video/" + item.id);
   };
 
   return (

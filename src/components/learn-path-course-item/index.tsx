@@ -25,7 +25,7 @@ export const LearnPathCourseItem: React.FC<PropInterface> = ({
   const navigate = useNavigate();
 
   const goDetail = () => {
-    navigate("/learnPath/detail?id=" + cid);
+    navigate("/learnPath/detail/" + cid);
   };
 
   return (

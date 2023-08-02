@@ -71,7 +71,7 @@ const BookPage = () => {
   };
 
   const goDetail = (id: number) => {
-    navigate("/book/detail?id=" + id);
+    navigate("/book/detail/" + id);
   };
 
   return (

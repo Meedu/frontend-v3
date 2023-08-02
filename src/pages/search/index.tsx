@@ -189,21 +189,21 @@ const SearchPage = () => {
 
   const goDetail = (val: string, id: number) => {
     if (val === "video") {
-      navigate("/courses/video?id=" + id);
+      navigate("/courses/video/" + id);
     } else if (val === "vod") {
-      navigate("/courses/detail?id=" + id);
+      navigate("/courses/detail/" + id);
     } else if (val === "live") {
-      navigate("/live/detail?id=" + id);
+      navigate("/live/detail/" + id);
     } else if (val === "topic") {
-      navigate("/topic/detail?id=" + id);
+      navigate("/topic/detail/" + id);
     } else if (val === "book") {
-      navigate("/book/detail?id=" + id);
+      navigate("/book/detail/" + id);
     } else if (val === "paper") {
-      navigate("/exam/papers/detail?id=" + id);
+      navigate("/exam/papers/detail/" + id);
     } else if (val === "mock_paper") {
-      navigate("/exam/mockpaper/detail?id=" + id);
+      navigate("/exam/mockpaper/detail/" + id);
     } else if (val === "practice") {
-      navigate("/exam/practice/detail?id=" + id);
+      navigate("/exam/practice/detail/" + id);
     } else {
       return;
     }

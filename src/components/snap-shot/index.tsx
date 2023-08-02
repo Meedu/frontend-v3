@@ -285,131 +285,128 @@ export const SnaoShotDialog: React.FC<PropInterface> = ({
               <img src={tabIcon} />
             </div>
           )}
-          {showList && (
-            <div className={styles["list-box"]}>
-              <div className={styles["list-top"]}>
-                {changeBox && (
-                  <>
-                    <div className={styles["left"]}>照片管理</div>
-                    <div
-                      className={styles["right"]}
-                      onClick={() => {
-                        setChangeBox(false);
-                        setPreviewStatus(false);
-                      }}
-                    >
-                      返回
-                    </div>
-                  </>
-                )}
-                {!changeBox && (
-                  <>
-                    <div className={styles["left"]}>学习拍照</div>
-                    <div
-                      className={styles["right"]}
-                      onClick={() => {
-                        setShowList(false);
-                        setPreviewStatus(false);
-                      }}
-                    >
-                      最小化窗口
-                    </div>
-                  </>
-                )}
-              </div>
+          <div
+            className={styles["list-box"]}
+            style={{ display: showList ? "block" : "none" }}
+          >
+            <div className={styles["list-top"]}>
               {changeBox && (
-                <div className={styles["thumb-box"]}>
-                  {imagesList.length > 0 &&
-                    imagesList.map((item: any, index: number) => (
-                      <div
-                        key={index}
-                        className={
-                          sel === index
-                            ? styles["thumb-active-item"]
-                            : styles["thumb-item"]
-                        }
-                        onClick={() => {
-                          showPreviewImage(index, item.thumb, item.id);
-                        }}
-                      >
-                        {item.thumb && (
-                          <div
-                            className={styles["image-view"]}
-                            style={{
-                              backgroundImage: "url(" + item.thumb + ")",
-                            }}
-                          ></div>
-                        )}
-                      </div>
-                    ))}
-                </div>
-              )}
-
-              <div
-                style={{ display: !changeBox ? "flex" : "none" }}
-                className={styles["camera-box"]}
-              >
-                {openCamera && (
-                  <>
-                    <div className={styles["content"]} id="contentHolder">
-                      <div style={{ display: "none" }}>
-                        <canvas
-                          ref={canvasRef}
-                          width="1920"
-                          height="1440"
-                          id="canvas"
-                        ></canvas>
-                        <video
-                          width={1920}
-                          height={1440}
-                          autoPlay={true}
-                          ref={capture_video_ref}
-                        ></video>
-                      </div>
-                      <video
-                        width={290}
-                        height={164}
-                        autoPlay={true}
-                        ref={video_ref}
-                      ></video>
-                    </div>
-                    {!openCamera && (
-                      <span className={styles["tip"]}>摄像头未捕捉到画面</span>
-                    )}
-                  </>
-                )}
-              </div>
-              {changeBox && (
-                <Upload {...props} showUploadList={false}>
-                  <div className={styles["upload-image-snapshot"]}>
-                    手动上传学习照片
+                <>
+                  <div className={styles["left"]}>照片管理</div>
+                  <div
+                    className={styles["right"]}
+                    onClick={() => {
+                      setChangeBox(false);
+                      setPreviewStatus(false);
+                    }}
+                  >
+                    返回
                   </div>
-                </Upload>
+                </>
               )}
               {!changeBox && (
                 <>
+                  <div className={styles["left"]}>学习拍照</div>
                   <div
-                    className={styles["camera-tip"]}
-                    style={{ marginTop: 20 }}
-                  >
-                    系统自动随机拍照无需操作
-                  </div>
-                  <div className={styles["camera-tip"]}>
-                    请保证摄像头开启对准面部
-                  </div>
-                  <div
-                    className={styles["upload-image-snapshot"]}
+                    className={styles["right"]}
                     onClick={() => {
-                      setChangeBox(true);
-                      getList();
+                      setShowList(false);
+                      setPreviewStatus(false);
                     }}
                   >
-                    学习照片管理
+                    最小化窗口
                   </div>
                 </>
               )}
             </div>
-          )}
+            {changeBox && (
+              <div className={styles["thumb-box"]}>
+                {imagesList.length > 0 &&
+                  imagesList.map((item: any, index: number) => (
+                    <div
+                      key={index}
+                      className={
+                        sel === index
+                          ? styles["thumb-active-item"]
+                          : styles["thumb-item"]
+                      }
+                      onClick={() => {
+                        showPreviewImage(index, item.thumb, item.id);
+                      }}
+                    >
+                      {item.thumb && (
+                        <div
+                          className={styles["image-view"]}
+                          style={{
+                            backgroundImage: "url(" + item.thumb + ")",
+                          }}
+                        ></div>
+                      )}
+                    </div>
+                  ))}
+              </div>
+            )}
+            <div
+              style={{ display: !changeBox ? "flex" : "none" }}
+              className={styles["camera-box"]}
+            >
+              <div
+                className={styles["content"]}
+                id="contentHolder"
+                style={{ display: openCamera ? "flex" : "none" }}
+              >
+                <div style={{ display: "none" }}>
+                  <canvas
+                    ref={canvasRef}
+                    width="1920"
+                    height="1440"
+                    id="canvas"
+                  ></canvas>
+                  <video
+                    width={1920}
+                    height={1440}
+                    autoPlay={true}
+                    ref={capture_video_ref}
+                  ></video>
+                </div>
+                <video
+                  width={290}
+                  height={164}
+                  autoPlay={true}
+                  ref={video_ref}
+                ></video>
+              </div>
+              {!openCamera && (
+                <span className={styles["tip"]}>摄像头未捕捉到画面</span>
+              )}
+            </div>
+            {changeBox && (
+              <Upload {...props} showUploadList={false}>
+                <div className={styles["upload-image-snapshot"]}>
+                  手动上传学习照片
+                </div>
+              </Upload>
+            )}
+            {!changeBox && (
+              <>
+                <div className={styles["camera-tip"]} style={{ marginTop: 20 }}>
+                  系统自动随机拍照无需操作
+                </div>
+                <div className={styles["camera-tip"]}>
+                  请保证摄像头开启对准面部
+                </div>
+                <div
+                  className={styles["upload-image-snapshot"]}
+                  onClick={() => {
+                    setChangeBox(true);
+                    getList();
+                  }}
+                >
+                  学习照片管理
+                </div>
+              </>
+            )}
+          </div>
         </div>
       )}
     </>

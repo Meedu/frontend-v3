@@ -22,7 +22,7 @@ export const CourseItemComp: React.FC<PropInterface> = ({
   const goPlay = (item: any) => {
     if (item.progress < 100 && item.last_view_video.length !== 0) {
       let vid = item.last_view_video.video_id;
-      navigate("/courses/video?id=" + vid);
+      navigate("/courses/video/" + vid);
     } else {
       goDetail(item.course_id);
     }
@@ -30,7 +30,7 @@ export const CourseItemComp: React.FC<PropInterface> = ({
 
   const goDetail = (id: number) => {
     let tab = currentStatus === 2 ? 3 : 2;
-    navigate("/courses/detail?id=" + id + "&tab=" + tab);
+    navigate("/courses/detail/" + id + "?tab=" + tab);
   };
 
   return (

@@ -26,7 +26,7 @@ export const ShareComp: React.FC<PropInterface> = ({ cid, title, thumb }) => {
         "//" +
         baseUrl.host +
         baseUrl.pathname +
-        "topic/detail?id="
+        "topic/detail/"
     );
 
     let qqValue =

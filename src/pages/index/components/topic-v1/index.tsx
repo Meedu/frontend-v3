@@ -11,7 +11,7 @@ interface PropInterface {
 export const TopicComp: React.FC<PropInterface> = ({ items, name }) => {
   const navigate = useNavigate();
   const goDetail = (item: any) => {
-    navigate("/topic/detail?id=" + item.id);
+    navigate("/topic/detail/" + item.id);
   };
   return (
     <>

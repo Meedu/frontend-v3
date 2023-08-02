@@ -1,15 +1,10 @@
 import { useState, useEffect } from "react";
 import styles from "./read.module.scss";
-import { Row, Col, Spin, Skeleton, message, Input, Button } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Col, Skeleton, message, Input, Button } from "antd";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { book as bookApi } from "../../api/index";
-import {
-  changeTime,
-  getCommentTime,
-  latexRender,
-  codeRender,
-} from "../../utils/index";
+import { getCommentTime, latexRender, codeRender } from "../../utils/index";
 import { Empty } from "../../components";
 import backIcon from "../../assets/img/commen/icon-back-h.png";
 import defaultAvatar from "../../assets/img/commen/default-avatar.jpg";
@@ -17,8 +12,8 @@ import appConfig from "../../js/config";
 
 const BookReadPage = () => {
   const navigate = useNavigate();
-  const result = new URLSearchParams(useLocation().search);
-  const [id, setId] = useState(Number(result.get("id")));
+  const params = useParams();
+  const [id, setId] = useState(Number(params.courseId));
   const [book, setBook] = useState<any>({});
   const [list, setList] = useState<any>({});
   const [chapters, setChapters] = useState<any>([]);
@@ -51,8 +46,8 @@ const BookReadPage = () => {
   }, [id]);
 
   useEffect(() => {
-    setId(Number(result.get("id")));
-  }, [result.get("id")]);
+    setId(Number(params.courseId));
+  }, [params.courseId]);
 
   useEffect(() => {
     latexRender(document.getElementById("desc"));
@@ -113,7 +108,7 @@ const BookReadPage = () => {
   };
 
   const goDetail = () => {
-    navigate("/book/detail?id=" + book.id + "&tab=3");
+    navigate("/book/detail/" + book.id + "?tab=3");
   };
 
   const showIndex = () => {
@@ -134,7 +129,7 @@ const BookReadPage = () => {
       return;
     }
     resetComments();
-    navigate("/book/read?id=" + articleId);
+    navigate("/book/read/" + articleId);
     setId(articleId);
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   };
@@ -148,7 +143,7 @@ const BookReadPage = () => {
       return;
     }
     resetComments();
-    navigate("/book/read?id=" + articleId);
+    navigate("/book/read/" + articleId);
     setId(articleId);
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   };
@@ -158,7 +153,7 @@ const BookReadPage = () => {
       return;
     }
     resetComments();
-    navigate("/book/read?id=" + item.id);
+    navigate("/book/read/" + item.id);
     setId(item.id);
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   };

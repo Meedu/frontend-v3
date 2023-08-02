@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
 import { Col, Skeleton, Input, Button, message } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { topic as topicApi } from "../../api/index";
 import { useSelector } from "react-redux";
 import { HistoryRecord, ShareComp, Empty } from "../../components";
@@ -19,7 +19,7 @@ import defaultAvatar from "../../assets/img/commen/default-avatar.jpg";
 
 const TopicDetailPage = () => {
   const navigate = useNavigate();
-  const result = new URLSearchParams(useLocation().search);
+  const params = useParams();
   const [loading, setLoading] = useState<boolean>(false);
   const [commentLoading, setCommentLoading] = useState<boolean>(false);
   const [topic, setTopic] = useState<any>({});
@@ -38,10 +38,7 @@ const TopicDetailPage = () => {
   const [size, setSize] = useState(10000);
   const [total, setTotal] = useState(0);
   const [commentId, setCommentId] = useState<number>(0);
-  const [id, setId] = useState(Number(result.get("id")));
-  const configFunc = useSelector(
-    (state: any) => state.systemConfig.value.configFunc
-  );
+  const [id, setId] = useState(Number(params.courseId));
   const user = useSelector((state: any) => state.loginUser.value.user);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
 
@@ -51,8 +48,8 @@ const TopicDetailPage = () => {
   }, [id]);
 
   useEffect(() => {
-    setId(Number(result.get("id")));
-  }, [result.get("id")]);
+    setId(Number(params.courseId));
+  }, [params.courseId]);
 
   useEffect(() => {
     latexRender(document.getElementById("math"));

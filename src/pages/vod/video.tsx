@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import styles from "./video.module.scss";
-import { Button, Skeleton, message } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Skeleton, message } from "antd";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { course as vod } from "../../api/index";
 import { useSelector } from "react-redux";
 import {
@@ -19,11 +19,11 @@ var timer: any = null;
 var clock: any = null;
 const VodPlayPage = () => {
   const navigate = useNavigate();
-  const result = new URLSearchParams(useLocation().search);
+  const params = useParams();
   const pathname = useLocation().pathname;
   const [loading, setLoading] = useState<boolean>(false);
   const [cid, setCid] = useState(0);
-  const [vid, setVid] = useState(Number(result.get("id")));
+  const [vid, setVid] = useState(Number(params.courseId));
   const [course, setCourse] = useState<any>({});
   const [video, setVideo] = useState<any>({});
   const [videos, setVideos] = useState<any>([]);
@@ -68,10 +68,10 @@ const VodPlayPage = () => {
   ];
 
   useEffect(() => {
-    setVid(Number(result.get("id")));
+    setVid(Number(params.courseId));
     window.player && window.player.destroy();
     myRef.current = 0;
-  }, [result.get("id")]);
+  }, [params.courseId]);
 
   useEffect(() => {
     clock && clearInterval(clock);
@@ -201,32 +201,27 @@ const VodPlayPage = () => {
     if (active === false && free_seconds > 0) {
       isTrySee = 1;
     }
-    vod
-      .playInfo(vid, { is_try: isTrySee })
-      .then((res: any) => {
-        if (res.data.urls.length === 0) {
-          message.error("无播放地址");
-          return;
-        }
+    vod.playInfo(vid, { is_try: isTrySee }).then((res: any) => {
+      if (res.data.urls.length === 0) {
+        message.error("无播放地址");
+        return;
+      }
 
-        let playUrls = res.data.urls;
-        let firstPlayUrl = playUrls[0].url;
+      let playUrls = res.data.urls;
+      let firstPlayUrl = playUrls[0].url;
 
-        if (firstPlayUrl.substr(1, 6) === "iframe") {
-          setIsIframe(true);
-          let playUrl = firstPlayUrl.replace(
-            ">",
-            ' style="width:100%;height:506px" >'
-          );
-          setPlayUrl(playUrl);
-          return;
-        }
-        setIsIframe(false);
-        initDPlayer(playUrls, isTrySee, ban_drag, last_see_value);
-      })
-      .catch((e) => {
-        message.error(e.message);
-      });
+      if (firstPlayUrl.substr(1, 6) === "iframe") {
+        setIsIframe(true);
+        let playUrl = firstPlayUrl.replace(
+          ">",
+          ' style="width:100%;height:506px" >'
+        );
+        setPlayUrl(playUrl);
+        return;
+      }
+      setIsIframe(false);
+      initDPlayer(playUrls, isTrySee, ban_drag, last_see_value);
+    });
   };
 
   const initDPlayer = (
@@ -235,7 +230,7 @@ const VodPlayPage = () => {
     ban_drag: number,
     lastSeeParams: any
   ) => {
-    savePlayId(String(result.get("id")));
+    savePlayId(String(params.courseId));
     let dplayerUrls: any[] = [];
     playUrls.forEach((item: any) => {
       dplayerUrls.push({
@@ -283,6 +278,9 @@ const VodPlayPage = () => {
     window.player.on("sub_course", () => {
       paySelect(1);
     });
+    window.player.on("play_error", (e: any) => {
+      console.log("视频播放错误,错误信息:", e);
+    });
 
     checkPlayer();
   };
@@ -290,7 +288,7 @@ const VodPlayPage = () => {
   const checkPlayer = () => {
     timer = setInterval(() => {
       let playId = getPlayId();
-      if (playId && parseInt(playId) !== Number(result.get("id"))) {
+      if (playId && parseInt(playId) !== Number(params.courseId)) {
         timer && clearInterval(timer);
         window.player && window.player.destroy();
         setCheckPlayerStatus(true);
@@ -331,14 +329,14 @@ const VodPlayPage = () => {
     clock && clearInterval(clock);
     setLastSeeValue(null);
     setTotalTime(10);
-    navigate("/courses/video?id=" + item.id, { replace: true });
+    navigate("/courses/video/" + item.id, { replace: true });
   };
 
   const goNextVideo = (id: number) => {
     clock && clearInterval(clock);
     setLastSeeValue(null);
     setTotalTime(10);
-    navigate("/courses/video?id=" + id, { replace: true });
+    navigate("/courses/video/" + id, { replace: true });
   };
 
   const paySelect = (val: number) => {
@@ -485,7 +483,7 @@ const VodPlayPage = () => {
             <>
               <a
                 onClick={() => {
-                  navigate("/courses/detail?id=" + course.id);
+                  navigate("/courses/detail/" + course.id);
                 }}
               >
                 {course.title}
@@ -564,18 +562,6 @@ const VodPlayPage = () => {
                           <span>订阅课程 ￥{course.charge}</span>
                         </div>
                       )}
-                      {video.charge > 0 &&
-                        video.is_ban_sell === 0 &&
-                        isWatch === false && (
-                          <div
-                            className={styles["subscribe-button2"]}
-                            onClick={() => paySelect(3)}
-                          >
-                            <span>
-                              或点击此处单独购买本节视频￥{video.charge}
-                            </span>
-                          </div>
-                        )}
                     </div>
                   )}
                   {!isLogin && (

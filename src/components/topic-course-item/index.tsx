@@ -30,7 +30,7 @@ export const TopicCourseItem: React.FC<PropInterface> = ({
 }) => {
   const navigate = useNavigate();
   const goDetail = () => {
-    navigate("/topic/detail?id=" + cid);
+    navigate("/topic/detail/" + cid);
   };
 
   return (

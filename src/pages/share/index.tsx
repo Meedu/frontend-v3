@@ -125,44 +125,36 @@ const SharePage = () => {
     if (goods.goods_type === "practice") {
       shareLink =
         getShareHost() +
-        "exam/practice/detail?id=" +
+        "exam/practice/detail/" +
         goods.goods_id +
-        "&msv=" +
+        "?msv=" +
         user.id;
     } else if (goods.goods_type === "paper") {
       shareLink =
         getShareHost() +
-        "exam/papers/detail?id=" +
+        "exam/papers/detail/" +
         goods.goods_id +
-        "&msv=" +
+        "?msv=" +
         user.id;
     } else if (goods.goods_type === "topic") {
       shareLink =
-        getShareHost() +
-        "topic/detail?id=" +
-        goods.goods_id +
-        "&msv=" +
-        user.id;
+        getShareHost() + "topic/detail/" + goods.goods_id + "?msv=" + user.id;
     } else if (goods.goods_type === "learnPath") {
       shareLink =
         getShareHost() +
-        "learnPath/detail?id=" +
+        "learnPath/detail/" +
         goods.goods_id +
-        "&msv=" +
+        "?msv=" +
         user.id;
     } else if (goods.goods_type === "book") {
       shareLink =
-        getShareHost() + "book/detail?id=" + goods.goods_id + "&msv=" + user.id;
+        getShareHost() + "book/detail/" + goods.goods_id + "?msv=" + user.id;
     } else if (goods.goods_type === "live") {
       shareLink =
-        getShareHost() + "live/detail?id=" + goods.goods_id + "&msv=" + user.id;
+        getShareHost() + "live/detail/" + goods.goods_id + "?msv=" + user.id;
     } else if (goods.goods_type === "video") {
       shareLink =
-        getShareHost() +
-        "courses/video?id=" +
-        goods.goods_id +
-        "&msv=" +
-        user.id;
+        getShareHost() + "courses/video/" + goods.goods_id + "?msv=" + user.id;
     } else if (goods.goods_type === "vip") {
       shareLink = getShareHost() + "vip" + "?msv=" + user.id;
     } else if (goods.goods_type === "ms") {
@@ -173,11 +165,7 @@ const SharePage = () => {
         getShareHost() + "tg/detail?id=" + goods.goods_id + "&msv=" + user.id;
     } else {
       shareLink =
-        getShareHost() +
-        "courses/detail?id=" +
-        goods.goods_id +
-        "&msv=" +
-        user.id;
+        getShareHost() + "courses/detail/" + goods.goods_id + "?msv=" + user.id;
     }
     var input = document.createElement("input");
     input.value = shareLink;

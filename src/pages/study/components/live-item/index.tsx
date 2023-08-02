@@ -21,12 +21,12 @@ export const LiveItemComp: React.FC<PropInterface> = ({
     if (item.course && item.course.next_video.length !== 0) {
       vid = item.course.next_video.id;
     }
-    navigate("/live/video?id=" + vid);
+    navigate("/live/video/" + vid);
   };
 
   const goDetail = (id: number) => {
     let tab = currentStatus !== 3 ? 3 : 2;
-    navigate("/live/detail?id=" + id + "&tab=" + tab);
+    navigate("/live/detail/" + id + "?tab=" + tab);
   };
 
   return (

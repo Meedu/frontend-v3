@@ -104,11 +104,11 @@ const MemberCredit1RecordsPage = () => {
     if (type === "vip") {
       navigate("/vip");
     } else if (type === "vod") {
-      navigate("/courses/detail?id=" + id);
+      navigate("/courses/detail/" + id);
     } else if (type === "live") {
-      navigate("/live/detail?id=" + id);
+      navigate("/live/detail/" + id);
     } else if (type === "book") {
-      navigate("/book/detail?id=" + id);
+      navigate("/book/detail/" + id);
     }
   };
 

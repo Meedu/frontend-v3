@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
-import { Row, Col, Skeleton, Input, Button, message } from "antd";
+import { Col, Skeleton, Input, Button, message } from "antd";
 import { useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { wenda } from "../../api/index";
 import { ImagePreview, UploadWendaImagesComp, Empty } from "../../components";
 import { changeTime, getCommentTime, latexRender } from "../../utils/index";
@@ -14,7 +14,7 @@ import noLikeIcon from "../../assets/img/commen/icon-like.png";
 
 const WendaDetailPage = () => {
   const navigate = useNavigate();
-  const result = new URLSearchParams(useLocation().search);
+  const params = useParams();
   const [loading, setLoading] = useState<boolean>(true);
   const [question, setQuestion] = useState<any>({});
   const [answers, setAnswers] = useState<any>([]);
@@ -34,7 +34,7 @@ const WendaDetailPage = () => {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10000);
   const [total, setTotal] = useState(0);
-  const [id, setId] = useState(Number(result.get("id")));
+  const [id, setId] = useState(Number(params.courseId));
   const [commentLoading, setCommentLoading] = useState<boolean>(true);
   const [refresh, setRefresh] = useState(false);
   const user = useSelector((state: any) => state.loginUser.value.user);
@@ -45,8 +45,8 @@ const WendaDetailPage = () => {
   }, [id]);
 
   useEffect(() => {
-    setId(Number(result.get("id")));
-  }, [result.get("id")]);
+    setId(Number(params.courseId));
+  }, [params.courseId]);
 
   useEffect(() => {
     latexRender(document.getElementById("desc"));

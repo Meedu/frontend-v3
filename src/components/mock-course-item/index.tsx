@@ -32,7 +32,7 @@ export const MockCourseItem: React.FC<PropInterface> = ({
       goLogin();
       return;
     }
-    navigate("/exam/mockpaper/detail?id=" + cid);
+    navigate("/exam/mockpaper/detail/" + cid);
   };
 
   const goLogin = () => {

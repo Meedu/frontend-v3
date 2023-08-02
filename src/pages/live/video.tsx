@@ -1,37 +1,110 @@
 import { useState, useRef, useEffect } from "react";
 import styles from "./video.module.scss";
 import { message, Input } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { ChatBox } from "../../components";
 import { SignDialog } from "./components/sign-dialog";
 import { AttachDialog } from "./components/attach-dialog";
 import { useSelector } from "react-redux";
 import { live, goMeedu } from "../../api/index";
 import backIcon from "../../assets/img/commen/icon-back-h.png";
+import { courses } from "../../api/user";
 
 declare const window: any;
-var livePlayer: any = null;
-var vodPlayer: any = null;
 
 const LiveVideoPage = () => {
+  // store数据
+  const user = useSelector((state: any) => state.loginUser.value.user);
+  const config = useSelector((state: any) => state.systemConfig.value.config);
+  const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
+
+  // 销毁播放器
+  const playerDestroy = () => {
+    if (liveDPlayerRef.current) {
+      liveDPlayerRef.current.destroy();
+    }
+    if (liveTencentPlayerRef.current) {
+      liveTencentPlayerRef.current.dispose();
+    }
+    if (vodDlayerRef.current) {
+      vodDlayerRef.current.destroy();
+    }
+  };
+
+  // 退出全屏播放
+  const exitFullscreen = () => {
+    if (liveDPlayerRef.current) {
+      liveDPlayerRef.current.fullScreen.cancel();
+    }
+    if (liveTencentPlayerRef.current) {
+      liveTencentPlayerRef.current.exitFullscreen();
+    }
+  };
+
+  // 三个播放器的实例
+  const liveTencentPlayerRef = useRef<any>(null);
+  const liveDPlayerRef = useRef<any>(null);
+  const vodDlayerRef = useRef<any>(null);
+
+  // 播放器
+  const [enabledBulletSecret, setEnabledBulletSecret] = useState(false);
+  const [bulletSecretText, setBullectSecretText] = useState("");
+  const [bulletSecretColor, setBulletSecretColor] = useState("red");
+  const [bulletSecretFontSize, setBulletSecretFontSize] = useState("10px");
+  const [bulletSecretFontOpacity, setBulletSecretOpacity] = useState("1");
+  const [playerPoster, setPlayerPoster] = useState("");
+
+  useEffect(() => {
+    if (config) {
+      setEnabledBulletSecret(
+        parseInt(config.player.enabled_bullet_secret) === 1
+      );
+      setBullectSecretText(
+        config.player.bullet_secret.text
+          .replace("${user.mobile}", user.mobile)
+          .replace("${mobile}", user.mobile)
+          .replace("${user.id}", user.id)
+      );
+      setBulletSecretColor(config.player.bullet_secret.color);
+      setBulletSecretFontSize(config.player.bullet_secret.size + "px");
+      setBulletSecretOpacity(config.player.bullet_secret.opacity);
+    }
+  }, [config]);
+
   const navigate = useNavigate();
-  const result = new URLSearchParams(useLocation().search);
-  const [id, setId] = useState(Number(result.get("id")));
+  const params = useParams();
+  const [id, setId] = useState(Number(params.courseId));
   const [course, setCourse] = useState<any>({});
   const [video, setVideo] = useState<any>({});
+  const [record_exists, setRecordExists] = useState(0);
+
+  useEffect(() => {
+    let poster = "";
+    if (course) {
+      poster = course.poster;
+    }
+    if (!poster && config) {
+      poster = config.player.cover;
+    }
+    setPlayerPoster(poster);
+  }, [config, course]);
+
+  // 播放地址
+  const [playUrl, setPlayUrl] = useState("");
+  const [aliRTS, setAliRTS] = useState("");
+  const [webrtc_play_url, setWebrtcPlayUrl] = useState("");
+  // 聊天
   const [chat, setChat] = useState<any>(null);
-  const [curStartTime, setCurStartTime] = useState<string>("");
-  const [playUrl, setPlayUrl] = useState<string>("");
-  const [record_exists, setRecordExists] = useState<number>(0);
-  const [webrtc_play_url, setWebrtcPlayUrl] = useState<string>("");
-  const [roomDisabled, setRoomDisabled] = useState<boolean>(false);
-  const [userDisabled, setUserDisabled] = useState<boolean>(false);
-  const [messageDisabled, setMessageDisabled] = useState<boolean>(false);
-  const [waitTeacher, setWaitTeacher] = useState<boolean>(false);
-  const [noTeacher, setNoTeacher] = useState<boolean>(false);
-  const [vodPlayerStatus, setVodPlayerStatus] = useState<boolean>(false);
-  const [signStatus, setSignStatus] = useState<boolean>(false);
-  const [signRecords, setSignRecords] = useState<any>(null);
+  const [roomDisabled, setRoomDisabled] = useState(false); //房间禁言
+  const [userDisabled, setUserDisabled] = useState(false); //学员禁言
+  const [messageDisabled, setMessageDisabled] = useState(false); // 房间禁言 || 学员禁言
+  // 直播间状态
+  const [waitTeacher, setWaitTeacher] = useState(false); //直播未开始-倒计时结束
+  const [noTeacher, setNoTeacher] = useState(false); //直播开始-但是讲师未推流
+  const [isShowVodPlayer, setIsShowVodPlayer] = useState(false); //是否显示回放
+  const [signStatus, setSignStatus] = useState(false); //签到状态
+  const [signRecords, setSignRecords] = useState<any>(null); //签到记录
+  // 倒计时
   const [day, setDay] = useState<string | number>("0");
   const [hour, setHour] = useState<string | number>("00");
   const [min, setMin] = useState<string | number>("00");
@@ -39,11 +112,9 @@ const LiveVideoPage = () => {
   const [timeValue, setTimeValue] = useState(0);
   const [curDuration, setCurDuration] = useState(0);
   const [currentTab, setCurrentTab] = useState(1);
-  const [content, setContent] = useState<string>("");
-  const [enabledChat, setEnabledChat] = useState<boolean>(false);
-  const user = useSelector((state: any) => state.loginUser.value.user);
-  const config = useSelector((state: any) => state.systemConfig.value.config);
-  const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
+  const [content, setContent] = useState("");
+  const [enabledChat, setEnabledChat] = useState(false);
+
   const myRef = useRef(0);
   const tabs = [
     {
@@ -57,10 +128,12 @@ const LiveVideoPage = () => {
   ];
 
   useEffect(() => {
-    if (video.status === 1 && webrtc_play_url) {
-      initLiveTencentPlayer();
-    } else if (video.status === 1 && !webrtc_play_url && playUrl) {
-      initLivePlayer();
+    if (video?.status === 1) {
+      if (webrtc_play_url) {
+        renderLiveTencentPlayer();
+      } else {
+        renderLiveDPlayer();
+      }
     }
   }, [video, webrtc_play_url, playUrl]);
 
@@ -77,22 +150,25 @@ const LiveVideoPage = () => {
   }, [id]);
 
   useEffect(() => {
-    setId(Number(result.get("id")));
-  }, [result.get("id")]);
+    setId(Number(params.courseId));
+  }, [params.courseId]);
 
   const getData = () => {
     live.play(id).then((res: any) => {
       let resData = res.data;
       document.title = resData.video.title;
+
       if (!chat && resData.chat) {
         setChat(resData.chat);
       }
-      setCurStartTime(resData.video.published_at);
+
       setCourse(resData.course);
       setVideo(resData.video);
       setPlayUrl(resData.play_url);
+      setAliRTS(resData.ali_rts);
       setRecordExists(resData.record_exists);
       setWebrtcPlayUrl(resData.web_rtc_play_url);
+
       if (typeof resData.video.status === "undefined") {
         setEnabledChat(false);
       } else {
@@ -101,26 +177,18 @@ const LiveVideoPage = () => {
         );
       }
 
-      if (resData.room_is_ban === 1) {
-        setRoomDisabled(true);
-      } else {
-        setRoomDisabled(false);
-      }
-      if (resData.user_is_ban === 1) {
-        setUserDisabled(true);
-      } else {
-        setUserDisabled(false);
-      }
-      if (resData.room_is_ban === 1 || resData.user_is_ban === 1) {
-        setMessageDisabled(true);
-      } else {
-        setMessageDisabled(false);
-      }
+      setRoomDisabled(resData.room_is_ban === 1);
+      setUserDisabled(resData.user_is_ban === 1);
+      setMessageDisabled(
+        resData.room_is_ban === 1 || resData.user_is_ban === 1
+      );
+
       // 倒计时
       if (resData.video.status === 0) {
         setWaitTeacher(false);
         countTime(resData.video.published_at);
       }
+
       //签到相关
       let sign_in_record = resData.sign_in_record;
       if (sign_in_record && sign_in_record.length !== 0) {
@@ -182,80 +250,96 @@ const LiveVideoPage = () => {
     }, 1000);
   };
 
-  const initLiveTencentPlayer = () => {
-    livePlayer = new window.TcPlayer("meedu-live-player", {
-      m3u8: webrtc_play_url,
-      autoplay: true,
-      poster: { src: course.poster || config.player.cover, style: "stretch" },
+  const renderLiveTencentPlayer = () => {
+    liveTencentPlayerRef.current = new window.TCPlayer("meedu-live-player", {
       width: 950,
       height: 535,
-      wording: {
-        2003: "讲师暂时离开直播间，稍后请刷新！",
+      sources: [{ src: webrtc_play_url }],
+      controls: true,
+      autoplay: true,
+      poster: playerPoster,
+      bigPlayButton: true,
+      reportable: false,
+      webrtcConfig: {
+        connectRetryCount: 3,
+        connectRetryDelay: 1,
+        receiveVideo: true,
+        receiveAudio: true,
+        showLog: false,
       },
-      listener: (msg: any) => {
-        setNoTeacher(false);
-        if (msg.type == "timeupdate") {
-          let time: number = Number(msg.timeStamp) / 1000;
-          let duration = Math.floor(time);
-          livePlayRecord(duration, false);
-        } else if (msg.type == "ended") {
-          let time: number = Number(msg.timeStamp) / 1000;
-          let duration = Math.floor(time);
-          livePlayRecord(duration, true);
-        } else if (msg.type == "error" && msg.detail.code === 2003) {
-          setNoTeacher(true);
-        }
+      plugins: {
+        DynamicWatermark: enabledBulletSecret
+          ? {
+              type: "text",
+              speed: 0.2, // 建议取值范围 0<= speed <=1，默认值 0.2
+              content: bulletSecretText,
+              opacity: bulletSecretFontOpacity,
+              fontSize: bulletSecretFontSize,
+              color: bulletSecretColor,
+            }
+          : null,
       },
+    });
+
+    liveTencentPlayerRef.current.on("timeupdate", function () {
+      livePlayRecord(liveTencentPlayerRef.current.currentTime(), false);
+    });
+    liveTencentPlayerRef.current.on("error", function (e: any) {
+      console.log("视频播放出现错误", e);
+      liveTencentPlayerRef.current.dispose();
+      liveTencentPlayerRef.current = null;
+      setTimeout(() => {
+        setNoTeacher(true);
+      }, 500);
     });
   };
 
-  const initLivePlayer = () => {
-    // 解析跑马灯的字体大小
-    let bulletSecretFontSize = !config.player.bullet_secret.size
-      ? 14
-      : config.player.bullet_secret.size;
+  const renderLiveDPlayer = () => {
+    let videoInfo: any = {
+      url: playUrl,
+      pic: playerPoster,
+    };
+    if (aliRTS) {
+      videoInfo = {
+        live_artc_url: aliRTS,
+        type: "artc",
+        pic: playerPoster,
+      };
+    }
 
     // 初始化播放器
-    livePlayer = new window.DPlayer({
+    liveDPlayerRef.current = new window.DPlayer({
       container: document.getElementById("meedu-live-player"),
       live: true,
-      video: {
-        url: playUrl,
-        type: "hls",
-        pic: course.poster || config.player.cover,
-      },
+      video: videoInfo,
       autoplay: true,
-      //   height: 535,
-      //   width: 950,
       bulletSecret: {
-        enabled: parseInt(config.player.enabled_bullet_secret) === 1,
-        text: config.player.bullet_secret.text
-          .replace("${user.mobile}", user.mobile)
-          .replace("${mobile}", user.mobile)
-          .replace("${user.id}", user.id),
-        size: bulletSecretFontSize + "px",
-        color: !config.player.bullet_secret.color
-          ? "red"
-          : config.player.bullet_secret.color,
-        opacity: config.player.bullet_secret.opacity,
+        enabled: enabledBulletSecret,
+        text: bulletSecretText,
+        size: bulletSecretFontSize,
+        color: bulletSecretColor,
+        opacity: bulletSecretFontOpacity,
       },
     });
-    livePlayer.on("timeupdate", () => {
-      let curDuration = parseInt(livePlayer.video.currentTime);
-      livePlayRecord(curDuration, false);
+    liveDPlayerRef.current.on("timeupdate", () => {
+      if (!liveDPlayerRef.current || !liveDPlayerRef.current.video) {
+        return;
+      }
+      livePlayRecord(parseInt(liveDPlayerRef.current.video.currentTime), false);
     });
-    livePlayer.on("ended", () => {
-      let curDuration = parseInt(livePlayer.video.currentTime);
-      livePlayRecord(curDuration, true);
+    liveDPlayerRef.current.on("play_error", (e: any) => {
+      console.log("play_error", e);
+      if (e?.from && (e.from === "AliRTS" || e.from === "HLS")) {
+        playerDestroy();
+        setNoTeacher(true);
+      }
     });
   };
 
   const goDetail = () => {
-    livePlayer && livePlayer.destroy(true);
-    vodPlayer && vodPlayer.destroy();
-
+    playerDestroy();
     setTimeout(() => {
-      navigate("/live/detail?id=" + course.id + "&tab=3", { replace: true });
+      navigate("/live/detail/" + course.id + "?tab=3", { replace: true });
     }, 500);
   };
 
@@ -264,48 +348,26 @@ const LiveVideoPage = () => {
   };
 
   const openSignDialog = (data: any) => {
-    if (livePlayer) {
+    if (liveDPlayerRef.current || liveTencentPlayerRef.current) {
       exitFullscreen();
-    }
-    if (vodPlayer) {
-      vodPlayer.pause();
-      vodPlayer.fullScreen.cancel();
     }
     setSignRecords(data);
     setSignStatus(true);
   };
 
-  const exitFullscreen = () => {
-    let de: any;
-    de = document;
-    if (de.fullscreenElement !== null) {
-      de.exitFullscreen();
-    } else if (de.mozCancelFullScreen) {
-      de.mozCancelFullScreen();
-    } else if (de.webkitCancelFullScreen) {
-      de.webkitCancelFullScreen();
-    }
-  };
-
   const showVodPlayer = () => {
     if (record_exists === 1 && playUrl.length > 0) {
-      vodPlayer && vodPlayer.destroy();
-      initVodPlayer(playUrl, course.poster);
+      playerDestroy();
+      setIsShowVodPlayer(true);
+      initVodPlayer();
     } else {
-      setVodPlayerStatus(false);
+      setIsShowVodPlayer(false);
       message.error("暂无回放");
     }
   };
 
   const reloadPlayer = () => {
-    vodPlayer && vodPlayer.destroy();
-    livePlayer && livePlayer.destroy(true);
-    setNoTeacher(false);
-    setCourse({});
-    setVideo({});
-    setPlayUrl("");
-    setWebrtcPlayUrl("");
-    getData();
+    window.location.reload();
   };
 
   const closeSignDialog = () => {
@@ -313,45 +375,31 @@ const LiveVideoPage = () => {
     setSignRecords(null);
   };
 
-  const initVodPlayer = (url: any, poster: string) => {
-    setVodPlayerStatus(true);
-    let dplayerUrls: any = [];
-    url.forEach((item: any) => {
-      dplayerUrls.push({
-        name: item.name,
-        url: item.url,
-      });
-    });
-    // 初始化播放器
-    let bulletSecretFontSize = !config.player.bullet_secret.size
-      ? 14
-      : config.player.bullet_secret.size;
-    vodPlayer = new window.DPlayer({
+  const initVodPlayer = () => {
+    vodDlayerRef.current = new window.DPlayer({
       container: document.getElementById("meedu-vod-player"),
       autoplay: false,
       video: {
-        quality: dplayerUrls,
+        quality: playUrl,
         defaultQuality: 0,
-        pic: poster || config.player.cover,
+        pic: playerPoster,
       },
       bulletSecret: {
-        enabled: parseInt(config.player.enabled_bullet_secret) === 1,
-        text: config.player.bullet_secret.text
-          .replace("${user.mobile}", user.mobile)
-          .replace("${mobile}", user.mobile)
-          .replace("${user.id}", user.id),
-        size: bulletSecretFontSize + "px",
-        color: !config.player.bullet_secret.color
-          ? "red"
-          : config.player.bullet_secret.color,
-        opacity: config.player.bullet_secret.opacity,
+        enabled: enabledBulletSecret,
+        text: bulletSecretText,
+        size: bulletSecretFontSize,
+        color: bulletSecretColor,
+        opacity: bulletSecretFontOpacity,
       },
     });
-    vodPlayer.on("timeupdate", () => {
-      playRecord(parseInt(vodPlayer.video.currentTime), false);
+    vodDlayerRef.current.on("timeupdate", () => {
+      playRecord(parseInt(vodDlayerRef.current.video.currentTime), false);
     });
-    vodPlayer.on("ended", () => {
-      playRecord(parseInt(vodPlayer.video.currentTime), true);
+    vodDlayerRef.current.on("ended", () => {
+      playRecord(parseInt(vodDlayerRef.current.video.currentTime), true);
+    });
+    vodDlayerRef.current.on("play_error", (e: any) => {
+      console.log("播放出错啦", e);
     });
   };
 
@@ -378,10 +426,7 @@ const LiveVideoPage = () => {
   };
 
   const submitMessage = () => {
-    if (content === "") {
-      return;
-    }
-    if (messageDisabled) {
+    if (content === "" || messageDisabled) {
       return;
     }
     saveChat(content);
@@ -447,45 +492,53 @@ const LiveVideoPage = () => {
                     backgroundSize: "100% 100%",
                   }}
                 >
-                  {video.status === 1 && (
+                  {video.status === 1 ? (
                     <>
-                      {noTeacher && (
-                        <div className={styles["alert-message"]}>
-                          <div className={styles["message"]}>
-                            讲师暂时离开直播间，稍后请刷新！
-                            <a onClick={() => reloadPlayer()}>点击刷新</a>
-                          </div>
+                      <div
+                        className={styles["alert-message"]}
+                        style={{ display: noTeacher ? "flex" : "none" }}
+                      >
+                        <div className={styles["message"]}>
+                          讲师暂时离开直播间，稍后请刷新！
+                          <a onClick={() => reloadPlayer()}>点击刷新</a>
                         </div>
-                      )}
-                      {!noTeacher && (
-                        <div className={styles["play"]}>
+                      </div>
+
+                      <div
+                        className={styles["play"]}
+                        style={{ display: noTeacher ? "none" : "block" }}
+                      >
+                        {webrtc_play_url ? (
+                          <video id="meedu-live-player"></video>
+                        ) : (
                           <div
                             id="meedu-live-player"
                             style={{ width: "100%", height: "100%" }}
                           ></div>
-                        </div>
-                      )}
+                        )}
+                      </div>
                     </>
-                  )}
+                  ) : null}
+
                   {video.status === 0 && (
                     <div className={styles["alert-message"]}>
-                      {waitTeacher && (
+                      {waitTeacher ? (
                         <div className={styles["message"]}>
                           待讲师开播，
                           <a onClick={() => reloadPlayer()}>点击刷新</a>
                         </div>
-                      )}
-                      {!waitTeacher && (
+                      ) : (
                         <div className={styles["message"]}>
                           直播倒计时：{day}天{hour}小时{min}分{second}秒
                         </div>
                       )}
                     </div>
                   )}
+
                   {video.status === 2 && (
                     <>
                       <div className={styles["play"]}>
-                        {record_exists === 1 && !vodPlayerStatus && (
+                        {record_exists === 1 && !isShowVodPlayer && (
                           <div className={styles["alert-message"]}>
                             {playUrl.length > 0 ? (
                               <div className={styles["message"]}>
@@ -506,7 +559,7 @@ const LiveVideoPage = () => {
                             width: "100%",
                             height: "100%",
                             display:
-                              record_exists === 1 && vodPlayerStatus
+                              record_exists === 1 && isShowVodPlayer
                                 ? "block"
                                 : "none",
                           }}

@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 import styles from "./detail.module.scss";
 import { Skeleton, message, Button } from "antd";
 import { useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { mock } from "../../../api/index";
 import { Empty } from "../../../components";
 
 const ExamMockPaperDetailPage = () => {
   const navigate = useNavigate();
-  const result = new URLSearchParams(useLocation().search);
+  const params = useParams();
   const [loading, setLoading] = useState<boolean>(false);
   const [list, setList] = useState<any>({});
   const [questions, setQuestions] = useState<any>([]);
@@ -18,7 +18,7 @@ const ExamMockPaperDetailPage = () => {
   const [requiredCourses, setRequiredCourses] = useState<any>([]);
   const [sumQuestion, setSumQuestion] = useState<number>(0);
   const [joinLoading, setJoinLoading] = useState<boolean>(false);
-  const [id, setId] = useState(Number(result.get("id")) || 0);
+  const [id, setId] = useState(Number(params.courseId) || 0);
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
 
   useEffect(() => {
@@ -26,8 +26,8 @@ const ExamMockPaperDetailPage = () => {
   }, [id]);
 
   useEffect(() => {
-    setId(Number(result.get("id")));
-  }, [result.get("id")]);
+    setId(Number(params.courseId));
+  }, [params.courseId]);
 
   useEffect(() => {
     let val = 0;

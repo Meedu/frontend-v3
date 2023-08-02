@@ -16,8 +16,8 @@ import { changeUserCredit } from "../../store/user/loginUserSlice";
 const WendaPage = () => {
   document.title = "在线问答";
   const navigate = useNavigate();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [init, setInit] = useState<boolean>(true);
+  const [loading, setLoading] = useState(false);
+  const [init, setInit] = useState(true);
   const [list, setList] = useState<any>([]);
   const [categories, setCategories] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
@@ -26,7 +26,8 @@ const WendaPage = () => {
   const [total, setTotal] = useState(0);
   const [pcDiyContent, setPcDiyContent] = useState<any>("");
   const [visiable, setVisiable] = useState(false);
-  const [status, setStatus] = useState<boolean>(false);
+  const [status, setStatus] = useState(false);
+  const [enableCredit1, setEnableCredit1] = useState(false);
   const result = new URLSearchParams(useLocation().search);
   const [scene, setScene] = useState(result.get("scene") || "default");
   const [cid, setCid] = useState(Number(result.get("cid")) || 0);
@@ -118,6 +119,11 @@ const WendaPage = () => {
   const getConfig = () => {
     wenda.config().then((res: any) => {
       setPcDiyContent(res.data.pc_diy_content);
+      if (res.data.enable_credit1 === 1) {
+        setEnableCredit1(true);
+      } else {
+        setEnableCredit1(false);
+      }
       setInit(false);
     });
   };
@@ -134,7 +140,7 @@ const WendaPage = () => {
     let credit = Number(user.credit1) - Number(credit1);
     changeUserCredit(credit);
     setTimeout(() => {
-      navigate("/wenda/detail?id=" + id);
+      navigate("/wenda/detail/" + id);
     }, 600);
   };
 
@@ -175,6 +181,7 @@ const WendaPage = () => {
       />
       <CreateQuestionDialog
         open={visiable}
+        enable={enableCredit1}
         onCancel={() => setVisiable(false)}
         onSuccess={(id: number, credit1: number) => createSuccess(id, credit1)}
       ></CreateQuestionDialog>

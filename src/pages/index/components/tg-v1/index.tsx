@@ -17,13 +17,13 @@ export const TuangouComp: React.FC<PropInterface> = ({ items, name }) => {
       return;
     }
     if (item.goods_type === "course") {
-      navigate("/courses/detail?id=" + item.other_id);
+      navigate("/courses/detail/" + item.other_id);
     } else if (item.goods_type === "live") {
-      navigate("/live/detail?id=" + item.other_id);
+      navigate("/live/detail/" + item.other_id);
     } else if (item.goods_type === "book") {
-      navigate("/book/detail?id=" + item.other_id);
+      navigate("/book/detail/" + item.other_id);
     } else if (item.goods_type === "learnPath") {
-      navigate("/learnPath/detail?id=" + item.other_id);
+      navigate("/learnPath/detail/" + item.other_id);
     }
   };
 
@@ -41,6 +41,9 @@ export const TuangouComp: React.FC<PropInterface> = ({ items, name }) => {
                 key={item.id + "tg" + index}
                 onClick={() => goDetail(item)}
               >
+                {!item.goods_type && (
+                  <div className={styles["whiteback"]}></div>
+                )}
                 <div className={styles["tg-course-thumb"]}>
                   {item.goods_type === "book" && (
                     <div className={styles["thumb-bar"]}>

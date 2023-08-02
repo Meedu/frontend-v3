@@ -48,7 +48,6 @@ const OrderPayPage = () => {
         })
         .catch((e) => {
           setLoading(false);
-          message.error(e.message);
           timer && clearInterval(timer);
           navigate("/");
         });
@@ -63,7 +62,6 @@ const OrderPayPage = () => {
         })
         .catch((e) => {
           setLoading(false);
-          message.error(e.message);
           timer && clearInterval(timer);
           navigate("/");
         });
@@ -92,46 +90,46 @@ const OrderPayPage = () => {
     if (goodsType === "role") {
       navigate("/member", { replace: true });
     } else if (goodsType === "book") {
-      navigate("/book/detail?id=" + id);
+      navigate("/book/detail/" + id);
     } else if (goodsType === "vod") {
-      navigate("/courses/detail?id=" + id);
+      navigate("/courses/detail/" + id);
     } else if (goodsType === "live") {
-      navigate("/live/detail?id=" + id);
+      navigate("/live/detail/" + id);
     } else if (goodsType === "topic") {
-      navigate("/topic/detail?id=" + id);
+      navigate("/topic/detail/" + id);
     } else if (goodsType === "video") {
-      navigate("/courses/video?id=" + id);
+      navigate("/courses/video/" + id);
     } else if (goodsType === "path") {
-      navigate("/learnPath/detail?id=" + id);
+      navigate("/learnPath/detail/" + id);
     } else if (goodsType === "paper") {
-      navigate("/exam/papers/detail?id=" + id);
+      navigate("/exam/papers/detail/" + id);
     } else if (goodsType === "practice") {
-      navigate("/exam/practice/detail?id=" + id);
+      navigate("/exam/practice/detail/" + id);
     } else if (goodsType === "mockpaper") {
-      navigate("/exam/mockpaper/detail?id=" + id);
+      navigate("/exam/mockpaper/detail/" + id);
     } else if (goodsType === "k12") {
       navigate("/k12/detail?id=" + id);
     } else if (goodsType === "tg") {
       if (courseType === "course") {
-        navigate("/courses/detail?id=" + courseId);
+        navigate("/courses/detail/" + courseId);
       } else if (courseType === "live") {
-        navigate("/live/detail?id=" + courseId);
+        navigate("/live/detail/" + courseId);
       } else if (courseType === "book") {
-        navigate("/book/detail?id=" + courseId);
+        navigate("/book/detail/" + courseId);
       } else if (courseType === "learnPath") {
-        navigate("/learnPath/detail?id=" + courseId);
+        navigate("/learnPath/detail/" + courseId);
       } else {
         navigate("/tg/detail?id=" + courseId);
       }
     } else if (goodsType === "ms") {
       if (courseType === "course") {
-        navigate("/courses/detail?id=" + courseId);
+        navigate("/courses/detail/" + courseId);
       } else if (courseType === "live") {
-        navigate("/live/detail?id=" + courseId);
+        navigate("/live/detail/" + courseId);
       } else if (courseType === "book") {
-        navigate("/book/detail?id=" + courseId);
+        navigate("/book/detail/" + courseId);
       } else if (courseType === "learnPath") {
-        navigate("/learnPath/detail?id=" + courseId);
+        navigate("/learnPath/detail/" + courseId);
       } else {
         navigate("/ms/detail?id=" + courseId);
       }

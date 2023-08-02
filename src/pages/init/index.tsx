@@ -8,12 +8,7 @@ import {
   saveConfigFuncAction,
 } from "../../store/system/systemConfigSlice";
 import { saveNavsAction } from "../../store/nav-menu/navMenuConfigSlice";
-import {
-  Header,
-  Footer,
-  BackTop,
-  CodeLoginBindMobileDialog,
-} from "../../components";
+import { BackTop, CodeLoginBindMobileDialog } from "../../components";
 import { useLocation } from "react-router-dom";
 import { user, share, login } from "../../api";
 import {
@@ -41,35 +36,8 @@ export const InitPage = (props: Props) => {
   const dispatch = useDispatch();
 
   const [backTopStatus, setBackTopStatus] = useState<boolean>(false);
-  const [showHeader, setShowHeader] = useState<boolean>(false);
-  const [showFooter, setShowFooter] = useState<boolean>(false);
   const [codebindmobileVisible, setCodebindmobileVisible] =
     useState<boolean>(false);
-
-  useEffect(() => {
-    let pathname = location.pathname;
-    if (
-      pathname === "/live/video" ||
-      pathname === "/exam/papers/play" ||
-      pathname === "/exam/mockpaper/play" ||
-      pathname === "/exam/practice/play" ||
-      pathname === "/exam/wrongbook/play" ||
-      pathname === "/exam/collection/play" ||
-      pathname === "/error"
-    ) {
-      setShowHeader(false);
-      setShowFooter(false);
-    } else if (pathname === "/book/read") {
-      setShowHeader(false);
-      setShowFooter(true);
-    } else if (pathname === "/login") {
-      setShowHeader(true);
-      setShowFooter(false);
-    } else {
-      setShowHeader(true);
-      setShowFooter(true);
-    }
-  }, [location.pathname]);
 
   //-----监听滚动条-----
   const getHeight = () => {
@@ -111,35 +79,30 @@ export const InitPage = (props: Props) => {
     saveSessionLoginCode(code);
 
     // 请求登录接口
-    login
-      .codeLogin({ code: code, msv: getMsv() })
-      .then((res: any) => {
-        if (res.data.success === 1) {
-          setToken(res.data.token);
-          user.detail().then((res: any) => {
-            let loginData = res.data;
-            // 将学员数据存储到store
-            dispatch(loginAction(loginData));
-            // 登录成功之后的跳转
-            if (window.location.pathname === "/login/callback") {
-              // 社交登录回调指定的跳转地址
-              navigate(redirectUrl, { replace: true });
-            } else {
-              // 直接reload当前登录表单所在页面
-              let path = window.location.pathname + window.location.search;
-              navigate(path, { replace: true });
-            }
-          });
-        } else {
-          if (res.data.action === "bind_mobile") {
-            saveLoginCode(code);
-            setCodebindmobileVisible(true);
+    login.codeLogin({ code: code, msv: getMsv() }).then((res: any) => {
+      if (res.data.success === 1) {
+        setToken(res.data.token);
+        user.detail().then((res: any) => {
+          let loginData = res.data;
+          // 将学员数据存储到store
+          dispatch(loginAction(loginData));
+          // 登录成功之后的跳转
+          if (window.location.pathname === "/login/callback") {
+            // 社交登录回调指定的跳转地址
+            navigate(redirectUrl, { replace: true });
+          } else {
+            // 直接reload当前登录表单所在页面
+            let path = window.location.pathname + window.location.search;
+            navigate(path, { replace: true });
           }
+        });
+      } else {
+        if (res.data.action === "bind_mobile") {
+          saveLoginCode(code);
+          setCodebindmobileVisible(true);
         }
-      })
-      .catch((e) => {
-        message.error(e.message);
-      });
+      }
+    });
   };
 
   const msvBind = () => {
@@ -173,29 +136,102 @@ export const InitPage = (props: Props) => {
       let curSearch = window.location.search || "";
 
       if (curPathname.indexOf("/topic/detail") !== -1) {
-        url += "/#/pages/webview/webview" + curSearch + "&course_type=topic";
+        let id = curPathname.slice(14);
+        if (curSearch === "") {
+          url += "/#/pages/webview/webview?course_type=topic&id=" + id;
+        } else {
+          url +=
+            "/#/pages/webview/webview" +
+            curSearch +
+            "&course_type=topic&id=" +
+            id;
+        }
       } else if (curPathname.indexOf("/courses/detail") !== -1) {
-        url += "/#/pages/course/show" + curSearch;
+        let id = curPathname.slice(16);
+        if (curSearch === "") {
+          url += "/#/pages/course/show?id=" + id;
+        } else {
+          url += "/#/pages/course/show" + curSearch + "&id=" + id;
+        }
       } else if (curPathname.indexOf("/courses/video") !== -1) {
-        url += "/#/pages/course/video" + curSearch;
+        let id = curPathname.slice(15);
+        if (curSearch === "") {
+          url += "/#/pages/course/video?id=" + id;
+        } else {
+          url += "/#/pages/course/video" + curSearch + "&id=" + id;
+        }
       } else if (curPathname.indexOf("/live/detail") !== -1) {
-        url += "/#/packageA/live/show" + curSearch;
+        let id = curPathname.slice(13);
+        if (curSearch === "") {
+          url += "/#/packageA/live/show?id=" + id;
+        } else {
+          url += "/#/packageA/live/show" + curSearch + "&id=" + id;
+        }
       } else if (curPathname.indexOf("/live/video") !== -1) {
-        url += "/#/packageA/live/video" + curSearch;
+        let id = curPathname.slice(12);
+        if (curSearch === "") {
+          url += "/#/packageA/live/video?id=" + id;
+        } else {
+          url += "/#/packageA/live/video" + curSearch + "&id=" + id;
+        }
       } else if (curPathname.indexOf("/book/detail") !== -1) {
-        url += "/#/packageA/book/show" + curSearch;
+        let id = curPathname.slice(13);
+        if (curSearch === "") {
+          url += "/#/packageA/book/show?id=" + id;
+        } else {
+          url += "/#/packageA/book/show" + curSearch + "&id=" + id;
+        }
       } else if (curPathname.indexOf("/book/read") !== -1) {
-        url += "/#/pages/webview/webview" + curSearch + "&course_type=book";
+        let id = curPathname.slice(11);
+        if (curSearch === "") {
+          url += "/#/pages/webview/webview?course_type=book&id=" + id;
+        } else {
+          url +=
+            "/#/pages/webview/webview" +
+            curSearch +
+            "&course_type=book&id=" +
+            id;
+        }
       } else if (curPathname.indexOf("/learnPath/detail") !== -1) {
-        url += "/#/packageA/learnPath/show" + curSearch;
+        let id = curPathname.slice(18);
+        if (curSearch === "") {
+          url += "/#/packageA/learnPath/show?id=" + id;
+        } else {
+          url += "/#/packageA/learnPath/show" + curSearch + "&id=" + id;
+        }
       } else if (curPathname.indexOf("/exam/papers/detail") !== -1) {
-        url +=
-          "/#/pages/webview/webview" + curSearch + "&course_type=paperRead";
+        let id = curPathname.slice(20);
+        if (curSearch === "") {
+          url += "/#/pages/webview/webview?course_type=paperRead&id=" + id;
+        } else {
+          url +=
+            "/#/pages/webview/webview" +
+            curSearch +
+            "&course_type=paperRead&id=" +
+            id;
+        }
       } else if (curPathname.indexOf("/exam/practice/detail") !== -1) {
-        url +=
-          "/#/pages/webview/webview" + curSearch + "&course_type=practiceRead";
+        let id = curPathname.slice(22);
+        if (curSearch === "") {
+          url += "/#/pages/webview/webview?course_type=practiceRead&id=" + id;
+        } else {
+          url +=
+            "/#/pages/webview/webview" +
+            curSearch +
+            "&course_type=practiceRead&id=" +
+            id;
+        }
       } else if (curPathname.indexOf("/exam/mockpaper/detail") !== -1) {
-        url += "/#/pages/webview/webview" + curSearch + "&course_type=mockRead";
+        let id = curPathname.slice(23);
+        if (curSearch === "") {
+          url += "/#/pages/webview/webview?course_type=mockRead&id=" + id;
+        } else {
+          url +=
+            "/#/pages/webview/webview" +
+            curSearch +
+            "&course_type=mockRead&id=" +
+            id;
+        }
       }
 
       // 如果存在msv的话则携带上msv(邀请学员的id)
@@ -230,10 +266,8 @@ export const InitPage = (props: Props) => {
         }}
       ></CodeLoginBindMobileDialog>
       <div style={{ minHeight: 800 }}>
-        {showHeader ? <Header></Header> : null}
         <Outlet />
       </div>
-      {showFooter ? <Footer status={true}></Footer> : null}
       {backTopStatus ? <BackTop></BackTop> : null}
     </>
   );

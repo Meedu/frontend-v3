@@ -17,7 +17,7 @@ export const TopicItemComp: React.FC<PropInterface> = ({
   const [loading, setLoading] = useState<boolean>(false);
 
   const goDetail = (item: any) => {
-    navigate("/topic/detail?id=" + item.topic.id);
+    navigate("/topic/detail/" + item.topic.id);
   };
 
   return (

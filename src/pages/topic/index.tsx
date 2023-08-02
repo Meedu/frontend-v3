@@ -71,7 +71,7 @@ const TopicPage = () => {
   };
 
   const goDetail = (id: number) => {
-    navigate("/topic/detail?id=" + id);
+    navigate("/topic/detail/" + id);
   };
 
   return (
