@@ -97,55 +97,57 @@ export const TencentFaceCheck: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title=""
-        centered
-        forceRender
-        open={open}
-        width={500}
-        footer={null}
-        onCancel={() => {
-          timer && clearInterval(timer);
-          onCancel();
-        }}
-        maskClosable={false}
-        closable={false}
-      >
-        <div className={styles["tabs"]}>
-          <div className={styles["tab-active-item"]}></div>
-          {!active && (
-            <a
-              className={styles["linkTab"]}
-              onClick={() => {
-                timer && clearInterval(timer);
-                goLogout();
-              }}
-            >
-              退出登录&gt;&gt;
-            </a>
-          )}
-          {active && (
-            <img
-              className={styles["btn-close"]}
-              onClick={() => {
-                timer && clearInterval(timer);
-                onCancel();
-              }}
-              src={closeIcon}
-            />
-          )}
-        </div>
-        <div className={styles["box"]}>
-          {qrode !== "" && (
-            <QRCode
-              size={250}
-              value={qrode}
-              status={verifyLoading ? "loading" : "active"}
-            />
-          )}
-        </div>
-        <p className={styles["tip"]}>学习前请用微信扫码完成实名认证</p>
-      </Modal>
+      {open ? (
+        <Modal
+          title=""
+          centered
+          forceRender
+          open={true}
+          width={500}
+          footer={null}
+          onCancel={() => {
+            timer && clearInterval(timer);
+            onCancel();
+          }}
+          maskClosable={false}
+          closable={false}
+        >
+          <div className={styles["tabs"]}>
+            <div className={styles["tab-active-item"]}></div>
+            {!active && (
+              <a
+                className={styles["linkTab"]}
+                onClick={() => {
+                  timer && clearInterval(timer);
+                  goLogout();
+                }}
+              >
+                退出登录&gt;&gt;
+              </a>
+            )}
+            {active && (
+              <img
+                className={styles["btn-close"]}
+                onClick={() => {
+                  timer && clearInterval(timer);
+                  onCancel();
+                }}
+                src={closeIcon}
+              />
+            )}
+          </div>
+          <div className={styles["box"]}>
+            {qrode !== "" && (
+              <QRCode
+                size={250}
+                value={qrode}
+                status={verifyLoading ? "loading" : "active"}
+              />
+            )}
+          </div>
+          <p className={styles["tip"]}>学习前请用微信扫码完成实名认证</p>
+        </Modal>
+      ) : null}
     </>
   );
 };

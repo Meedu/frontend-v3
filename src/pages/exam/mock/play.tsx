@@ -257,46 +257,49 @@ const ExamMockPaperPlayPage = () => {
 
   return (
     <div className="full-container">
-      <Modal
-        title="确认信息"
-        centered
-        forceRender
-        maskClosable={false}
-        open={submitTip}
-        width={500}
-        onCancel={() => setSubmitTip(false)}
-        footer={null}
-      >
-        {surplus !== 0 && (
-          <div className={styles["text"]}>
-            还有{surplus}道题未做，确认要交卷吗？
-          </div>
-        )}
-        {surplus === 0 && <div className={styles["text"]}>确认要交卷吗？</div>}
-        <div
-          slot="footer"
-          style={{
-            display: "flex",
-            flexDirection: "row-reverse",
-            marginTop: 15,
-          }}
+      {submitTip ? (
+        <Modal
+          title="确认信息"
+          centered
+          forceRender
+          maskClosable={false}
+          open={true}
+          width={500}
+          onCancel={() => setSubmitTip(false)}
+          footer={null}
         >
-          <Button
-            type="primary"
-            onClick={() => finish()}
-            loading={submitLoading}
+          {surplus !== 0 && (
+            <div className={styles["text"]}>
+              还有{surplus}道题未做，确认要交卷吗？
+            </div>
+          )}
+          {surplus === 0 && (
+            <div className={styles["text"]}>确认要交卷吗？</div>
+          )}
+          <div
+            slot="footer"
+            style={{
+              display: "flex",
+              flexDirection: "row-reverse",
+              marginTop: 15,
+            }}
           >
-            确定
-          </Button>
-          <Button
-            style={{ marginRight: 15 }}
-            onClick={() => setSubmitTip(false)}
-          >
-            继续答题
-          </Button>
-        </div>
-      </Modal>
-
+            <Button
+              type="primary"
+              onClick={() => finish()}
+              loading={submitLoading}
+            >
+              确定
+            </Button>
+            <Button
+              style={{ marginRight: 15 }}
+              onClick={() => setSubmitTip(false)}
+            >
+              继续答题
+            </Button>
+          </div>
+        </Modal>
+      ) : null}
       <div className={styles["navheader"]}>
         <div className={styles["top"]}>
           {userPaper && userPaper.status === 0 && (

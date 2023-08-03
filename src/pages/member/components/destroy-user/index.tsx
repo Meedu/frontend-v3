@@ -41,39 +41,41 @@ export const DestroyUserDialog: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title=""
-        centered
-        forceRender
-        open={open}
-        width={500}
-        onCancel={() => {
-          onCancel();
-        }}
-        onOk={() => {
-          destroyUserValidate();
-        }}
-        maskClosable={false}
-        okText="确认注销"
-        cancelText="暂不注销"
-        closable={false}
-      >
-        <div className={styles["tabs"]}>
-          <div className={styles["tab-active-item"]}>账号注销</div>
-          <img
-            className={styles["btn-close"]}
-            onClick={() => {
-              onCancel();
-            }}
-            src={closeIcon}
-          />
-        </div>
-        <div className={styles["box"]}>
-          <div className={styles["input-item"]}>
-            确认注销账号？确认之后账号将在7天后自动注销，期间内登录账号将会自动取消账号注销
+      {open ? (
+        <Modal
+          title=""
+          centered
+          forceRender
+          open={true}
+          width={500}
+          onCancel={() => {
+            onCancel();
+          }}
+          onOk={() => {
+            destroyUserValidate();
+          }}
+          maskClosable={false}
+          okText="确认注销"
+          cancelText="暂不注销"
+          closable={false}
+        >
+          <div className={styles["tabs"]}>
+            <div className={styles["tab-active-item"]}>账号注销</div>
+            <img
+              className={styles["btn-close"]}
+              onClick={() => {
+                onCancel();
+              }}
+              src={closeIcon}
+            />
           </div>
-        </div>
-      </Modal>
+          <div className={styles["box"]}>
+            <div className={styles["input-item"]}>
+              确认注销账号？确认之后账号将在7天后自动注销，期间内登录账号将会自动取消账号注销
+            </div>
+          </div>
+        </Modal>
+      ) : null}
     </>
   );
 };

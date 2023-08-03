@@ -265,20 +265,22 @@ const ExamWrongbookPlayPage = () => {
 
   return (
     <div className="full-container">
-      <Modal
-        title="确认信息"
-        centered
-        forceRender
-        maskClosable={false}
-        open={openmask}
-        width={500}
-        onOk={() => {
-          submitHandle();
-        }}
-        onCancel={() => setOpenmask(false)}
-      >
-        <div className={styles["text"]}>是否将此题从错题本移除？</div>
-      </Modal>
+      {openmask ? (
+        <Modal
+          title="确认信息"
+          centered
+          forceRender
+          maskClosable={false}
+          open={true}
+          width={500}
+          onOk={() => {
+            submitHandle();
+          }}
+          onCancel={() => setOpenmask(false)}
+        >
+          <div className={styles["text"]}>是否将此题从错题本移除？</div>
+        </Modal>
+      ) : null}
       <div className={styles["navheader"]}>
         <div className={styles["top"]}>
           <div className={styles["left-top"]} onClick={() => goBack()}>
