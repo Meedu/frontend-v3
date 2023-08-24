@@ -88,79 +88,81 @@ export const MiaoshaDialog: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title=""
-        centered
-        forceRender
-        open={open}
-        width={500}
-        onCancel={() => {
-          onCancel();
-        }}
-        maskClosable={false}
-        closable={false}
-        footer={null}
-      >
-        <div className={styles["tabs"]}>
-          <div className={styles["tab-active-item"]}>秒杀活动</div>
-          <img
-            className={styles["btn-close"]}
-            onClick={() => {
-              onCancel();
-            }}
-            src={closeIcon}
-          />
-        </div>
-        <Form
-          form={form}
-          name="miaosha-dialog"
-          labelCol={{ span: 0 }}
-          wrapperCol={{ span: 24 }}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-          style={{ marginTop: 30 }}
+      {open ? (
+        <Modal
+          title=""
+          centered
+          forceRender
+          open={true}
+          width={500}
+          onCancel={() => {
+            onCancel();
+          }}
+          maskClosable={false}
+          closable={false}
+          footer={null}
         >
-          <Form.Item>
-            <Space align="baseline">
-              <Form.Item
-                name="captcha"
-                rules={[{ required: true, message: "请输入图形验证码!" }]}
-              >
-                <Input
-                  style={{ width: 310, height: 54, marginRight: 10 }}
-                  autoComplete="off"
-                  placeholder="请输入图形验证码"
-                />
-              </Form.Item>
-              <Image
-                onClick={() => getCaptcha()}
-                src={captcha.img}
-                width={110}
-                height={39}
-                preview={false}
-                style={{ cursor: "pointer" }}
-              />
-            </Space>
-          </Form.Item>
-        </Form>
-        <div
-          slot="footer"
-          style={{ display: "flex", flexDirection: "row-reverse" }}
-        >
-          <Button
-            type="primary"
-            onClick={() => form.submit()}
-            loading={loading}
+          <div className={styles["tabs"]}>
+            <div className={styles["tab-active-item"]}>秒杀活动</div>
+            <img
+              className={styles["btn-close"]}
+              onClick={() => {
+                onCancel();
+              }}
+              src={closeIcon}
+            />
+          </div>
+          <Form
+            form={form}
+            name="miaosha-dialog"
+            labelCol={{ span: 0 }}
+            wrapperCol={{ span: 24 }}
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+            style={{ marginTop: 30 }}
           >
-            立即秒杀
-          </Button>
-          <Button style={{ marginRight: 15 }} onClick={() => onCancel()}>
-            取消
-          </Button>
-        </div>
-      </Modal>
+            <Form.Item>
+              <Space align="baseline">
+                <Form.Item
+                  name="captcha"
+                  rules={[{ required: true, message: "请输入图形验证码!" }]}
+                >
+                  <Input
+                    style={{ width: 310, height: 54, marginRight: 10 }}
+                    autoComplete="off"
+                    placeholder="请输入图形验证码"
+                  />
+                </Form.Item>
+                <Image
+                  onClick={() => getCaptcha()}
+                  src={captcha.img}
+                  width={110}
+                  height={39}
+                  preview={false}
+                  style={{ cursor: "pointer" }}
+                />
+              </Space>
+            </Form.Item>
+          </Form>
+          <div
+            slot="footer"
+            style={{ display: "flex", flexDirection: "row-reverse" }}
+          >
+            <Button
+              type="primary"
+              onClick={() => form.submit()}
+              loading={loading}
+            >
+              立即秒杀
+            </Button>
+            <Button style={{ marginRight: 15 }} onClick={() => onCancel()}>
+              取消
+            </Button>
+          </div>
+        </Modal>
+      ) : null}
     </>
   );
 };

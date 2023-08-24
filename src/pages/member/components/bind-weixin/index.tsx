@@ -49,35 +49,37 @@ export const BindWeixinDialog: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title=""
-        centered
-        forceRender
-        open={open}
-        width={500}
-        footer={null}
-        onCancel={() => {
-          timer && clearInterval(timer);
-          onCancel();
-        }}
-        maskClosable={false}
-        closable={false}
-      >
-        <div className={styles["tabs"]}>
-          <div className={styles["tab-active-item"]}>绑定微信</div>
-          <img
-            className={styles["btn-close"]}
-            onClick={() => {
-              timer && clearInterval(timer);
-              onCancel();
-            }}
-            src={closeIcon}
-          />
-        </div>
-        <div className={styles["box"]}>
-          <Image width={300} height={300} src={qrode} preview={false} />
-        </div>
-      </Modal>
+      {open ? (
+        <Modal
+          title=""
+          centered
+          forceRender
+          open={true}
+          width={500}
+          footer={null}
+          onCancel={() => {
+            timer && clearInterval(timer);
+            onCancel();
+          }}
+          maskClosable={false}
+          closable={false}
+        >
+          <div className={styles["tabs"]}>
+            <div className={styles["tab-active-item"]}>绑定微信</div>
+            <img
+              className={styles["btn-close"]}
+              onClick={() => {
+                timer && clearInterval(timer);
+                onCancel();
+              }}
+              src={closeIcon}
+            />
+          </div>
+          <div className={styles["box"]}>
+            <Image width={300} height={300} src={qrode} preview={false} />
+          </div>
+        </Modal>
+      ) : null}
     </>
   );
 };

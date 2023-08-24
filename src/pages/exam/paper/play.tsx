@@ -274,88 +274,96 @@ const ExamPaperPlayPage = () => {
 
   return (
     <div className="full-container">
-      <Modal
-        title="确认信息"
-        centered
-        forceRender
-        maskClosable={false}
-        open={dialogStatus}
-        width={500}
-        onOk={() => {
-          cancelAll();
-          setTimeout(() => {
-            navigate(-1);
-          }, 500);
-        }}
-        onCancel={() => setDialogStatus(false)}
-      >
-        <div className={styles["text"]}>正在考试中,是否确认返回?</div>
-      </Modal>
-      <Modal
-        title="确认信息"
-        centered
-        forceRender
-        maskClosable={false}
-        open={submitTip}
-        width={500}
-        onCancel={() => setSubmitTip(false)}
-        footer={null}
-      >
-        {surplus !== 0 && (
-          <div className={styles["text"]}>
-            还有{surplus}道题未做，确认要交卷吗？
+      {dialogStatus ? (
+        <Modal
+          title="确认信息"
+          centered
+          forceRender
+          maskClosable={false}
+          open={true}
+          width={500}
+          onOk={() => {
+            cancelAll();
+            setTimeout(() => {
+              navigate(-1);
+            }, 500);
+          }}
+          onCancel={() => setDialogStatus(false)}
+        >
+          <div className={styles["text"]}>正在考试中,是否确认返回?</div>
+        </Modal>
+      ) : null}
+      {submitTip ? (
+        <Modal
+          title="确认信息"
+          centered
+          forceRender
+          maskClosable={false}
+          open={true}
+          width={500}
+          onCancel={() => setSubmitTip(false)}
+          footer={null}
+        >
+          {surplus !== 0 && (
+            <div className={styles["text"]}>
+              还有{surplus}道题未做，确认要交卷吗？
+            </div>
+          )}
+          {surplus === 0 && (
+            <div className={styles["text"]}>确认要交卷吗？</div>
+          )}
+          <div
+            slot="footer"
+            style={{
+              display: "flex",
+              flexDirection: "row-reverse",
+              marginTop: 15,
+            }}
+          >
+            <Button
+              type="primary"
+              onClick={() => finish()}
+              loading={submitLoading}
+            >
+              确定
+            </Button>
+            <Button
+              style={{ marginRight: 15 }}
+              onClick={() => setSubmitTip(false)}
+            >
+              继续答题
+            </Button>
           </div>
-        )}
-        {surplus === 0 && <div className={styles["text"]}>确认要交卷吗？</div>}
-        <div
-          slot="footer"
-          style={{
-            display: "flex",
-            flexDirection: "row-reverse",
-            marginTop: 15,
-          }}
+        </Modal>
+      ) : null}
+      {readTip ? (
+        <Modal
+          title="交卷提示"
+          centered
+          forceRender
+          maskClosable={false}
+          open={true}
+          width={500}
+          closable={false}
+          footer={null}
         >
-          <Button
-            type="primary"
-            onClick={() => finish()}
-            loading={submitLoading}
+          <div className={styles["text"]}>
+            此次在线考试包含主观题，等待老师阅卷后查看成绩
+          </div>
+          <div
+            slot="footer"
+            style={{
+              display: "flex",
+              flexDirection: "row-reverse",
+              marginTop: 15,
+            }}
           >
-            确定
-          </Button>
-          <Button
-            style={{ marginRight: 15 }}
-            onClick={() => setSubmitTip(false)}
-          >
-            继续答题
-          </Button>
-        </div>
-      </Modal>
-      <Modal
-        title="交卷提示"
-        centered
-        forceRender
-        maskClosable={false}
-        open={readTip}
-        width={500}
-        closable={false}
-        footer={null}
-      >
-        <div className={styles["text"]}>
-          此次在线考试包含主观题，等待老师阅卷后查看成绩
-        </div>
-        <div
-          slot="footer"
-          style={{
-            display: "flex",
-            flexDirection: "row-reverse",
-            marginTop: 15,
-          }}
-        >
-          <Button type="primary" onClick={() => ok()}>
-            我知道了
-          </Button>
-        </div>
-      </Modal>
+            <Button type="primary" onClick={() => ok()}>
+              我知道了
+            </Button>
+          </div>
+        </Modal>
+      ) : null}
       <div className={styles["navheader"]}>
         <div className={styles["top"]}>
           {userPaper && userPaper.status === 1 && (
