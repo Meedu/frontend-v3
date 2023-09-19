@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "./index.module.scss";
-import { Input, message, Row, Col, Skeleton, Button, Pagination } from "antd";
+import { Input, message, Col, Skeleton, Button, Pagination } from "antd";
 import { useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
 import { multiLevelShare } from "../../api/index";
 import { getShareHost, changeTime } from "../../utils/index";
 import { Empty } from "../../components";
@@ -10,7 +9,6 @@ import { WithdrawDialog } from "./components/withdraw-dialog";
 
 const SharePage = () => {
   document.title = "推广";
-  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [init, setInit] = useState<boolean>(true);
   const [dialogStatus, setDialogStatus] = useState<boolean>(false);

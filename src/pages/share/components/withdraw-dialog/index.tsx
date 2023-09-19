@@ -18,22 +18,21 @@ export const WithdrawDialog: React.FC<PropInterface> = ({
   onSuccess,
   onCancel,
 }) => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [channelName, setChannelName] = useState<string>("");
-  const [channelAccount, setChannelAccount] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const [channelName, setChannelName] = useState("");
+  const [channelAccount, setChannelAccount] = useState("");
   const [amount, setAmount] = useState(0);
-  const [channel, setChannel] = useState<string>("alipay");
-  const [channelAddress, setChannelAddress] = useState<string>("");
-  const user = useSelector((state: any) => state.loginUser.value.user);
+  const [channel, setChannel] = useState("alipay");
+  const [channelAddress, setChannelAddress] = useState("");
   const channels = [
     {
       label: "支付宝",
       value: "alipay",
     },
-    {
-      label: "微信",
-      value: "wechat",
-    },
+    // {
+    //   label: "微信",
+    //   value: "wechat",
+    // },
   ];
 
   useEffect(() => {
@@ -79,7 +78,7 @@ export const WithdrawDialog: React.FC<PropInterface> = ({
         channel: channel,
         channel_address: channelAddress,
       })
-      .then((res: any) => {
+      .then(() => {
         message.success("提现申请已提交，请耐心等待管理员转账");
         onSuccess();
         setLoading(false);
@@ -125,19 +124,23 @@ export const WithdrawDialog: React.FC<PropInterface> = ({
                   options={channels}
                 ></Select>
               </div>
-              <div className={styles["item"]}>
-                <div className={styles["tit"]}>
-                  <span>*</span>提现账号
+
+              {channel === "alipay" ? (
+                <div className={styles["item"]}>
+                  <div className={styles["tit"]}>
+                    <span>*</span>提现账号
+                  </div>
+                  <Input
+                    value={channelAccount}
+                    onChange={(e) => {
+                      setChannelAccount(e.target.value);
+                    }}
+                    className={styles["input"]}
+                    placeholder="收款账号"
+                  ></Input>
                 </div>
-                <Input
-                  value={channelAccount}
-                  onChange={(e) => {
-                    setChannelAccount(e.target.value);
-                  }}
-                  className={styles["input"]}
-                  placeholder="收款账号"
-                ></Input>
-              </div>
+              ) : null}
+
               <div className={styles["item"]}>
                 <div className={styles["tit"]}>
                   <span>*</span>真实姓名
@@ -163,6 +166,7 @@ export const WithdrawDialog: React.FC<PropInterface> = ({
                   }}
                   className={styles["input"]}
                   placeholder="提现金额"
+                  min={0}
                 ></Input>
               </div>
             </div>
