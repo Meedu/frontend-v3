@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { message } from "antd";
 import { useNavigate, Outlet } from "react-router-dom";
 import { loginAction } from "../../store/user/loginUserSlice";
 import {
@@ -247,6 +246,7 @@ export const InitPage = (props: Props) => {
       window.location.href = url;
     }
   }
+  
   if (props.configFunc) {
     dispatch(saveConfigFuncAction(props.configFunc));
   }

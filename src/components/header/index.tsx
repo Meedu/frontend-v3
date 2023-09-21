@@ -20,7 +20,9 @@ export const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [content, setContent] = useState<string>("");
+  // 全局状态的user
   const user = useSelector((state: any) => state.loginUser.value.user);
+  // 全局状态-是否登录
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
   const freshUnread = useSelector(
     (state: any) => state.loginUser.value.freshUnread
@@ -323,7 +325,7 @@ export const Header = () => {
               />
               <div className={styles["text"]}>我的学习</div>
             </a>
-            {!isLogin && (
+            {isLogin ? null : (
               <>
                 <a
                   onClick={() => goLogin()}
@@ -340,7 +342,7 @@ export const Header = () => {
                 </a>
               </>
             )}
-            {isLogin && user && (
+            {isLogin && user ? (
               <Button.Group className={styles["button-group"]}>
                 <Dropdown
                   menu={{ items, onClick }}
@@ -356,7 +358,7 @@ export const Header = () => {
                   </div>
                 </Dropdown>
               </Button.Group>
-            )}
+            ) : null}
           </div>
         </div>
         <div className="header-menu">

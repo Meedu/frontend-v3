@@ -14,10 +14,7 @@ import {
   getShareHost,
 } from "../../utils/index";
 import { loginAction } from "../../store/user/loginUserSlice";
-import {
-  saveConfigAction,
-  saveConfigFuncAction,
-} from "../../store/system/systemConfigSlice";
+import { saveConfigAction } from "../../store/system/systemConfigSlice";
 import { MobileVerifyDialog } from "./components/mobile-verify-dialog";
 import { BindMobileDialog } from "./components/bind-mobile";
 import { BindNewMobileDialog } from "./components/bind-new-mobile";
@@ -33,7 +30,6 @@ const { confirm } = Modal;
 const MemberPage = () => {
   document.title = "用户中心";
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
   const [editNickStatus, setEditNickStatus] = useState<boolean>(false);
@@ -174,15 +170,17 @@ const MemberPage = () => {
         file.type === "image/png" ||
         file.type === "image/jpg" ||
         file.type === "image/jpeg";
-
       if (!isPNG) {
         message.error(`${file.name}不是图片文件`);
+        return Upload.LIST_IGNORE;
       }
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isLt2M) {
+
+      if (file.size > 2 * 1024 * 1024) {
         message.error("图片大小不超过2M");
+        return Upload.LIST_IGNORE;
       }
-      return (isPNG && isLt2M) || Upload.LIST_IGNORE;
+
+      return true;
     },
     onChange(info: any) {
       const { status, response } = info.file;
@@ -190,6 +188,7 @@ const MemberPage = () => {
         if (response.code === 0) {
           message.success("上传头像成功");
           resetData();
+          return;
         } else {
           message.error(response.msg);
         }
