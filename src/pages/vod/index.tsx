@@ -74,7 +74,7 @@ const VodPage = () => {
     course
       .list({
         page: page,
-        size: size,
+        page_size: size,
         scene: scene,
         category_id: category_id,
       })
