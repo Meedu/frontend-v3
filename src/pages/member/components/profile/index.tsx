@@ -9,7 +9,6 @@ interface PropInterface {
 }
 
 export const ProfileComp: React.FC<PropInterface> = ({ refresh }) => {
-  const [loading, setLoading] = useState<boolean>(false);
   const [faceCheckVisible, setFaceCheckVisible] = useState<boolean>(false);
   const user = useSelector((state: any) => state.loginUser.value.user);
 

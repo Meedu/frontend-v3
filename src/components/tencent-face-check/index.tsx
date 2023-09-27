@@ -145,7 +145,7 @@ export const TencentFaceCheck: React.FC<PropInterface> = ({
               />
             )}
           </div>
-          <p className={styles["tip"]}>学习前请用微信扫码完成实名认证</p>
+          <p className={styles["tip"]}>请使用微信扫码完成实名认证</p>
         </Modal>
       ) : null}
     </>
