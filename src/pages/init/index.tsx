@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate, Outlet } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, Outlet, useSearchParams } from "react-router-dom";
 import { loginAction } from "../../store/user/loginUserSlice";
 import {
   saveConfigAction,
@@ -8,7 +8,6 @@ import {
 } from "../../store/system/systemConfigSlice";
 import { saveNavsAction } from "../../store/nav-menu/navMenuConfigSlice";
 import { BackTop, CodeLoginBindMobileDialog } from "../../components";
-import { useLocation } from "react-router-dom";
 import { user, share, login } from "../../api";
 import {
   saveMsv,
@@ -20,24 +19,41 @@ import {
   saveLoginCode,
   isMobile,
   SPAUrlAppend,
+  getToken,
+  setBindMobileKey,
+  clearBindMobileKey,
+  setFaceCheckKey,
+  clearFaceCheckKey,
 } from "../../utils/index";
 
 interface Props {
-  loginData: any;
   config: any;
   configFunc: any;
   navsData: any;
 }
 
 export const InitPage = (props: Props) => {
-  const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [backTopStatus, setBackTopStatus] = useState<boolean>(false);
-  const [codebindmobileVisible, setCodebindmobileVisible] =
-    useState<boolean>(false);
+  // ------ store变量 ------
+  const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
 
+  // ------ URL变量 ------
+  const [searchParams] = useSearchParams();
+  const urlMsv = searchParams.get("msv");
+  const urlLoginCode = searchParams.get("login_code");
+  const urlAction = searchParams.get("action");
+  const urlRedirectUrl = decodeURIComponent(
+    searchParams.get("redirect") || "/"
+  );
+
+  // ------ 本地变量 ------
+  const loginToken = getToken();
+  const [backTopStatus, setBackTopStatus] = useState(false);
+  const [codebindmobileVisible, setCodebindmobileVisible] = useState(false);
+
+  // 滚动条监听
   useEffect(() => {
     const getHeight = () => {
       let scrollTop =
@@ -50,31 +66,24 @@ export const InitPage = (props: Props) => {
     };
   }, []);
 
+  // msv(分销识别符)的保存
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    if (searchParams) {
-      // msv分销id记录
-      let msv = searchParams.get("msv");
-      if (msv) {
-        saveMsv(msv);
-      }
-      // 社交登录回调处理
-      let loginCode = searchParams.get("login_code");
-      let action = searchParams.get("action");
-      let redirectUrl = decodeURIComponent(searchParams.get("redirect") || "/");
-      if (loginCode && action === "login") {
-        codeLogin(loginCode, redirectUrl);
-      }
-    }
-  }, [location.search]);
+    urlMsv && saveMsv(urlMsv);
+  }, [urlMsv]);
 
+  useEffect(() => {
+    if (urlLoginCode && urlAction === "login") {
+      codeLogin(urlLoginCode, urlRedirectUrl);
+    }
+  }, [urlLoginCode, urlAction, urlRedirectUrl]);
+
+  // 使用code登录系统
   const codeLogin = (code: string, redirectUrl: string) => {
-    // 重复请求检测
+    // 防止code重复请求登录
     if (getSessionLoginCode(code)) {
       return;
     }
     saveSessionLoginCode(code);
-
     // 请求登录接口
     login.codeLogin({ code: code, msv: getMsv() }).then((res: any) => {
       if (res.data.success === 1) {
@@ -117,10 +126,40 @@ export const InitPage = (props: Props) => {
       });
   };
 
-  if (props.loginData) {
-    dispatch(loginAction(props.loginData));
-    msvBind();
-  }
+  useEffect(() => {
+    // 存在token-做自动登录
+    loginToken &&
+      user
+        .detail()
+        .then((res: any) => {
+          let resUser = res.data as UserDetailInterface;
+          // 强制绑定手机号
+          if (
+            resUser.is_bind_mobile === 0 &&
+            props.config.member.enabled_mobile_bind_alert === 1
+          ) {
+            setBindMobileKey();
+          } else {
+            clearBindMobileKey();
+          }
+
+          //强制实名认证
+          if (
+            resUser.is_face_verify === false &&
+            props.config.member.enabled_face_verify === true
+          ) {
+            setFaceCheckKey();
+          } else {
+            clearFaceCheckKey();
+          }
+
+          // 自动登录
+          dispatch(loginAction(resUser));
+
+          msvBind();
+        })
+        .catch((e) => {});
+  }, [loginToken]);
 
   if (props.config) {
     dispatch(saveConfigAction(props.config));
@@ -231,12 +270,8 @@ export const InitPage = (props: Props) => {
       }
 
       // 如果存在msv的话则携带上msv(邀请学员的id)
-      const searchParams = new URLSearchParams(location.search);
-      if (searchParams.get("msv")) {
-        url = SPAUrlAppend(
-          props.config.h5_url,
-          "msv=" + searchParams.get("msv")
-        );
+      if (urlMsv) {
+        url = SPAUrlAppend(props.config.h5_url, "msv=" + urlMsv);
       }
 
       // 跳转到手机访问地址
@@ -252,6 +287,10 @@ export const InitPage = (props: Props) => {
     dispatch(saveNavsAction(props.navsData));
   }
 
+  if (loginToken && isLogin === false) {
+    return <span>登录中...</span>;
+  }
+
   return (
     <>
       <CodeLoginBindMobileDialog
@@ -261,10 +300,12 @@ export const InitPage = (props: Props) => {
         success={() => {
           setCodebindmobileVisible(false);
         }}
-      ></CodeLoginBindMobileDialog>
+      />
+
       <div style={{ minHeight: 800 }}>
         <Outlet />
       </div>
+
       {backTopStatus ? <BackTop></BackTop> : null}
     </>
   );

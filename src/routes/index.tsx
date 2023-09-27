@@ -158,41 +158,12 @@ RootPage = lazy(async () => {
       configFunc.miaosha = configRes.enabled_addons.includes("MiaoSha");
       configFunc.cert = configRes.enabled_addons.includes("Cert");
 
-      // 如果当前是已登录的状态则处理下登录后的逻辑
-      let userRes: UserDetailInterface | null = null;
-      if (getToken()) {
-        // 获取当前登录学员
-        userRes = ((await user.detail()) as ResponseInterface)
-          .data as UserDetailInterface;
-
-        // 强制绑定手机号
-        if (
-          userRes.is_bind_mobile === 0 &&
-          configRes.member.enabled_mobile_bind_alert === 1
-        ) {
-          setBindMobileKey();
-        } else {
-          clearBindMobileKey();
-        }
-
-        //强制实名认证
-        if (
-          userRes.is_face_verify === false &&
-          configRes.member.enabled_face_verify === true
-        ) {
-          setFaceCheckKey();
-        } else {
-          clearFaceCheckKey();
-        }
-      }
-
       // 获取导航栏
       let navsRes: any = await home.headerNav();
 
       resolve({
         default: (
           <InitPage
-            loginData={userRes}
             config={configRes}
             configFunc={configFunc}
             navsData={navsRes.data}

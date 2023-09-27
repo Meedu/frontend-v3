@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { clearToken, clearFaceCheckKey,clearBindMobileKey } from "../../utils/index";
+import {
+  clearToken,
+  clearFaceCheckKey,
+  clearBindMobileKey,
+} from "../../utils/index";
 
 type UserStoreInterface = {
   user: any;
@@ -45,7 +49,7 @@ const loginUserSlice = createSlice({
       stage.value.isLogin = false;
       clearToken();
       clearFaceCheckKey();
-      clearBindMobileKey()
+      clearBindMobileKey();
     },
     changeUserCredit(stage, e) {
       stage.value.user.credit1 = e.payload;
@@ -60,6 +64,7 @@ const loginUserSlice = createSlice({
 });
 
 export default loginUserSlice.reducer;
+
 export const {
   loginAction,
   logoutAction,

@@ -19,11 +19,12 @@ import appConfig from "../../js/config";
 export const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [content, setContent] = useState<string>("");
+  const [content, setContent] = useState("");
   // 全局状态的user
   const user = useSelector((state: any) => state.loginUser.value.user);
   // 全局状态-是否登录
   const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
+  // 刷新-未读消息数量
   const freshUnread = useSelector(
     (state: any) => state.loginUser.value.freshUnread
   );
@@ -362,7 +363,7 @@ export const Header = () => {
           </div>
         </div>
         <div className="header-menu">
-          {navLoading && (
+          {navLoading ? (
             <Skeleton.Button
               style={{
                 width: 600,
@@ -372,8 +373,7 @@ export const Header = () => {
               }}
               active
             />
-          )}
-          {!navLoading && (
+          ) : (
             <Menu
               onClick={checkNav}
               selectedKeys={[current]}

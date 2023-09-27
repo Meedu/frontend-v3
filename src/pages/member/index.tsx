@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import { Input, Modal, message, Upload } from "antd";
 import type { UploadProps } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { sign, system, login, user as member } from "../../api/index";
 import { NavMember, SignComp } from "../../components";
 import config from "../../js/config";
@@ -28,36 +28,42 @@ import wxIcon from "../../assets/img/commen/icon-wechat.png";
 const { confirm } = Modal;
 
 const MemberPage = () => {
-  document.title = "用户中心";
+  document.title = "学员中心";
   const dispatch = useDispatch();
-  const result = new URLSearchParams(useLocation().search);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [editNickStatus, setEditNickStatus] = useState<boolean>(false);
-  const [mobileValidateVisible, setMobileValidateVisible] =
-    useState<boolean>(false);
-  const [bindMobileSign, setBindMobileSign] = useState<string>("");
-  const [bindMobileVisible, setBindMobileVisible] = useState<boolean>(false);
-  const [bindNewMobileVisible, setBindNewMobileVisible] =
-    useState<boolean>(false);
-  const [changePasswordVisible, setChangePasswordVisible] =
-    useState<boolean>(false);
-  const [destroyUserVisible, setDestroyUserVisible] = useState<boolean>(false);
-  const [bindWeixinVisible, setBindWeixinVisible] = useState<boolean>(false);
-  const [signStatus, setSignStatus] = useState<boolean>(false);
-  const [app, setApp] = useState<string>("");
+
+  // --------- store变量 ---------
+  // 当前登录学员
   const user = useSelector((state: any) => state.loginUser.value.user);
+  // 系统配置
   const systemConfig = useSelector(
     (state: any) => state.systemConfig.value.config
   );
+  // 系统启用的功能
   const configFunc = useSelector(
     (state: any) => state.systemConfig.value.configFunc
   );
-  const isLogin = useSelector((state: any) => state.loginUser.value.isLogin);
+
+  // --------- URL变量 ---------
+  const [searchParams] = useSearchParams();
+  const loginCode = searchParams.get("login_code");
+  const urlLoginAction = searchParams.get("action");
+  const loginErrMsg = searchParams.get("login_err_msg");
+
+  // --------- 页面变量 ---------
+  const [loading, setLoading] = useState(false);
+  const [editNickStatus, setEditNickStatus] = useState(false);
+  const [mobileValidateVisible, setMobileValidateVisible] = useState(false);
+  const [bindMobileSign, setBindMobileSign] = useState("");
+  const [bindMobileVisible, setBindMobileVisible] = useState(false);
+  const [bindNewMobileVisible, setBindNewMobileVisible] = useState(false);
+  const [changePasswordVisible, setChangePasswordVisible] = useState(false);
+  const [destroyUserVisible, setDestroyUserVisible] = useState(false);
+  const [bindWeixinVisible, setBindWeixinVisible] = useState(false);
+  const [signStatus, setSignStatus] = useState(false);
+  const [app, setApp] = useState("");
+
   const [currentTab, setCurrentTab] = useState(1);
   const [nickName, setNickName] = useState<string>(user && user.nick_name);
-  const loginCode = result.get("login_code");
-  const action = result.get("action");
-  const errMsg = result.get("login_err_msg");
   const tabs = [
     {
       name: "基本信息",
@@ -70,32 +76,26 @@ const MemberPage = () => {
   ];
 
   useEffect(() => {
-    if (isLogin) {
-      getSignStatus();
-    }
+    getSignStatus();
     resetData();
-  }, [isLogin]);
+  }, []);
 
   useEffect(() => {
-    if (loginCode && action === "bind") {
+    if (loginCode && urlLoginAction === "bind") {
       codeBind(loginCode);
     }
-    if (errMsg) {
-      message.error(errMsg);
-    }
-  }, [loginCode, action, errMsg]);
+  }, [loginCode, urlLoginAction]);
+
+  useEffect(() => {
+    loginErrMsg && message.error(loginErrMsg);
+  }, [loginErrMsg]);
 
   const getSignStatus = () => {
     if (!configFunc.daySignIn) {
       return;
     }
     sign.user().then((res: any) => {
-      let is_submit = res.data.is_submit;
-      if (is_submit === 0) {
-        setSignStatus(true);
-      } else {
-        setSignStatus(false);
-      }
+      setSignStatus(res.data.is_submit === 0);
     });
   };
 
@@ -136,17 +136,17 @@ const MemberPage = () => {
   };
 
   const saveEditNick = () => {
-    if (loading) {
-      return;
-    }
     if (!nickName) {
       message.error("请输入昵称");
+      return;
+    }
+    if (loading) {
       return;
     }
     setLoading(true);
     member
       .nicknameChange({ nick_name: nickName })
-      .then((res) => {
+      .then(() => {
         setLoading(false);
         message.success("修改成功");
         resetData();
@@ -156,7 +156,7 @@ const MemberPage = () => {
       });
   };
 
-  const props: UploadProps = {
+  const avatarUploadProps: UploadProps = {
     name: "file",
     multiple: false,
     method: "POST",
@@ -400,7 +400,7 @@ const MemberPage = () => {
                     <div className={styles["item-avatar"]}>
                       <Upload
                         className={styles["avatar"]}
-                        {...props}
+                        {...avatarUploadProps}
                         showUploadList={false}
                       >
                         <img className={styles["avatar"]} src={user.avatar} />
@@ -500,6 +500,7 @@ const MemberPage = () => {
                     </div>
                   </div>
                 </div>
+
                 {systemConfig.socialites.qq === 1 && (
                   <div className={styles["item-line"]}>
                     <div className={styles["item-left"]}>
@@ -531,6 +532,7 @@ const MemberPage = () => {
                     </div>
                   </div>
                 )}
+
                 {systemConfig.socialites.wechat_scan === 1 && (
                   <div className={styles["item-line"]}>
                     <div className={styles["item-left"]}>
@@ -564,6 +566,7 @@ const MemberPage = () => {
                 )}
               </div>
             )}
+
             {currentTab === 2 && (
               <div className={styles["project-content"]}>
                 <ProfileComp refresh={() => resetData()}></ProfileComp>
