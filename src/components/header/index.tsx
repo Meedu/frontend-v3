@@ -4,7 +4,7 @@ import { Skeleton, Input, Button, Dropdown, message, Menu } from "antd";
 import type { MenuProps } from "antd";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutAction, saveUnread } from "../../store/user/loginUserSlice";
+import { saveUnread } from "../../store/user/loginUserSlice";
 import vipIcon from "../../assets/img/commen/icon-VIP.png";
 import studyIcon from "../../assets/img/study/icon-mystudy.png";
 import { LoginDialog } from "../login-dailog";
@@ -15,6 +15,7 @@ import { ForgetPasswordDialog } from "../forget-password-dialog";
 import { login, user as member } from "../../api/index";
 import searchIcon from "../../assets/img/commen/icon-search.png";
 import appConfig from "../../js/config";
+import { clearBindMobileKey, clearFaceCheckKey, clearToken } from "../../utils";
 
 export const Header = () => {
   const dispatch = useDispatch();
@@ -145,12 +146,13 @@ export const Header = () => {
       }
       setLoading(true);
       login.logout().then(() => {
-        setLoading(false);
         message.success("已安全退出");
-        dispatch(logoutAction());
+        clearToken();
+        clearFaceCheckKey();
+        clearBindMobileKey();
         setTimeout(() => {
           window.location.href = "/";
-        }, 800);
+        }, 500);
       });
     } else if (key === "user_info") {
       navigate(`/member`);
