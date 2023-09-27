@@ -21,10 +21,15 @@ export const SignComp: React.FC<PropInterface> = ({ open, success }) => {
       .signIn({})
       .then((res: any) => {
         setLoading(false);
-        message.success("签到成功，积分+" + res.data.reward);
+        if (res.data.reward === false) {
+          message.success(`今日已签到`);
+        } else {
+          message.success("签到成功，积分+" + res.data.reward);
+        }
         success();
       })
       .catch((e: any) => {
+        message.error(e.message || JSON.stringify(e));
         setLoading(false);
       });
   };
