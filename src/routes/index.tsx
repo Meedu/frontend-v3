@@ -105,6 +105,7 @@ const ErrorPage = lazy(() => import("../pages/error/index"));
 const Error404 = lazy(() => import("../pages/error/404"));
 
 let RootPage: any = null;
+
 let configFunc: AppFeatureInterface = {
   vip: true,
   live: false,
@@ -126,21 +127,43 @@ let configFunc: AppFeatureInterface = {
   cert: false,
 };
 
-if (getToken()) {
-  RootPage = lazy(async () => {
-    return new Promise<any>(async (resolve) => {
-      try {
-        // 获取系统配置
-        let configRes: AppConfigInterface = (
-          (await system.config()) as ResponseInterface
-        ).data as AppConfigInterface;
+RootPage = lazy(async () => {
+  return new Promise<any>(async (resolve) => {
+    try {
+      // 获取系统配置
+      let configRes: AppConfigInterface = (
+        (await system.config()) as ResponseInterface
+      ).data as AppConfigInterface;
 
+      // 决定开启哪些功能
+      configFunc.live = configRes.enabled_addons.includes("Zhibo");
+      configFunc.book = configRes.enabled_addons.includes("MeeduBooks");
+      configFunc.topic = configRes.enabled_addons.includes("MeeduTopics");
+      // 考试模块
+      configFunc.practice =
+        configFunc.wrongBook =
+        configFunc.mockPaper =
+        configFunc.paper =
+          configRes.enabled_addons.includes("Paper");
+      configFunc.wenda = configRes.enabled_addons.includes("Wenda");
+      configFunc.share = configRes.enabled_addons.includes("MultiLevelShare");
+      configFunc.codeExchanger =
+        configRes.enabled_addons.includes("CodeExchanger");
+      configFunc.snapshort = configRes.enabled_addons.includes("Snapshot");
+      configFunc.promoCode =
+        configRes.enabled_addons.includes("MultiLevelShar");
+      configFunc.daySignIn = configRes.enabled_addons.includes("DaySignIn");
+      configFunc.credit1Mall = configRes.enabled_addons.includes("DaySignIn");
+      configFunc.tuangou = configRes.enabled_addons.includes("TuanGou");
+      configFunc.miaosha = configRes.enabled_addons.includes("MiaoSha");
+      configFunc.cert = configRes.enabled_addons.includes("Cert");
+
+      // 如果当前是已登录的状态则处理下登录后的逻辑
+      let userRes: UserDetailInterface | null = null;
+      if (getToken()) {
         // 获取当前登录学员
-        let userRes: UserDetailInterface = (
-          (await user.detail()) as ResponseInterface
-        ).data as UserDetailInterface;
-
-        let navsRes: any = await home.headerNav();
+        userRes = ((await user.detail()) as ResponseInterface)
+          .data as UserDetailInterface;
 
         // 强制绑定手机号
         if (
@@ -161,93 +184,26 @@ if (getToken()) {
         } else {
           clearFaceCheckKey();
         }
-
-        configFunc.live = configRes.enabled_addons.includes("Zhibo");
-        configFunc.book = configRes.enabled_addons.includes("MeeduBooks");
-        configFunc.topic = configRes.enabled_addons.includes("MeeduTopics");
-        // 考试模块
-        configFunc.practice =
-          configFunc.wrongBook =
-          configFunc.mockPaper =
-          configFunc.paper =
-            configRes.enabled_addons.includes("Paper");
-        configFunc.wenda = configRes.enabled_addons.includes("Wenda");
-        configFunc.share = configRes.enabled_addons.includes("MultiLevelShare");
-        configFunc.codeExchanger =
-          configRes.enabled_addons.includes("CodeExchanger");
-        configFunc.snapshort = configRes.enabled_addons.includes("Snapshot");
-        configFunc.promoCode =
-          configRes.enabled_addons.includes("MultiLevelShar");
-        configFunc.daySignIn = configRes.enabled_addons.includes("DaySignIn");
-        configFunc.credit1Mall = configRes.enabled_addons.includes("DaySignIn");
-        configFunc.tuangou = configRes.enabled_addons.includes("TuanGou");
-        configFunc.miaosha = configRes.enabled_addons.includes("MiaoSha");
-        configFunc.cert = configRes.enabled_addons.includes("Cert");
-
-        resolve({
-          default: (
-            <InitPage
-              loginData={userRes}
-              config={configRes}
-              configFunc={configFunc}
-              navsData={navsRes.data}
-            />
-          ),
-        });
-      } catch (e) {
-        console.error("系统初始化失败", e);
       }
-    });
+
+      // 获取导航栏
+      let navsRes: any = await home.headerNav();
+
+      resolve({
+        default: (
+          <InitPage
+            loginData={userRes}
+            config={configRes}
+            configFunc={configFunc}
+            navsData={navsRes.data}
+          />
+        ),
+      });
+    } catch (e) {
+      console.error("系统初始化失败", e);
+    }
   });
-} else {
-  RootPage = lazy(async () => {
-    return new Promise<any>(async (resolve) => {
-      try {
-        // 获取系统配置
-        let configRes: AppConfigInterface = (
-          (await system.config()) as ResponseInterface
-        ).data as AppConfigInterface;
-
-        let navsRes: any = await home.headerNav();
-
-        configFunc.live = configRes.enabled_addons.includes("Zhibo");
-        configFunc.book = configRes.enabled_addons.includes("MeeduBooks");
-        configFunc.topic = configRes.enabled_addons.includes("MeeduTopics");
-        // 考试模块
-        configFunc.practice =
-          configFunc.wrongBook =
-          configFunc.mockPaper =
-          configFunc.paper =
-            configRes.enabled_addons.includes("Paper");
-        configFunc.wenda = configRes.enabled_addons.includes("Wenda");
-        configFunc.share = configRes.enabled_addons.includes("MultiLevelShare");
-        configFunc.codeExchanger =
-          configRes.enabled_addons.includes("CodeExchanger");
-        configFunc.snapshort = configRes.enabled_addons.includes("Snapshot");
-        configFunc.promoCode =
-          configRes.enabled_addons.includes("MultiLevelShar");
-        configFunc.daySignIn = configRes.enabled_addons.includes("DaySignIn");
-        configFunc.credit1Mall = configRes.enabled_addons.includes("DaySignIn");
-        configFunc.tuangou = configRes.enabled_addons.includes("TuanGou");
-        configFunc.miaosha = configRes.enabled_addons.includes("MiaoSha");
-        configFunc.cert = configRes.enabled_addons.includes("Cert");
-
-        resolve({
-          default: (
-            <InitPage
-              loginData={null}
-              config={configRes}
-              configFunc={configFunc}
-              navsData={navsRes.data}
-            />
-          ),
-        });
-      } catch (e) {
-        console.error("系统初始化失败", e);
-      }
-    });
-  });
-}
+});
 
 const routes: RouteObject[] = [
   {

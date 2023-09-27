@@ -38,15 +38,13 @@ export const InitPage = (props: Props) => {
   const [codebindmobileVisible, setCodebindmobileVisible] =
     useState<boolean>(false);
 
-  //-----监听滚动条-----
-  const getHeight = () => {
-    let scrollTop =
-      document.documentElement.scrollTop || document.body.scrollTop;
-    setBackTopStatus(scrollTop >= 2000);
-  };
   useEffect(() => {
+    const getHeight = () => {
+      let scrollTop =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      setBackTopStatus(scrollTop >= 2000);
+    };
     window.addEventListener("scroll", getHeight, true);
-
     return () => {
       window.removeEventListener("scroll", getHeight, true);
     };
@@ -111,11 +109,10 @@ export const InitPage = (props: Props) => {
     }
     share
       .bind({ msv: msv })
-      .then(() => {
-        clearMsv();
-      })
       .catch((e: any) => {
-        console.error(e);
+        console.error("三级分销绑定失败,错误信息:" + JSON.stringify(e));
+      })
+      .finally(() => {
         clearMsv();
       });
   };
@@ -246,7 +243,7 @@ export const InitPage = (props: Props) => {
       window.location.href = url;
     }
   }
-  
+
   if (props.configFunc) {
     dispatch(saveConfigFuncAction(props.configFunc));
   }
