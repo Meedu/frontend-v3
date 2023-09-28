@@ -197,6 +197,7 @@ export const LoginDialog: React.FC<PropInterface> = ({
     if (successRedirectUrl.indexOf("/#/") !== -1) {
       successRedirectUrl = successRedirectUrl.replace("/#/", "/");
     }
+
     if (pathname === "/login") {
       let appUrl = getAppUrl();
       if (redirect) {
@@ -205,6 +206,7 @@ export const LoginDialog: React.FC<PropInterface> = ({
         successRedirectUrl = appUrl;
       }
     }
+
     window.location.href =
       config.url +
       "/api/v3/auth/login/socialite/qq?s_url=" +

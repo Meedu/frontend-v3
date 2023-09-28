@@ -25,6 +25,7 @@ import {
   setFaceCheckKey,
   clearFaceCheckKey,
 } from "../../utils/index";
+import { Spin } from "antd";
 
 interface Props {
   config: any;
@@ -288,7 +289,19 @@ export const InitPage = (props: Props) => {
   }
 
   if (loginToken && isLogin === false) {
-    return <span>登录中...</span>;
+    return (
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Spin size="large" />
+      </div>
+    );
   }
 
   return (
