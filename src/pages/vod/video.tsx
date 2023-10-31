@@ -264,6 +264,7 @@ const VodPlayPage = () => {
         opacity: config.player.bullet_secret.opacity,
       },
       ban_drag: ban_drag === 1,
+      playbackSpeed: ban_drag === 1 ? [1] : [0.5, 0.75, 1, 1.25, 1.5, 2],
       last_see_pos: lastSeeParams,
     });
 
