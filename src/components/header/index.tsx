@@ -90,7 +90,11 @@ export const Header = () => {
 
       if (item.children.length > 0) {
         arr.push({
-          label: <span onClick={() => onMenuClick(item.url)}>{item.name}</span>,
+          label: (
+            <span onClick={() => onMenuClick(item.url, item.blank)}>
+              {item.name}
+            </span>
+          ),
           key: item.url,
           blank: item.blank,
           children: checkArr(item.children),
@@ -108,11 +112,12 @@ export const Header = () => {
   }, [navs]);
 
   const checkArr = (children: any) => {
-    const arr: MenuProps["items"] = [];
+    const arr: any = [];
     children.map((item: any) => {
       arr.push({
         label: item.name,
         key: item.url,
+        blank: item.blank,
       });
     });
     return arr;
@@ -219,7 +224,15 @@ export const Header = () => {
     navigate(e.key);
   };
 
-  const onMenuClick = (e: any) => {
+  const onMenuClick = (e: any, blank: number) => {
+    if (e.match("https:") || e.match("http:")) {
+      if (blank === 0) {
+        window.location.href = e;
+      } else {
+        window.open(e);
+      }
+      return;
+    }
     setCurrent(e);
     navigate(e);
   };
