@@ -204,6 +204,9 @@ export const LoginDialog: React.FC<PropInterface> = ({
       successRedirectUrl = successRedirectUrl.replace("/#/", "/");
     }
 
+    successRedirectUrl = removeURLParameter(successRedirectUrl, "login_code");
+    successRedirectUrl = removeURLParameter(successRedirectUrl, "action");
+    
     if (pathname === "/login") {
       let appUrl = getAppUrl();
       if (redirect) {
@@ -212,9 +215,6 @@ export const LoginDialog: React.FC<PropInterface> = ({
         successRedirectUrl = appUrl;
       }
     }
-
-    successRedirectUrl = removeURLParameter(successRedirectUrl, "login_code");
-    successRedirectUrl = removeURLParameter(successRedirectUrl, "action");
 
     window.location.href =
       config.url +
