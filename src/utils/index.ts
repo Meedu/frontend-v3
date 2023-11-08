@@ -202,6 +202,19 @@ export function SPAUrlAppend(baseUrl: string, queryParams: any) {
   );
 }
 
+export function removeURLParameter(url: string, parameter: any) {
+  const urlObj = new URL(url);
+  const searchParams = new URLSearchParams(urlObj.search);
+
+  // 删除指定的参数
+  searchParams.delete(parameter);
+
+  // 构建新的URL
+  urlObj.search = searchParams.toString();
+
+  return urlObj.toString();
+}
+
 export function codeRender(el: any) {
   if (!el) {
     return;

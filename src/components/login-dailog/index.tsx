@@ -4,7 +4,13 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Modal, Form, Input, message, Spin, Button, Space, Image } from "antd";
 import styles from "./index.module.scss";
 import { login, system, user } from "../../api/index";
-import { setToken, getMsv, getAppUrl, getHost } from "../../utils/index";
+import {
+  setToken,
+  getMsv,
+  getAppUrl,
+  getHost,
+  removeURLParameter,
+} from "../../utils/index";
 import { loginAction } from "../../store/user/loginUserSlice";
 import iconQQ from "../../assets/img/commen/icon-qq.png";
 import iconWeixin from "../../assets/img/commen/icon-weixin.png";
@@ -206,6 +212,9 @@ export const LoginDialog: React.FC<PropInterface> = ({
         successRedirectUrl = appUrl;
       }
     }
+
+    successRedirectUrl = removeURLParameter(successRedirectUrl, "login_code");
+    successRedirectUrl = removeURLParameter(successRedirectUrl, "action");
 
     window.location.href =
       config.url +
