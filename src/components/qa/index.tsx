@@ -220,6 +220,7 @@ export const QaComp: React.FC<PropInterface> = ({
                     width={80}
                     height={80}
                     border={4}
+                    isContain
                   ></ThumbBar>
                 </div>
               </div>
