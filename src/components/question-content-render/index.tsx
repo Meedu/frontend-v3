@@ -62,6 +62,7 @@ export const QuestionContentRender: React.FC<PropInterface> = ({
                     width={200}
                     height={200}
                     border={8}
+                    isContain
                   ></ThumbBar>
                 </div>
               ))}
