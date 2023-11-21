@@ -12,7 +12,7 @@ interface PropInterface {
   userCount: number;
   category: any;
   records: any[];
-  isFree: number;
+  isFree: boolean;
   isVipFree: number;
   questionCount: number;
 }
