@@ -168,7 +168,7 @@ const WendaPage = () => {
       />
       <FilterScenes
         scenes={scenes}
-        defaultKey={"default"}
+        defaultKey={scene}
         onSelected={(id: string) => {
           setScene(id);
           if (cid === 0) {

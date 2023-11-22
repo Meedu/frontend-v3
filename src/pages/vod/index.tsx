@@ -109,7 +109,7 @@ const VodPage = () => {
       <div className="container">
         <FilterScenes
           scenes={scenes}
-          defaultKey={""}
+          defaultKey={scene}
           onSelected={(id: string) => {
             setScene(id);
             if (cid === 0) {
