@@ -177,6 +177,8 @@ const LearnPathDetailPage = () => {
       navigate("/exam/practice/detail/" + item.other_id);
     } else if (item.type === "paper_paper") {
       navigate("/exam/papers/detail/" + item.other_id);
+    } else if (item.type === "paper_mock") {
+      navigate("/exam/mockpaper/detail/" + item.other_id);
     }
   };
 
@@ -373,7 +375,7 @@ const LearnPathDetailPage = () => {
                               </div>
                             ) : courseItem.type === "paper_paper" ||
                               courseItem.type === "paper_practice" ||
-                              courseItem.type === "paper_mock_paper" ? (
+                              courseItem.type === "paper_mock" ? (
                               <div className={styles["thumb-bar"]}>
                                 <ThumbBar
                                   value={paperIcon}
