@@ -92,16 +92,20 @@
     top: 100px;
     z-index: 50;
     min-height: 500px;
+    max-height: calc(100vh - 130px);
     background: #fff;
     border-radius: 8px;
     .number-box {
       width: 100%;
+      height: 100%;
       padding: 30px;
       box-sizing: border-box;
       display: grid;
       grid-row-gap: 30px;
       grid-column-gap: 22px;
       grid-template-columns: repeat(5, minmax(0, 1fr));
+      overflow-x: hidden;
+      overflow-y: auto;
       .active-num {
         width: 30px;
         height: 30px;
