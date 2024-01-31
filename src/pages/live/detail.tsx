@@ -500,7 +500,7 @@ const LiveDetailPage = () => {
             </div>
           </div>
           {!isBuy && msData && <MiaoshaList msData={msData} />}
-          {!isBuy && msData && <TuangouList tgData={tgData} />}
+          {!isBuy && tgData && <TuangouList tgData={tgData} />}
           <div className="course-tabs" id="NavBar">
             {tabs.map((item: any) => (
               <div
