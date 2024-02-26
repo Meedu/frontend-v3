@@ -50,9 +50,12 @@ const BookReadPage = () => {
   }, [params.courseId]);
 
   useEffect(() => {
-    latexRender(document.getElementById("desc"));
-    codeRender(document.getElementById("desc"));
-  }, [document.getElementById("desc")]);
+    let dom = document ? document.getElementById("desc") : null;
+    if (dom) {
+      latexRender(dom);
+      codeRender(dom);
+    }
+  }, [list]);
 
   const getData = () => {
     if (loading) {

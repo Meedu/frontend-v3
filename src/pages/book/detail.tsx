@@ -67,9 +67,12 @@ const BookDetailPage = () => {
   }, [bid]);
 
   useEffect(() => {
-    latexRender(document.getElementById("desc"));
-    codeRender(document.getElementById("desc"));
-  }, [document.getElementById("desc")]);
+    let dom = document ? document.getElementById("desc") : null;
+    if (dom) {
+      latexRender(dom);
+      codeRender(dom);
+    }
+  }, [book]);
 
   const getDetail = () => {
     if (loading) {

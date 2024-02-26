@@ -52,9 +52,12 @@ const TopicDetailPage = () => {
   }, [params.courseId]);
 
   useEffect(() => {
-    latexRender(document.getElementById("math"));
-    codeRender(document.getElementById("math"));
-  }, [document.getElementById("math")]);
+    let dom = document ? document.getElementById("math") : null;
+    if (dom) {
+      latexRender(dom);
+      codeRender(dom);
+    }
+  }, [topic]);
 
   const getDetail = () => {
     if (loading) {

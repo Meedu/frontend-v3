@@ -19,9 +19,12 @@ const AnnouncementPage = () => {
   }, [result.get("id")]);
 
   useEffect(() => {
-    latexRender(document.getElementById("desc"));
-    codeRender(document.getElementById("desc"));
-  }, [document.getElementById("desc")]);
+    let dom = document ? document.getElementById("desc") : null;
+    if (dom) {
+      latexRender(dom);
+      codeRender(dom);
+    }
+  }, [notice]);
 
   useEffect(() => {
     getData();
